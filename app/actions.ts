@@ -4,6 +4,8 @@ import { encodedRedirect } from "@/utils/utils";
 import { createClient } from "@/utils/supabase/server";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
+import prisma from "@/lib/prisma";
+
 
 export const signUpAction = async (formData: FormData) => {
   const email = formData.get("email")?.toString();
@@ -31,13 +33,24 @@ export const signUpAction = async (formData: FormData) => {
     console.error(error.code + " " + error.message);
     return encodedRedirect("error", "/sign-up", error.message);
   } else {
+
+    await prisma.user.create({
+      data:{
+        email:email,
+        password:password,
+      }
+      
+    })
     return encodedRedirect(
       "success",
-      "/sign-up",
+      "/",
       "Thanks for signing up! Please check your email for a verification link.",
     );
   }
 };
+
+
+
 
 export const signInAction = async (formData: FormData) => {
   const email = formData.get("email") as string;
