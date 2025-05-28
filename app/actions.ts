@@ -7,6 +7,8 @@ import { redirect } from "next/navigation";
 import prisma from "@/lib/prisma";
 
 
+
+
 export const signUpAction = async (formData: FormData) => {
   console.log(formData)
   const email = formData.get("email")?.toString();
@@ -49,6 +51,7 @@ export const signUpAction = async (formData: FormData) => {
       "/",
       "Thanks for signing up! Please check your email for a verification link.",
     );
+    
   }
 };
 
@@ -69,7 +72,8 @@ export const signInAction = async (formData: FormData) => {
     return encodedRedirect("error", "/sign-in", error.message);
   }
 
-  return redirect("/protected");
+
+  return redirect("/");
 };
 
 export const forgotPasswordAction = async (formData: FormData) => {
