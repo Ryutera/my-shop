@@ -28,23 +28,23 @@ const geistSans = Geist({
 });
 
 
-const getUserinfo = async() =>{
-  const supabase = await createClient()
-  const { data, error } =  await  supabase.auth.getUserIdentities()
-  if(error){
-    console.log(error,"エラー")
-  }else{
-    console.log(data,"データ")
-  }
-  
-}
-getUserinfo()
 
-export default function RootLayout({
+
+
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
+  // const supabase = await createClient()
+  // const { data } =  await  supabase.auth.getUserIdentities()
+  // if (data) {
+  //   console.log(data)
+    
+  // }
+  
+
   return (
     <html lang="en" className={geistSans.className} suppressHydrationWarning>
       <body className="bg-background text-foreground">
