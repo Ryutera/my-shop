@@ -4,13 +4,20 @@ import Link from "next/link";
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
 import { createClient } from "@/utils/supabase/server";
+import prisma from "@/lib/prisma";
 
 export default async function AuthButton() {
   const supabase = await createClient();
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const {  data } = await supabase.auth.getUser();
+
+  const user = await prisma.user.findFirst({
+    where:{
+      email : data.user?.email
+    }
+  })
+
+
 
   if (!hasEnvVars) {
     return (
@@ -48,9 +55,9 @@ export default async function AuthButton() {
       </>
     );
   }
-  return user ? (
+  return data? (
     <div className="flex items-center gap-4">
-      Hey, {user.email}!
+      Hey, {user?.name}!
       <form action={signOutAction}>
         <Button type="submit" variant={"outline"}>
           Sign out
