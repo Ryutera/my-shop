@@ -6,6 +6,7 @@ import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import prisma from "@/lib/prisma";
 import { contentfulClient } from "@/lib/contentful";
+import { ProductFields, ProductFieldsSkeleton } from "@/lib/types";
 
 
 
@@ -163,4 +164,11 @@ export async function getProducts() {
   });
 
   return entries.items;
+}
+
+
+export async function getProduct(id:string):Promise<ProductFields>{
+  const entry = await contentfulClient.getEntry<ProductFieldsSkeleton>(id)
+   
+   return entry.fields
 }
