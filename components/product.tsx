@@ -1,15 +1,20 @@
+import Link from 'next/link'
 import React from 'react'
 
-const Product = () => {
+const Product = ({cloth}:{cloth:any}) => {
+    
+  
   return (
     <div>
-    <div className="transition duration-300 transform hover:-translate-y-2 hover:scale-105 hover:shadow-2xl shadow-lg  overflow-hidden">
-            <img src="img/C59995E0-C29A-4350-ADF3-D9B375548E94.jpeg" alt="" className="h-[400px] "/>
+        <Link href={`/product/${cloth.sys.id}`}>
+    <div className='transition transform duration-300 hover:-translate-y-2 hover:shadow-2xl shadow-lg hover:scale-105 hover:cursor-pointer'>
+            <img src={cloth.fields.thumbnail.fields.file.url} alt="" className="h-[400px] "/>
             </div>
+            </Link>
   
   <div className="mt-3 justify-between flex"> 
-  <p>aaaaaaaaaaaaaa</p>
-  <p>100</p>
+  <p>{cloth.fields.name}</p>
+  <p>{cloth.fields.price}</p>
   </div>
 </div>
 

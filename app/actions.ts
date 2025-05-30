@@ -5,6 +5,7 @@ import { createClient } from "@/utils/supabase/server";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import prisma from "@/lib/prisma";
+import { contentfulClient } from "@/lib/contentful";
 
 
 
@@ -152,3 +153,14 @@ export const signOutAction = async () => {
   await supabase.auth.signOut();
   return redirect("/sign-in");
 };
+
+
+
+
+export async function getProducts() {
+  const entries = await contentfulClient.getEntries({
+    content_type: 'clothes', 
+  });
+
+  return entries.items;
+}
