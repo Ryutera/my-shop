@@ -1,11 +1,17 @@
 import Link from "next/link";
 import { Button } from "./ui/button";
+import { ShoppingCart } from "lucide-react";
 
 export function EnvVarWarning() {
   return (
     <div className="flex gap-4 items-center">
-    
+     
       <div className="flex gap-2">
+      
+<div className="flex gap-4 items-center border-2 border-red-500">
+  
+                    <ShoppingCart />
+                  </div>
         <Button
           asChild
           size="sm"

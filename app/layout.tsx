@@ -9,8 +9,7 @@ import Link from "next/link";
 import "./globals.css";
 import prisma from "@/lib/prisma";
 import { createClient } from "@/utils/supabase/server";
-
-
+import { ShoppingCart } from "lucide-react";
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
@@ -27,23 +26,17 @@ const geistSans = Geist({
   subsets: ["latin"],
 });
 
-
-
-
-
 export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-
   // const supabase = await createClient()
   // const { data } =  await  supabase.auth.getUserIdentities()
   // if (data) {
   //   console.log(data)
-    
+
   // }
-  
 
   return (
     <html lang="en" className={geistSans.className} suppressHydrationWarning>
@@ -64,16 +57,15 @@ export default async function RootLayout({
                       <DeployButton />
                     </div>
                   </div>
+
+                 
                   {!hasEnvVars ? <EnvVarWarning /> : <HeaderAuth />}
                 </div>
               </nav>
-              <div className="flex flex-col gap-20 max-w-7xl p-5">
+
+              <div className="flex flex-col gap-20 max-w-7xl p-4">
                 {children}
               </div>
-
-
-
-             
             </div>
           </main>
         </ThemeProvider>
