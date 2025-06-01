@@ -5,6 +5,7 @@ import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
 import { createClient } from "@/utils/supabase/server";
 import prisma from "@/lib/prisma";
+import { ShoppingCart } from "lucide-react";
 
 export default async function AuthButton() {
   const supabase = await createClient();
@@ -23,6 +24,10 @@ export default async function AuthButton() {
     return (
       <>
         <div className="flex gap-4 items-center">
+       
+  
+
+
           <div>
             <Badge
               variant={"default"}
@@ -57,6 +62,8 @@ export default async function AuthButton() {
   }
   return data? (
     <div className="flex items-center gap-4">
+      <div className="mr-1 hover:cursor-pointer"><ShoppingCart /></div>
+        
       Hey, {user?.name}!
       <form action={signOutAction}>
         <Button type="submit" variant={"outline"}>

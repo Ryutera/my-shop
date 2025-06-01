@@ -5,6 +5,7 @@ import ProductImeges from "@/components/productImeges";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Heart } from "lucide-react";
+import AddToCart from "@/components/AddToCart";
 
 const ProductPage = async ({ params }: { params: { id: string } }) => {
   const { id } = params;
@@ -59,11 +60,7 @@ const ProductPage = async ({ params }: { params: { id: string } }) => {
             </div>
             {/* Actions */}
             <div className="space-y-3">
-              <div className="transition transform duration-300 translate-y-1 hover:scale-105 hover:cursor-pointer">
-                <Button className="w-full" disabled size="lg">
-                  Add to Cart - ${productData.price}
-                </Button>
-              </div>
+             <AddToCart productData={productData}/>
               <Button
                 variant="outline"
                 className="w-full transition transform duration-300 translate-y-1 hover:scale-105"
