@@ -10,6 +10,7 @@ import "./globals.css";
 import prisma from "@/lib/prisma";
 import { createClient } from "@/utils/supabase/server";
 import { ShoppingCart } from "lucide-react";
+import { Provider } from "./context/cartContext";
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
@@ -39,6 +40,7 @@ export default async function RootLayout({
   // }
 
   return (
+    <Provider>
     <html lang="en" className={geistSans.className} suppressHydrationWarning>
       <body className="bg-background text-foreground">
         <ThemeProvider
@@ -71,5 +73,6 @@ export default async function RootLayout({
         </ThemeProvider>
       </body>
     </html>
+    </Provider>
   );
 }

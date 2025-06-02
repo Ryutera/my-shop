@@ -1,11 +1,9 @@
+"use client"
+import { Product } from "@/lib/types";
 import React, { createContext, ReactNode, useContext, useState } from "react";
 
-type Product = {
-  id: string;
-  name: string;
-  price: number;
-  quantity: number;
-};
+
+
 
 type CartContextType = {
   items: Product[];
@@ -47,4 +45,19 @@ export const Provider = ({ children }: { children: ReactNode }) => {
   )
 };
 
+// カスタムフック
+export const useCart = () => {
+    const context = useContext(CartContext)
+    if (context === undefined) {
+      throw new Error("useCart must be used within a CartProvider")
+    }
+    return context
+  }
+  
+
+
 export default CartContext;
+
+
+
+  
