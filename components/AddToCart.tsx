@@ -17,7 +17,7 @@ const  {addItem,items} = useCart()
 
 const isAdded = items.some((i)=>i===id)
 
-console.log(items)
+// console.log(items)
   
 
     const addToCart = (id:string) =>{

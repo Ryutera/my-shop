@@ -13,7 +13,7 @@ const ProductPage = async ({ params }: { params: { id: string } }) => {
 
 
 
-  console.log(productData,"データ");
+  // console.log(productData,"データ");
 
 
   if (!productData) {
