@@ -12,13 +12,12 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { ShoppingCart, Trash2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
 
 const Cart = () => {
-    const {items} = useCart()
+    const {items,removeItem} = useCart()
     const [products, setProducts] = useState<ProductFields[]>([])
 
     useEffect(() => {
@@ -30,7 +29,7 @@ const Cart = () => {
         }
     
         fetchProducts()
-      }, [])
+      }, [items])
     
       console.log(products,"プロダクト")
 console.log(items,"データ群")
@@ -38,6 +37,9 @@ console.log(items,"データ群")
 const totalAmount = products.reduce((acc,cur)=>(
   acc += cur.price
 ),0)
+
+
+
     
   return (
     <div className="max-w-3xl mx-auto p-6 md:p-10">
@@ -61,7 +63,9 @@ const totalAmount = products.reduce((acc,cur)=>(
             {products.map((product, index) => (
               <TableRow key={index} className="border-b border-gray-100 last:border-b-0">
                 <Link href={`/product/${items[index]}`}>
+                <div>
                 <TableCell className="text-gray-900 text-lg py-5 px-6 hover:text-blue-500">{product.name}</TableCell>
+                </div>
                 </Link>
                 <TableCell className="text-gray-900 text-lg py-5 px-6"></TableCell>
                 <TableCell className="text-gray-900 text-lg py-5 px-6">${product.price.toFixed(2)}</TableCell>
@@ -70,6 +74,7 @@ const totalAmount = products.reduce((acc,cur)=>(
                     variant="ghost"
                     size="sm"
                     className="h-8 w-8 p-0 hover:bg-gray-100 text-gray-400 hover:text-gray-600"
+                    onClick={()=>removeItem(items[index])}
                   >
                     <Trash2 className="h-5 w-5" />
                   </Button>
