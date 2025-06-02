@@ -12,17 +12,16 @@ id:string
 
 const AddToCart = (params:Type) => {
   const {  productData,id} = params
-const [isAdded, setIsAdded] = useState(false)
+
 const  {addItem,items} = useCart()
 
-console.log(isAdded)
-
+const isAdded = items.some((i)=>i===id)
 
 console.log(items)
   
 
     const addToCart = (id:string) =>{
-      setIsAdded((prev:boolean)=> !prev)
+      
       addItem(id)
     }
     
