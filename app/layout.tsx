@@ -10,7 +10,7 @@ import "./globals.css";
 import prisma from "@/lib/prisma";
 import { createClient } from "@/utils/supabase/server";
 import { ShoppingCart } from "lucide-react";
-import { Provider } from "./context/cartContext";
+import { Provider } from "./context/CartContext";
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`

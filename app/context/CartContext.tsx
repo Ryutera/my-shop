@@ -6,8 +6,8 @@ import React, { createContext, ReactNode, useContext, useState } from "react";
 
 
 type CartContextType = {
-  items: Product[];
-  addItem: (item: Product) => void;
+  items: string[];
+  addItem: (id: string) => void;
   removeItem: (id: string) => void;
   clearCart: () => void;
 };
@@ -15,23 +15,19 @@ type CartContextType = {
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export const Provider = ({ children }: { children: ReactNode }) => {
-  const [items, setItems] = useState<Product[]>([]);
+  const [items, setItems] = useState<string[]>([]);
 
-  const addItem = (item: Product) => {
+  const addItem = (id: string) => {
     setItems((prev) => {
-      const existing = prev.find((i) => i.id === item.id);
-      if (existing) {
-        return prev.map((i) =>
-          i.id === item.id ? { ...i, quantity: i.quantity + item.quantity } : i
-        );
-      }
-      return [...prev, item];
-    });
-  };
+      const exists = prev.some((i) => i === id)
+      if (exists) return prev 
+      return [...prev, id] 
+    })
+  }
 
   const removeItem = (id:string)=>{
     setItems((prev)=>{
-        return prev.filter((i) => i.id !== id);
+        return prev.filter((i) => i !== id);
     })
    
   } 
