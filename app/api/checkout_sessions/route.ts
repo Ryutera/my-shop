@@ -17,15 +17,17 @@ export async function POST(req:Request) {
     const session = await stripe.checkout.sessions.create({
       line_items: products.map((product: any) => ({
         price_data: {
-          currency: "jpy",
+          currency: "gbp",
           product_data: {
             name: product.name,
           },
-          unit_amount: product.price,
+          unit_amount: product.price*100,
         },
-        quantity: product.quantity,
+        quantity: 1,
+        
       })),
       mode: 'payment',
+      locale:'en',
       success_url: `${origin}/success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${origin}/?canceled=true`,
     });
