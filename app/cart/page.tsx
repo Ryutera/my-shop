@@ -38,17 +38,11 @@ const Cart = () => {
   console.log(items, "データ群");
 
   const getPayment = async () => {
-    const url:any = await axios.post("/api/checkout_sessions/", {
-      products: [
-        {
-          name: "Sample Product",
-          price: 1000,
-          quantity: 1,
-        },
-      ],
+    const data:any = await axios.post("/api/checkout_sessions/", {
+      products: products,
     });
-    console.log(url.data)
-    router.push(url.data.url)
+    console.log(data.data)
+    router.push(data.data.url)
   };
 
   const totalAmount = products.reduce((acc, cur) => (acc += cur.price), 0);
