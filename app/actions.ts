@@ -213,3 +213,13 @@ export async function removeFavoriteFromDb(cmsItemId: string) {
     },
   });
 }
+
+export async function  isFavoriteInDatabase(id:string,data:any){
+  const item = await prisma.favorite.findFirst({
+    where:{
+      userId:data.identities[0].userId,
+      cmsItemId:id
+    }
+  })
+return item
+}

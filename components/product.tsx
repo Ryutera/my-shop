@@ -6,8 +6,8 @@ import { createClient } from '@/utils/supabase/server'
 
 const Product = async({cloth}:{cloth:any}) => {
   const supabase = await createClient()
- 
-  
+  const { data } =  await  supabase.auth.getUserIdentities()
+
   return (
     <div>
         <Link href={`/product/${cloth.sys.id}`}>
@@ -21,7 +21,7 @@ const Product = async({cloth}:{cloth:any}) => {
   <div className="flex flex-row gap-2">
   <p>£{cloth.fields.price}</p>
 
-  <FavoriteButton id={cloth.sys.id}/>
+  <FavoriteButton id={cloth.sys.id} data={data}/>
 
   </div>
 
