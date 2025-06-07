@@ -17,7 +17,7 @@ const Product = ({cloth}:{cloth:any}) => {
   <p>{cloth.fields.name}</p>
   <div className="flex flex-row gap-2">
   <p>£{cloth.fields.price}</p>
-  <FavoriteButton/>
+  <FavoriteButton id={cloth.sys.id}/>
   </div>
 
 

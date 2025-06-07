@@ -12,17 +12,6 @@ import { createClient } from "@/utils/supabase/client";
 
 
 export default  function AuthButton({data,userData}:any) {
-  // const [user,setUser] = useState<any>(null);
-  // const supabase = createClient()
-
-  // // useEffect(()=>{
-  // //   const getUser = async()=>{
-    
-  // //   }
-  // //   getUser()
-    
-  // // },[])
-
 
 
   if (!hasEnvVars) {
