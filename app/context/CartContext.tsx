@@ -3,14 +3,18 @@
 import React, { createContext, ReactNode, useContext, useState } from "react";
 type CartContextType = {
   items: string[];
+  favorite:string[]
   addItem: (id: string) => void;
   removeItem: (id: string) => void;
   clearCart: () => void;
+  addFavorite:(id:string)=>void
+
 };
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
 export const Provider = ({ children }: { children: ReactNode }) => {
   const [items, setItems] = useState<string[]>([]);
+  const [favorite, setFavorite] = useState<string[]>([]);
 
   
   const addItem = (id: string) => {
@@ -31,10 +35,23 @@ export const Provider = ({ children }: { children: ReactNode }) => {
    
   };
 
+  const addFavorite = (id:string) =>{
+
+    const isAlreadyadded = favorite?.find((f)=> f === id)
+    
+    if(isAlreadyadded){
+     const filteredFavoritelist = favorite.filter((f)=>f !== id)
+     setFavorite(filteredFavoritelist)
+    }else{
+setFavorite((prev)=>[...prev, id])
+    }
+
+  }
+
   const clearCart = () => setItems([]);
 
   return (
-    <CartContext.Provider value={{ items, addItem, removeItem, clearCart }}>
+    <CartContext.Provider value={{ items, addItem, removeItem, clearCart, favorite, addFavorite }}>
       {children}
     </CartContext.Provider>
   );
