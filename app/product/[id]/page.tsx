@@ -3,18 +3,12 @@ import React from "react";
 
 import ProductImeges from "@/components/productImeges";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Heart } from "lucide-react";
 import AddToCart from "@/components/AddToCart";
+import AddToWishList from "@/components/AddToWishList";
 
 const ProductPage = async ({ params }: { params: { id: string } }) => {
   const { id } = await params;
   const productData = await getProduct(id);
-
-
-
-  // console.log(productData,"データ");
-
 
   if (!productData) {
     console.log("商品データがない");
@@ -23,16 +17,14 @@ const ProductPage = async ({ params }: { params: { id: string } }) => {
 
   const formatDescription = (description: string) => {
     return description.split("\n").map((line, index) => {
-      if (line.trim() === "") return <br key={index} />
+      if (line.trim() === "") return <br key={index} />;
       return (
         <p key={index} className="mb-2">
           {line}
         </p>
-      )
-    })
-  }
-
-
+      );
+    });
+  };
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -65,20 +57,16 @@ const ProductPage = async ({ params }: { params: { id: string } }) => {
             </div>
             {/* Actions */}
             <div className="space-y-3">
-             <AddToCart productData={productData} id={id}/>
-              <Button
-                variant="outline"
-                className="w-full transition transform duration-300 translate-y-1 hover:scale-105"
-              >
-                <Heart className="mr-2 h-4 w-4" />
-                Add to Wishlist
-              </Button>
+              <AddToCart productData={productData} id={id} />
+              <AddToWishList id={id}/>
             </div>
             {/* Description */}
-      <div>
-        <h3 className="font-medium mb-3">Product Details</h3>
-        <div className="text-muted-foreground text-sm space-y-1">{formatDescription(productData.description)}</div>
-      </div>
+            <div>
+              <h3 className="font-medium mb-3">Product Details</h3>
+              <div className="text-muted-foreground text-sm space-y-1">
+                {formatDescription(productData.description)}
+              </div>
+            </div>
           </div>
         </div>
       </div>
