@@ -13,7 +13,7 @@ interface Props{
 const FavoriteButton = (props:Props) => {
     const {id,data} = props
    const {favorite,addFavorite } =useCart()
-   const [isFavorited, setIsFavorited] = useState<any>(false);
+   const [isFavorited, setIsFavorited] = useState<any>(null);
 
    useEffect(()=>{
     const getFavoriteItemFromDatabase = async(id:string) =>{
