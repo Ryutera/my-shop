@@ -1,4 +1,5 @@
 "use client";
+
 import React, { createContext, ReactNode, useContext, useState } from "react";
 type CartContextType = {
   items: string[];
@@ -11,10 +12,12 @@ const CartContext = createContext<CartContextType | undefined>(undefined);
 export const Provider = ({ children }: { children: ReactNode }) => {
   const [items, setItems] = useState<string[]>([]);
 
+  
   const addItem = (id: string) => {
     setItems((prev) => {
       const exists = prev.some((i) => i === id);
       if (exists) return prev;
+      
       return [...prev, id];
     });
   };

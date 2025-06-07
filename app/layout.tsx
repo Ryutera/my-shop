@@ -1,7 +1,6 @@
 import DeployButton from "@/components/deploy-button";
 import { EnvVarWarning } from "@/components/env-var-warning";
 import HeaderAuth from "@/components/header-auth";
-import { ThemeSwitcher } from "@/components/theme-switcher";
 import { hasEnvVars } from "@/utils/supabase/check-env-vars";
 import { Geist } from "next/font/google";
 import { ThemeProvider } from "next-themes";
@@ -32,12 +31,12 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  // const supabase = await createClient()
-  // const { data } =  await  supabase.auth.getUserIdentities()
-  // if (data) {
-  //   console.log(data)
+  const supabase = await createClient()
+  const { data } =  await  supabase.auth.getUserIdentities()
+  if (data) {
+    console.log(data)
 
-  // }
+  }
 
   return (
     <Provider>

@@ -39,13 +39,17 @@ export const signUpAction = async (formData: FormData) => {
     console.error(error.code + " " + error.message);
     return encodedRedirect("error", "/sign-up", error.message);
   } else {
-
+     const user = await supabase.auth.getUser()
+    //  subabaseのユーザーIDと紐づける
+     const supabaseUserId = user.data.user?.id
     await prisma.user.create({
       data:{
+        id:supabaseUserId,
         email:email,
         password:password,
         name:name || email
       }
+  
       
     })
     return encodedRedirect(
@@ -61,20 +65,22 @@ export const signUpAction = async (formData: FormData) => {
 
 
 export const signInAction = async (formData: FormData) => {
-  const email = formData.get("email") as string;
-  const password = formData.get("password") as string;
+  const email = formData.get("email")?.toString().trim() as string;
+const password = formData.get("password")?.toString() as string; 
+
   const supabase = await createClient();
 
-  const { error } = await supabase.auth.signInWithPassword({
+  const { data, error } = await supabase.auth.signInWithPassword({
     email,
     password,
   });
 
   if (error) {
+    console.log("ログインエラー",error)
     return encodedRedirect("error", "/sign-in", error.message);
+  }else{
+    console.log("ログイン成功",data)
   }
-
-
   return redirect("/");
 };
 
@@ -152,9 +158,19 @@ export const resetPasswordAction = async (formData: FormData) => {
 export const signOutAction = async () => {
   const supabase = await createClient();
   await supabase.auth.signOut();
-  return redirect("/sign-in");
+  return redirect("/");
+  
 };
 
+
+export async function getUserWithId (id:string) {
+  const data = await prisma.user.findUnique({
+    where:{
+    id
+    }
+  })
+return data
+}
 
 
 
