@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import React from 'react'
+import FavoriteButton from './FavoriteButton'
 
 const Product = ({cloth}:{cloth:any}) => {
     
@@ -14,7 +15,12 @@ const Product = ({cloth}:{cloth:any}) => {
   
   <div className="mt-3 justify-between flex"> 
   <p>{cloth.fields.name}</p>
-  <p>{cloth.fields.price}</p>
+  <div className="flex flex-row gap-2">
+  <p>£{cloth.fields.price}</p>
+  <FavoriteButton/>
+  </div>
+
+
   </div>
 </div>
 
