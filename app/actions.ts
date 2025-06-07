@@ -8,9 +8,6 @@ import prisma from "@/lib/prisma";
 import { contentfulClient } from "@/lib/contentful";
 import { ProductFields, ProductFieldsSkeleton } from "@/lib/types";
 
-
-
-
 export const signUpAction = async (formData: FormData) => {
   console.log(formData)
   const email = formData.get("email")?.toString();
@@ -187,4 +184,32 @@ export async function getProduct(id:string):Promise<ProductFields>{
   const entry = await contentfulClient.getEntry<ProductFieldsSkeleton>(id)
    
    return entry.fields
+}
+
+
+
+export async function addFavoriteToDb(cmsItemId: string) {
+  const supabase = await createClient();
+  const { data } = await supabase.auth.getUser();
+  if (!data.user?.id) return;
+
+  await prisma.favorite.create({
+    data: {
+      userId: data.user.id,
+      cmsItemId,
+    },
+  });
+}
+
+export async function removeFavoriteFromDb(cmsItemId: string) {
+  const supabase = await createClient();
+  const { data } = await supabase.auth.getUser();
+  if (!data.user?.id) return;
+
+  await prisma.favorite.deleteMany({
+    where: {
+      userId: data.user.id,
+      cmsItemId,
+    },
+  });
 }

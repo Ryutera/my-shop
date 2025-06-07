@@ -21,6 +21,7 @@ model User {
   password  String
   orders    Order[]
   cartItems CartItem[]
+  favorites Favorite[]
   createdAt DateTime   @default(now())
 }
 
@@ -41,4 +42,14 @@ model CartItem {
   cmsItemId String // CMS側の商品ID
   quantity  Int      @default(1)
   createdAt DateTime @default(now())
+}
+
+model Favorite {
+  id        String   @id @default(uuid())
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+  cmsItemId String // CMSの商品ID（例: CMS側の UUID や slug など）
+  createdAt DateTime @default(now())
+
+  @@unique([userId, cmsItemId])
 }

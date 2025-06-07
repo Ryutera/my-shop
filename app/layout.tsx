@@ -43,7 +43,7 @@ let userData
   }
 
   return (
-    <Provider>
+    <Provider userData={data}>
     <html lang="en" className={geistSans.className} suppressHydrationWarning>
       <body className="bg-background text-foreground">
         <ThemeProvider

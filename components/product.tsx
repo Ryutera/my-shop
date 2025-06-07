@@ -1,9 +1,12 @@
 import Link from 'next/link'
 import React from 'react'
 import FavoriteButton from './FavoriteButton'
+import { createClient } from '@/utils/supabase/server'
 
-const Product = ({cloth}:{cloth:any}) => {
-    
+
+const Product = async({cloth}:{cloth:any}) => {
+  const supabase = await createClient()
+ 
   
   return (
     <div>
@@ -17,7 +20,9 @@ const Product = ({cloth}:{cloth:any}) => {
   <p>{cloth.fields.name}</p>
   <div className="flex flex-row gap-2">
   <p>£{cloth.fields.price}</p>
+
   <FavoriteButton id={cloth.sys.id}/>
+
   </div>
 
 

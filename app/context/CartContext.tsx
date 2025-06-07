@@ -1,6 +1,7 @@
 "use client";
 
 import React, { createContext, ReactNode, useContext, useState } from "react";
+import { addFavoriteToDb, removeFavoriteFromDb } from "../actions";
 type CartContextType = {
   items: string[];
   favorite:string[]
@@ -11,8 +12,14 @@ type CartContextType = {
 
 };
 
+interface Props{
+  children: ReactNode 
+ userData:any
+}
+
 const CartContext = createContext<CartContextType | undefined>(undefined);
-export const Provider = ({ children }: { children: ReactNode }) => {
+export const Provider = (props: Props) => {
+  const {children,userData} = props
   const [items, setItems] = useState<string[]>([]);
   const [favorite, setFavorite] = useState<string[]>([]);
 
@@ -35,15 +42,21 @@ export const Provider = ({ children }: { children: ReactNode }) => {
    
   };
 
-  const addFavorite = (id:string) =>{
+  const addFavorite = async(id:string) =>{
 
     const isAlreadyadded = favorite?.find((f)=> f === id)
     
     if(isAlreadyadded){
      const filteredFavoritelist = favorite.filter((f)=>f !== id)
      setFavorite(filteredFavoritelist)
+     if (userData) {
+      await removeFavoriteFromDb(id); // ログイン中ならDBからも削除
+    }
     }else{
 setFavorite((prev)=>[...prev, id])
+if (userData) {
+  await addFavoriteToDb(id); // ログイン中ならDBに追加
+}
     }
 
   }
