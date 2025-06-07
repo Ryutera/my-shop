@@ -5,10 +5,13 @@ import ProductImeges from "@/components/productImeges";
 import { Badge } from "@/components/ui/badge";
 import AddToCart from "@/components/AddToCart";
 import AddToWishList from "@/components/AddToWishList";
+import { createClient } from "@/utils/supabase/server";
 
 const ProductPage = async ({ params }: { params: { id: string } }) => {
   const { id } = await params;
   const productData = await getProduct(id);
+  const supabase = await createClient()
+  const { data } =  await  supabase.auth.getUserIdentities()
 
   if (!productData) {
     console.log("商品データがない");
@@ -58,7 +61,7 @@ const ProductPage = async ({ params }: { params: { id: string } }) => {
             {/* Actions */}
             <div className="space-y-3">
               <AddToCart productData={productData} id={id} />
-              <AddToWishList id={id}/>
+              <AddToWishList id={id} userData={data}/>
             </div>
             {/* Description */}
             <div>
