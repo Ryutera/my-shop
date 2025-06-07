@@ -10,6 +10,7 @@ import prisma from "@/lib/prisma";
 import { createClient } from "@/utils/supabase/server";
 import { ShoppingCart } from "lucide-react";
 import { Provider } from "./context/CartContext";
+import { getUserWithId } from "./actions";
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
@@ -33,8 +34,11 @@ export default async function RootLayout({
 }>) {
   const supabase = await createClient()
   const { data } =  await  supabase.auth.getUserIdentities()
+let userData
   if (data) {
-    console.log(data)
+       userData = await getUserWithId(data.identities[0].id)
+    
+    // console.log(data)
 
   }
 
@@ -60,7 +64,7 @@ export default async function RootLayout({
                   </div>
 
                  
-                  {!hasEnvVars ? <EnvVarWarning /> : <HeaderAuth />}
+                  {!hasEnvVars ? <EnvVarWarning /> : <HeaderAuth data={data} userData={userData}/>}
                 </div>
               </nav>
 

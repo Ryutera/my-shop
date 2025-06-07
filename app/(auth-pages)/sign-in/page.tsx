@@ -5,8 +5,11 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
 
-export default async function Login(props: { searchParams: Promise<Message> }) {
-  const searchParams = await props.searchParams;
+export default async function Login(props:  { searchParams: { error?: string; success?: string } }) {
+  const params = await props.searchParams;
+  const error = params?.error ;
+
+  
   return (
     <form className="flex-1 flex flex-col min-w-64">
       <h1 className="text-2xl font-medium">Sign in</h1>
@@ -37,7 +40,9 @@ export default async function Login(props: { searchParams: Promise<Message> }) {
         <SubmitButton pendingText="Signing In..." formAction={signInAction}>
           Sign in
         </SubmitButton>
-        <FormMessage message={searchParams} />
+        {/* <FormMessage message={URLSearchParams} /> */}
+        {error && <p className="text-red-500">{error}</p>}
+       
       </div>
     </form>
   );

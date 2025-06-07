@@ -7,28 +7,21 @@ import { Button } from "./ui/button";
 import ShoppingCartIcon from "./ShoppingCartIcon";
 import { useEffect, useState } from "react";
 import { createClient } from "@/utils/supabase/client";
-import prisma from "@/lib/prisma";
 
 
 
-export default  function AuthButton() {
-  const [user,setUser] = useState<any>(null);
-  const supabase = createClient()
 
-  useEffect(()=>{
-    const getUser = async()=>{
-      const {data,error} =  await supabase.auth.getUser()
-     
-     if (data) {
-      const userData = await getUserWithId(data.user?.id!)
-     
-      setUser(userData)
-     }
-    }
-    getUser()
+export default  function AuthButton({data,userData}:any) {
+  // const [user,setUser] = useState<any>(null);
+  // const supabase = createClient()
 
+  // // useEffect(()=>{
+  // //   const getUser = async()=>{
     
-  },[])
+  // //   }
+  // //   getUser()
+    
+  // // },[])
 
 
 
@@ -68,10 +61,10 @@ export default  function AuthButton() {
       </>
     );
   }
-  return user ? (
+  return data ? (
     <div className="flex items-center gap-4">
       <ShoppingCartIcon />
-      Hey, {user.name}!
+      Hey, {userData.name}!
       <form action={signOutAction}>
         <Button type="submit" variant={"outline"}>
           Sign out
