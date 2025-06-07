@@ -193,12 +193,22 @@ export async function addFavoriteToDb(cmsItemId: string) {
   const { data } = await supabase.auth.getUser();
   if (!data.user?.id) return;
 
-  await prisma.favorite.create({
-    data: {
+  const existing = await prisma.favorite.findFirst({
+    where: {
       userId: data.user.id,
       cmsItemId,
     },
   });
+
+  // なければ新しく作成
+  if (!existing) {
+    await prisma.favorite.create({
+      data: {
+        userId: data.user.id,
+        cmsItemId,
+      },
+    });
+  }
 }
 
 export async function removeFavoriteFromDb(cmsItemId: string) {
@@ -217,7 +227,7 @@ export async function removeFavoriteFromDb(cmsItemId: string) {
 export async function  isFavoriteInDatabase(id:string,data:any){
   const item = await prisma.favorite.findFirst({
     where:{
-      userId:data.identities[0].userId,
+      userId:data?.identities[0].userId,
       cmsItemId:id
     }
   })

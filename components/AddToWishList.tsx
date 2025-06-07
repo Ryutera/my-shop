@@ -1,16 +1,28 @@
 "use client"
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Button } from './ui/button'
 import { Heart } from 'lucide-react'
 import { useCart } from '@/app/context/CartContext'
+import { isFavoriteInDatabase } from '@/app/actions'
 
 interface Props{
     id:string
+    userData: any
 }
 
 const AddToWishList = (props:Props) => {
-    const {id} = props
+    const {id,userData} = props
     const {favorite,addFavorite} = useCart()
+    const [isFavorited, setIsFavorited] = useState<any>(false);
+
+   useEffect(()=>{
+    const getFavoriteItemFromDatabase = async(id:string) =>{
+        const favoriteItem = await  isFavoriteInDatabase(id,userData)
+        setIsFavorited(favoriteItem)
+    }
+    getFavoriteItemFromDatabase(id)
+   },[])
+
   return (
     <Button
     variant="outline"
@@ -18,7 +30,7 @@ const AddToWishList = (props:Props) => {
     onClick={()=>addFavorite(id)}
   >
     <Heart className="mr-2 h-4 w-4" 
-    color={favorite.find((f)=>f===id) ? "red" : "gray"} />
+    color={ isFavorited? "red" :   favorite.find((f)=>f===id) ? "red" : "gray"} />
     Add to Wishlist
   </Button>
   )
