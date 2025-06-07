@@ -5,18 +5,14 @@ import { ShoppingCart } from "lucide-react";
 export function EnvVarWarning() {
   return (
     <div className="flex gap-4 items-center">
-     
       <div className="flex gap-2">
-      
-<div className="flex gap-4 items-center border-2 border-red-500">
-  
-                    <ShoppingCart />
-                  </div>
+        <div className="flex gap-4 items-center border-2 border-red-500">
+          <ShoppingCart />
+        </div>
         <Button
           asChild
           size="sm"
           variant={"outline"}
-          
           className="opacity-75 hover:cursor-pointer "
         >
           <Link href="/sign-in">Sign in</Link>
@@ -25,7 +21,6 @@ export function EnvVarWarning() {
           asChild
           size="sm"
           variant={"default"}
-          
           className="opacity-75 hover:cursor-pointer"
         >
           <Link href="/sign-up">Sign up</Link>

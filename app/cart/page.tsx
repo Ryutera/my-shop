@@ -19,7 +19,6 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 
 
-
 const Cart = () => {
   const { items, removeItem } = useCart();
   const [products, setProducts] = useState<ProductFields[]>([]);
@@ -32,6 +31,8 @@ const Cart = () => {
     };
 
     fetchProducts();
+
+    
   }, [items]);
 
   console.log(products, "プロダクト");

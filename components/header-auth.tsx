@@ -1,22 +1,34 @@
-import { signOutAction } from "@/app/actions";
+"use client"
+import { getUserWithId, signOutAction } from "@/app/actions";
 import { hasEnvVars } from "@/utils/supabase/check-env-vars";
 import Link from "next/link";
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
-import { createClient } from "@/utils/supabase/server";
-import prisma from "@/lib/prisma";
 import ShoppingCartIcon from "./ShoppingCartIcon";
+import { useEffect, useState } from "react";
+import { createClient } from "@/utils/supabase/client";
+import prisma from "@/lib/prisma";
 
-export default async function AuthButton() {
-  const supabase = await createClient();
 
-  const {  data } = await supabase.auth.getUser();
 
-  const user = await prisma.user.findFirst({
-    where:{
-      email : data.user?.email
+export default  function AuthButton() {
+  const [user,setUser] = useState<any>(null);
+  const supabase = createClient()
+
+  useEffect(()=>{
+    const getUser = async()=>{
+      const {data,error} =  await supabase.auth.getUser()
+     
+     if (data) {
+      const userData = await getUserWithId(data.user?.id!)
+     
+      setUser(userData)
+     }
     }
-  })
+    getUser()
+
+    
+  },[])
 
 
 
@@ -24,10 +36,6 @@ export default async function AuthButton() {
     return (
       <>
         <div className="flex gap-4 items-center">
-       
-  
-
-
           <div>
             <Badge
               variant={"default"}
@@ -60,11 +68,10 @@ export default async function AuthButton() {
       </>
     );
   }
-  return data? (
+  return user ? (
     <div className="flex items-center gap-4">
-      <ShoppingCartIcon/>
-        
-      Hey, {user?.name}!
+      <ShoppingCartIcon />
+      Hey, {user.name}!
       <form action={signOutAction}>
         <Button type="submit" variant={"outline"}>
           Sign out
@@ -72,8 +79,10 @@ export default async function AuthButton() {
       </form>
     </div>
   ) : (
-    <div className="flex gap-2">
-      <Button asChild size="sm" variant={"outline"}>
+    <div className="flex gap-2 items-center">
+      <ShoppingCartIcon />
+
+      <Button asChild size="sm" className="ml-2" variant={"outline"}>
         <Link href="/sign-in">Sign in</Link>
       </Button>
       <Button asChild size="sm" variant={"default"}>
