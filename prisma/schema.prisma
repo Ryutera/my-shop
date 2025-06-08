@@ -41,6 +41,7 @@ model CartItem {
   userId    String
   cmsItemId String   // CMS側の商品ID
   quantity  Int      @default(1)
+  price   Int
   createdAt DateTime @default(now())
 }
 
