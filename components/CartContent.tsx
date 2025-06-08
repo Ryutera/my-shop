@@ -5,8 +5,11 @@ import Link from "next/link"
 import { Trash2 } from "lucide-react"
 import { useRouter } from "next/navigation"
 import axios from "axios"
+import { useEffect } from "react"
+import { removeCartItemFromDB } from "@/app/actions"
 
 interface Product {
+  sys: any
   id: string
   name: string
   price: number
@@ -16,21 +19,25 @@ interface ContentProps {
   cartItems?: Product[]
   items?: any[]
   removeItems?: (id: string) => void
+  userData?: any
   
 }
 
 
 const CartContent = (props: ContentProps) => {
   const router = useRouter()
-  const { cartItems, items, removeItems,  } = props
+  const { cartItems, items, removeItems, userData } = props
 
   console.log(cartItems,"カートあいてむ")
   console.log(items,"あいてむ")
 
+  
+
   // ログイン状態を判定　!!はbooleanに変換するもの
   const isLoggedIn = !!cartItems
-  
+
   const products = isLoggedIn ? cartItems : items
+
 
   const getPayment = async () => {
     try {
@@ -44,10 +51,17 @@ const CartContent = (props: ContentProps) => {
     }
   }
 
-  const handleRemoveItem = (product: Product, index: number) => {
+  const handleRemoveItem = async (product: Product) => {
+   
     if (isLoggedIn) {
       // ログイン時：DBから削除
+      //userIdとcsmID必要
+      if (window.confirm("Do you want to remove this item?")){
+        await removeCartItemFromDB(userData.identities[0].id, product.id)
+      }
+     
       
+      console.log(product)
     } else {
       // 非ログイン時：ローカル状態から削除
       removeItems?.(product.id)
@@ -89,7 +103,7 @@ const CartContent = (props: ContentProps) => {
                     variant="ghost"
                     size="sm"
                     className="h-8 w-8 p-0 hover:bg-gray-100 text-gray-400 hover:text-gray-600"
-                    onClick={() => handleRemoveItem(product, index)}
+                    onClick={() => handleRemoveItem(product)}
                   >
                     <Trash2 className="h-5 w-5" />
                   </Button>

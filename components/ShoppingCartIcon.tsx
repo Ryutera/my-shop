@@ -20,12 +20,14 @@ const searchCartItems =async() =>{
   if (userId) {
     const cartItemsInDb = await getCartItemsInDb(userId)
     setCartItems(cartItemsInDb)
+  }else {
+    setCartItems([]) // ログアウト時にバッジを消す
   }
   
 }
 searchCartItems ()
 
-  },[])
+  },[userId])
 
   return (
     <div className="relative inline-block hover:scale-110 transition-transform duration-200 cursor-pointer">

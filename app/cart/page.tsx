@@ -4,47 +4,43 @@ import { useCart } from "../context/CartContext";
 import { ProductFields } from "@/lib/types";
 import { getCartItemsInDb, getProduct } from "../actions";
 
-import { ShoppingCart} from "lucide-react";
-
+import { ShoppingCart } from "lucide-react";
 
 import CartContent from "@/components/CartContent";
 import { createClient } from "@/utils/supabase/client";
 
-
 const Cart = () => {
   const { items, removeItem } = useCart();
   const [products, setProducts] = useState<ProductFields[]>([]);
-const [cartItems, setCartItems ] = useState<any[]>([])
-
-
+  const [cartItems, setCartItems] = useState<any[]>([]);
+  const [userData, setUserData] = useState<any>(null);
 
   useEffect(() => {
     const fetchProducts = async () => {
       const supabase = await createClient();
-  const { data } = await supabase.auth.getUserIdentities();
+      const { data } = await supabase.auth.getUserIdentities();
+      setUserData(data);
 
       const results = await Promise.all(items.map((id) => getProduct(id)));
       setProducts(results.filter(Boolean)); // null を除外
 
-       if (data) {
-        const DbItems = await getCartItemsInDb(data.identities[0].id)
+      if (data) {
+        const DbItems = await getCartItemsInDb(data.identities[0].id);
         //cartcontentにcntentfulの商品データを送るため(nameとpriceがある)
-        const Items = await Promise.all(DbItems.map((i) => getProduct(i.cmsItemId)));
+        const Items = await Promise.all(
+          DbItems.map((i) => getProduct(i.cmsItemId))
+        );
 
-        setCartItems(Items)
-
-       }
+        setCartItems(Items);
+      }
     };
 
     fetchProducts();
-
-    
   }, [items]);
 
   // console.log(products, "プロダクト");
   // console.log(items, "データ群");
 
-  
   return (
     <div className="max-w-3xl mx-auto p-6 md:p-10">
       <div className="mb-8 flex items-center justify-between">
@@ -52,8 +48,10 @@ const [cartItems, setCartItems ] = useState<any[]>([])
         <div className="text-lg text-gray-500">{products.length} items</div>
       </div>
 
-      {cartItems.length >0 ?  <CartContent cartItems={cartItems} />:  products.length > 0 ? (
-        <CartContent items={products} removeItems={removeItem}/>
+      {cartItems.length > 0 ? (
+        <CartContent cartItems={cartItems} userData={userData} />
+      ) : products.length > 0 ? (
+        <CartContent items={products} removeItems={removeItem} />
       ) : (
         <div className="border border-gray-200 rounded-lg bg-white p-16 text-center">
           <div className="flex flex-col items-center justify-center gap-6">

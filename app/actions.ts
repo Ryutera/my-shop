@@ -179,11 +179,14 @@ export async function getProducts() {
   return entries.items;
 }
 
-
-export async function getProduct(id:string):Promise<ProductFields>{
+export type Product = ProductFields & { id: string }
+export async function getProduct(id:string):Promise<Product>{
   const entry = await contentfulClient.getEntry<ProductFieldsSkeleton>(id)
    
-   return entry.fields
+   return {
+    id: entry.sys.id,
+    ...entry.fields,
+  };
 }
 
 
@@ -297,12 +300,16 @@ return items
 }
 
 
-export async function removeCartItemFromDB (id:string) {
+export async function removeCartItemFromDB (userId:string, productId:string) {
 
-  // await prisma.cartItem.delete({
-  //   where:{
-  //     id:
-  //   }
-  // })
+ await prisma.cartItem.deleteMany({
+    where:{
+      userId,
+      cmsItemId:productId
+    }
+  })
+  
+  
+ 
 
 }
