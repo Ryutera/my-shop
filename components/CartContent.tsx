@@ -16,19 +16,20 @@ interface ContentProps {
   cartItems?: Product[]
   items?: any[]
   removeItems?: (id: string) => void
-  removeFromDB?: (id: string) => void // DBから削除する関数を追加
+  
 }
 
 
 const CartContent = (props: ContentProps) => {
   const router = useRouter()
-  const { cartItems, items, removeItems, removeFromDB } = props
+  const { cartItems, items, removeItems,  } = props
 
   console.log(cartItems,"カートあいてむ")
   console.log(items,"あいてむ")
 
   // ログイン状態を判定　!!はbooleanに変換するもの
   const isLoggedIn = !!cartItems
+  
   const products = isLoggedIn ? cartItems : items
 
   const getPayment = async () => {
@@ -46,7 +47,7 @@ const CartContent = (props: ContentProps) => {
   const handleRemoveItem = (product: Product, index: number) => {
     if (isLoggedIn) {
       // ログイン時：DBから削除
-      removeFromDB?.(product.id)
+      
     } else {
       // 非ログイン時：ローカル状態から削除
       removeItems?.(product.id)

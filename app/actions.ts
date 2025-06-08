@@ -246,7 +246,7 @@ return item
 export async function  addCartToDb (userId:string |undefined,   id:string){
   if (!userId)  return null
   
-  const product = await getProduct(id)
+
   const existing = await prisma.cartItem.findFirst({
     where: {
       userId: userId,
@@ -260,7 +260,7 @@ export async function  addCartToDb (userId:string |undefined,   id:string){
       data: {
         userId: userId,
       cmsItemId:id,
-      price:product.price
+     
       },
     });
   }
@@ -294,4 +294,15 @@ userId:id
     }
   })
 return items
+}
+
+
+export async function removeCartItemFromDB (id:string) {
+
+  // await prisma.cartItem.delete({
+  //   where:{
+  //     id:
+  //   }
+  // })
+
 }
