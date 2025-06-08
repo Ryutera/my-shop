@@ -34,7 +34,7 @@ export default async function RootLayout({
 }>) {
   const supabase = await createClient()
   const { data } =  await  supabase.auth.getUserIdentities()
-  console.log(data,"ログイン中？")
+  
 let userData
   if (data) {
        userData = await getUserWithId(data.identities[0].id)
