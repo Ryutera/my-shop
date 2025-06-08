@@ -1,12 +1,31 @@
 "use client"
 
+import { getCartItemsInDb } from '@/app/actions'
 import { useCart } from '@/app/context/CartContext'
 import { ShoppingCart } from 'lucide-react'
 import Link from 'next/link'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
-const ShoppingCartIcon = () => {
+interface ShoppingCartIconProps {
+  userData?: { id: string }
+}
+
+const ShoppingCartIcon = ({ userData }:ShoppingCartIconProps)  => {
   const { items } = useCart()
+  const [cartItems , setCartItems] = useState<any[]>([]) 
+ const userId = userData?.id
+
+  useEffect(()=>{
+const searchCartItems =async() =>{
+  if (userId) {
+    const cartItemsInDb = await getCartItemsInDb(userId)
+    setCartItems(cartItemsInDb)
+  }
+  
+}
+searchCartItems ()
+
+  },[])
 
   return (
     <div className="relative inline-block hover:scale-110 transition-transform duration-200 cursor-pointer">
@@ -16,7 +35,12 @@ const ShoppingCartIcon = () => {
       
       </Link>
       
-      {items.length > 0 && (
+      {cartItems.length > 0 ?
+       <span className="absolute -top-2 -right-2 bg-red-400 text-white text-xs font-bold px-2 py-0.5 rounded-full">
+       {cartItems.length}
+     </span>
+      :  
+      items.length > 0 && (
         <span className="absolute -top-2 -right-2 bg-red-400 text-white text-xs font-bold px-2 py-0.5 rounded-full">
           {items.length}
         </span>

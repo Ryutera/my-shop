@@ -1,14 +1,10 @@
 "use client"
-import { getUserWithId, signOutAction } from "@/app/actions";
+import {  signOutAction } from "@/app/actions";
 import { hasEnvVars } from "@/utils/supabase/check-env-vars";
 import Link from "next/link";
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
 import ShoppingCartIcon from "./ShoppingCartIcon";
-import { useEffect, useState } from "react";
-import { createClient } from "@/utils/supabase/client";
-
-
 
 
 export default  function AuthButton({data,userData}:any) {
@@ -52,7 +48,7 @@ export default  function AuthButton({data,userData}:any) {
   }
   return data ? (
     <div className="flex items-center gap-4">
-      <ShoppingCartIcon />
+      <ShoppingCartIcon userData={userData} />
       Hey, {userData?.name}!
       <form action={signOutAction}>
         <Button type="submit" variant={"outline"}>
