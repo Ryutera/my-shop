@@ -1,6 +1,6 @@
 "use client";
 
-import React, { createContext, ReactNode, useContext, useState } from "react";
+import React, { createContext, ReactNode, useContext, useEffect, useState } from "react";
 import { addFavoriteToDb, removeFavoriteFromDb } from "../actions";
 type CartContextType = {
   items: string[];
@@ -23,7 +23,7 @@ export const Provider = (props: Props) => {
   const [items, setItems] = useState<string[]>([]);
   const [favorite, setFavorite] = useState<string[]>([]);
 
-  
+
   const addItem = (id: string) => {
     setItems((prev) => {
       const exists = prev.some((i) => i === id);
