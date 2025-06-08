@@ -239,3 +239,49 @@ export async function  isFavoriteInDatabase(id:string,data:any){
 return item
 
 }
+
+
+  
+
+export async function  addCartToDb (userId:string |undefined,   id:string){
+  if (!userId)  return null
+  
+
+  const existing = await prisma.cartItem.findFirst({
+    where: {
+      userId: userId,
+      cmsItemId:id,
+    },
+  });
+
+  // なければ新しく作成
+  if (!existing) {
+    await prisma.cartItem.create({
+      data: {
+        userId: userId,
+      cmsItemId:id,
+      },
+    });
+  }
+ return 
+}
+
+
+
+export async function  isCartInDatabase(id:string,userId:any){
+  //このようにuseeIDがないときはreturnする、でないとuserIdがundefinedになってcmsItemIdのみで検索を行なってしまい、nullを返すということが起き得なくなる。そうするとハートマークの切り替えに問題がおきる
+  
+  if (!userId) return null;
+
+  const item = await prisma.cartItem.findFirst({
+    where:{
+      userId:userId,
+      cmsItemId:id
+    }
+  })
+ 
+  
+return item
+
+}
+

@@ -60,7 +60,7 @@ const ProductPage = async ({ params }: { params: { id: string } }) => {
             </div>
             {/* Actions */}
             <div className="space-y-3">
-              <AddToCart productData={productData} id={id} />
+              <AddToCart productData={productData} id={id} userData={data}/>
               <AddToWishList id={id} userData={data}/>
             </div>
             {/* Description */}

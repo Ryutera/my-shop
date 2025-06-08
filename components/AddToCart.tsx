@@ -3,38 +3,38 @@ import React, { useEffect, useState } from "react";
 import { Button } from "./ui/button";
 import { useCart } from "@/app/context/CartContext";
 import { ProductFields } from "@/lib/types";
-import { createClient } from "@/utils/supabase/client";
+import { addCartToDb, isCartInDatabase } from "@/app/actions";
 
-
-
-interface Type {
+interface AddToCartProps {
   productData: ProductFields;
   id: string;
+  userData: any;
 }
 
-const AddToCart = (params: Type) => {
-  const { productData, id } = params;
+const AddToCart = (props: AddToCartProps) => {
+  const { productData, id, userData } = props;
+  const [existingCartItem, setExistingCartItem] = useState<any>(null);
+
+  const userId = userData?.identities[0].id;
 
   const { addItem, items } = useCart();
 
-  useEffect(()=>{
-   
-    const getCurrentUser = async() =>{
-      const supabase = await  createClient()
-      const user = await supabase.auth.getUser()
-      console.log(user,"現在のユーザー")
-     
-    }
-    getCurrentUser ()
-    return 
-  },[])
+  useEffect(() => {
+    const checkIfItemInDatabase = async () => {
+      const item = await isCartInDatabase(id, userId);
+      setExistingCartItem(item);
+    };
+    checkIfItemInDatabase();
+  }, []);
 
   const isAdded = items.some((i) => i === id);
 
   // console.log(items)
-  const Cart = (id: string) => {
+  const handleAddToCart  = async (id: string) => {
     addItem(id);
-
+    if (userData) {
+      await addCartToDb(userId, id);
+    }
   };
 
   return (
@@ -44,10 +44,10 @@ const AddToCart = (params: Type) => {
       <Button
         className={`w-full `}
         size="lg"
-        onClick={() => Cart(id)}
-        disabled={isAdded}
+        onClick={() => handleAddToCart (id)}
+        disabled={!existingCartItem ? isAdded : true}
       >
-        {isAdded
+        {existingCartItem? `Already added to Cart - £${productData.price}`:   isAdded
           ? `Already added to Cart - £${productData.price}`
           : `Add to Cart - £${productData.price}`}
       </Button>
