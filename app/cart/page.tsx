@@ -27,7 +27,10 @@ const [cartItems, setCartItems ] = useState<any[]>([])
       setProducts(results.filter(Boolean)); // null を除外
 
        if (data) {
-        const Items = await getCartItemsInDb(data.identities[0].id)
+        const DbItems = await getCartItemsInDb(data.identities[0].id)
+        //cartcontentにcntentfulの商品データを送るため(nameとpriceがある)
+        const Items = await Promise.all(DbItems.map((i) => getProduct(i.cmsItemId)));
+
         setCartItems(Items)
 
        }
