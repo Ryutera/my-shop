@@ -5,8 +5,9 @@ import Link from "next/link"
 import { Trash2 } from "lucide-react"
 import { useRouter } from "next/navigation"
 import axios from "axios"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { removeCartItemFromDB } from "@/app/actions"
+import NoCartContent from "./NoCartContent"
 
 interface Product {
   sys: any
@@ -27,16 +28,19 @@ interface ContentProps {
 const CartContent = (props: ContentProps) => {
   const router = useRouter()
   const { cartItems, items, removeItems, userData } = props
-
-  console.log(cartItems,"カートあいてむ")
-  console.log(items,"あいてむ")
+  const [localCartItems, setLocalCartItems] = useState<Product[]>(cartItems || []);
 
   
+  useEffect(() => {
+    if (cartItems) {
+      setLocalCartItems(cartItems);
+    }
+  }, [cartItems]);
 
   // ログイン状態を判定　!!はbooleanに変換するもの
   const isLoggedIn = !!cartItems
 
-  const products = isLoggedIn ? cartItems : items
+  const products = isLoggedIn ? localCartItems : items
 
 
   const getPayment = async () => {
@@ -51,6 +55,8 @@ const CartContent = (props: ContentProps) => {
     }
   }
 
+  useEffect(()=>{},[cartItems,items])
+
   const handleRemoveItem = async (product: Product) => {
    
     if (isLoggedIn) {
@@ -58,6 +64,7 @@ const CartContent = (props: ContentProps) => {
       //userIdとcsmID必要
       if (window.confirm("Do you want to remove this item?")){
         await removeCartItemFromDB(userData.identities[0].id, product.id)
+        setLocalCartItems((prev) => prev.filter((item) => item.id !== product.id))
       }
      
       
@@ -66,15 +73,15 @@ const CartContent = (props: ContentProps) => {
       // 非ログイン時：ローカル状態から削除
       removeItems?.(product.id)
     }
+
+    
   }
 
   const totalAmount = products?.reduce((acc: number, cur: Product) => (acc += cur.price), 0) || 0
 
   if (!products || products.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center py-12">
-        <p className="text-gray-500 text-lg">カートが空です</p>
-      </div>
+      <NoCartContent/>
     )
   }
 

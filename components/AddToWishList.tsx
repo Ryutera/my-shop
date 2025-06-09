@@ -14,14 +14,19 @@ const AddToWishList = (props:Props) => {
     const {id,userData} = props
     const {favorite,addFavorite} = useCart()
     const [isFavorited, setIsFavorited] = useState<any>(false);
-
+   
+    
+   
    useEffect(()=>{
     const getFavoriteItemFromDatabase = async(id:string) =>{
         const favoriteItem = await  isFavoriteInDatabase(id,userData)
+        
         setIsFavorited(favoriteItem)
     }
     getFavoriteItemFromDatabase(id)
    },[])
+
+   
 
   return (
     <Button
