@@ -11,7 +11,7 @@ interface ShoppingCartIconProps {
 }
 
 const ShoppingCartIcon = ({ userData }:ShoppingCartIconProps)  => {
-  const { items } = useCart()
+  const { items,cartVersion } = useCart()
   const [cartItems , setCartItems] = useState<any[]>([]) 
  const userId = userData?.id
 
@@ -27,7 +27,7 @@ const searchCartItems =async() =>{
 }
 searchCartItems ()
 
-  },[])
+  },[cartVersion,userId])
 
   return (
     <div className="relative inline-block hover:scale-110 transition-transform duration-200 cursor-pointer">
@@ -37,9 +37,9 @@ searchCartItems ()
       
       </Link>
       
-      {cartItems.length > 0 ?
+      { cartItems !== null ?
        <span className="absolute -top-2 -right-2 bg-red-400 text-white text-xs font-bold px-2 py-0.5 rounded-full">
-       {cartItems.length}
+       {cartItems.length > 0 ? cartItems.length:0 }
      </span>
       :  
       items.length > 0 && (

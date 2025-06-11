@@ -11,10 +11,12 @@ import { addFavoriteToDb, removeFavoriteFromDb } from "../actions";
 type CartContextType = {
   items: string[];
   favorite: string[];
+  cartVersion:number
   addItem: (id: string) => void;
   removeItem: (id: string) => void;
   clearCart: () => void;
   addFavorite: (id: string) => void;
+  refreshCart:()=>void
 };
 
 interface Props {
@@ -27,6 +29,8 @@ export const Provider = (props: Props) => {
   const { children, userData } = props;
   const [items, setItems] = useState<string[]>([]);
   const [favorite, setFavorite] = useState<string[]>([]);
+  //カートの個数を正しく反映するためにuseEffectのトリガーにするためだけどの値
+  const [cartVersion, setCartVersion] = useState(0)
 
   const addItem = (id: string) => {
     setItems((prev) => {
@@ -65,9 +69,13 @@ export const Provider = (props: Props) => {
 
   const clearCart = () => setItems([]);
 
+  const refreshCart = () =>{
+    setCartVersion((prev)=>prev+1)
+  }
+
   return (
     <CartContext.Provider
-      value={{ items, addItem, removeItem, clearCart, favorite, addFavorite }}
+      value={{ items, addItem, removeItem, clearCart, favorite, addFavorite,refreshCart,cartVersion }}
     >
       {children}
     </CartContext.Provider>
