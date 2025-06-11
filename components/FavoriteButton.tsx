@@ -21,7 +21,7 @@ const FavoriteButton = (props:Props) => {
         setIsFavorited(favoriteItem)
     }
     getFavoriteItemFromDatabase(id)
-   },[])
+   },[data])
 
   return (
     <div className="hover:cursor-pointer" onClick={()=>addFavorite(id)}>

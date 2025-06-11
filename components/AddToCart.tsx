@@ -17,7 +17,7 @@ const AddToCart = (props: AddToCartProps) => {
 
   const userId = userData?.identities[0].id;
 
-  const { addItem, items } = useCart();
+  const { addItem, items,refreshCart } = useCart();
 
   useEffect(() => {
     const checkIfItemInDatabase = async () => {
@@ -34,6 +34,7 @@ const AddToCart = (props: AddToCartProps) => {
     addItem(id);
     if (userData) {
       await addCartToDb(userId, id);
+      refreshCart()
     }
   };
 

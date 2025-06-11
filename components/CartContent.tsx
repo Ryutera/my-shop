@@ -8,6 +8,7 @@ import axios from "axios"
 import { useEffect, useState } from "react"
 import { removeCartItemFromDB } from "@/app/actions"
 import NoCartContent from "./NoCartContent"
+import { useCart } from "@/app/context/CartContext"
 
 interface Product {
   sys: any
@@ -29,6 +30,7 @@ const CartContent = (props: ContentProps) => {
   const router = useRouter()
   const { cartItems, items, removeItems, userData } = props
   const [localCartItems, setLocalCartItems] = useState<Product[]>(cartItems || []);
+  const {refreshCart} = useCart()
 
   
   useEffect(() => {
@@ -65,6 +67,7 @@ const CartContent = (props: ContentProps) => {
       if (window.confirm("Do you want to remove this item?")){
         await removeCartItemFromDB(userData.identities[0].id, product.id)
         setLocalCartItems((prev) => prev.filter((item) => item.id !== product.id))
+        refreshCart()
       }
      
       
