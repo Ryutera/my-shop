@@ -55,7 +55,7 @@ const CartContent = (props: ContentProps) => {
     }
   }
 
-  useEffect(()=>{},[cartItems,items])
+  
 
   const handleRemoveItem = async (product: Product) => {
    
@@ -87,6 +87,10 @@ const CartContent = (props: ContentProps) => {
 
   return (
     <div className="flex flex-col w-full gap-6">
+         <div className="mb-8 flex items-center justify-between">
+        <h2 className="text-2xl font-semibold text-gray-900">Your Cart</h2>
+        <div className="text-lg text-gray-500">{products.length} items</div>
+      </div>
       <div className="border border-gray-200 rounded-xl overflow-hidden bg-white shadow">
         <Table>
           <TableHeader>

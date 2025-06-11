@@ -27,7 +27,7 @@ const searchCartItems =async() =>{
 }
 searchCartItems ()
 
-  },[userId])
+  },[])
 
   return (
     <div className="relative inline-block hover:scale-110 transition-transform duration-200 cursor-pointer">

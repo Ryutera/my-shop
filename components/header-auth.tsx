@@ -8,6 +8,7 @@ import ShoppingCartIcon from "./ShoppingCartIcon";
 
 
 export default  function AuthButton({data,userData}:any) {
+  console.log(userData, "ゆざでた")
 
 
   if (!hasEnvVars) {
