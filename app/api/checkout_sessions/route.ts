@@ -20,12 +20,20 @@ export async function POST(req:Request) {
           currency: "gbp",
           product_data: {
             name: product.name,
+            metadata: {
+              app_product_id: product.id, 
+            },
           },
+          
           unit_amount: product.price*100,
         },
         quantity: 1,
         
       })),
+      billing_address_collection: 'auto',
+      shipping_address_collection: {
+        allowed_countries: ['JP', 'GB'],
+      },
       mode: 'payment',
       locale:'en',
       success_url: `${origin}/success?session_id={CHECKOUT_SESSION_ID}`,

@@ -230,7 +230,7 @@ export async function removeFavoriteFromDb(cmsItemId: string) {
 export async function  isFavoriteInDatabase(id:string,userData:any){
   //このようにuseeIDがないときはreturnする、でないとuserIdがundefinedになってcmsItemIdのみで検索を行なってしまい、nullを返すということが起き得なくなる。そうするとハートマークの切り替えに問題がおきる
   const userId = userData?.identities[0].user_id 
-  console.log(userId,"いsふぁゔぉりて")
+  
   if (!userId) return null;
 
   const item = await prisma.favorite.findFirst({
