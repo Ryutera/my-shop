@@ -27,7 +27,7 @@ const searchCartItems =async() =>{
 }
 searchCartItems ()
 
-  },[cartVersion,userId])
+  },[cartVersion,userId,items])
 
   return (
     <div className="relative inline-block hover:scale-110 transition-transform duration-200 cursor-pointer">
@@ -37,7 +37,7 @@ searchCartItems ()
       
       </Link>
       
-      { cartItems !== null ?
+      { userId?
        <span className="absolute -top-2 -right-2 bg-red-400 text-white text-xs font-bold px-2 py-0.5 rounded-full">
        {cartItems.length > 0 ? cartItems.length:0 }
      </span>
