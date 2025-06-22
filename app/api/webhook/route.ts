@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 
 export async function POST(req: Request) {
-  const body = await req.text(); // ここ注意
+  const body = await req.text(); 
   const sig = req.headers.get("stripe-signature")!;
   const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET!;
 
@@ -33,6 +33,12 @@ export async function POST(req: Request) {
               status: "completed",
             },
           });
+
+          await prisma.cartItem.deleteMany({
+            where:{
+                userId
+            }
+          })
     }
    
   }

@@ -12,6 +12,7 @@ import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import Stripe from "stripe";
+import ClearCartItem from "@/components/ClearCartItem";
 
 interface Props {
   searchParams: Promise<{ session_id?: string }>;
@@ -137,6 +138,8 @@ export default async function SuccessPage({ searchParams }: Props) {
             </Button> */}
           </div>
         </div>
+     {/* Clearcart function need to be used on client component */}
+        <ClearCartItem/>
       </div>
     );
   } catch (error) {
