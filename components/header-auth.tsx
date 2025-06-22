@@ -5,7 +5,7 @@ import Link from "next/link";
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
 import ShoppingCartIcon from "./ShoppingCartIcon";
-import { useEffect } from "react";
+
 
 
 export default  function AuthButton({data,userData}:any) {

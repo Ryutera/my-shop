@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server'
 import { headers } from 'next/headers'
 import { stripe } from '@/lib/stripe';
+import { createClient } from '@/utils/supabase/server';
+
 
 
 
@@ -11,18 +13,24 @@ export async function POST(req:Request) {
     const body = await req.json();
     const products = body.products || [];
 
-    console.log(products)
+    console.log(products,"pu")
+
+    const supabase = await createClient();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    const userId = user?.id 
 
     // Create Checkout Sessions from body params.
     const session = await stripe.checkout.sessions.create({
+      
       line_items: products.map((product: any) => ({
         price_data: {
           currency: "gbp",
           product_data: {
-            name: product.name,
-            metadata: {
-              app_product_id: product.id, 
-            },
+            name:`${product.name}-${product.id}`,
+           
           },
           
           unit_amount: product.price*100,
@@ -34,6 +42,10 @@ export async function POST(req:Request) {
       shipping_address_collection: {
         allowed_countries: ['JP', 'GB'],
       },
+     metadata: {
+  user_id: userId || "",
+  product_ids: products.map((p: any) => p.id).join(","),
+},
       mode: 'payment',
       locale:'en',
       success_url: `${origin}/success?session_id={CHECKOUT_SESSION_ID}`,
