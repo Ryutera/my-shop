@@ -44,6 +44,7 @@ const CartContent = (props: ContentProps) => {
 
   const products = isLoggedIn ? localCartItems : items
 
+  console.log(products)
 
   const getPayment = async () => {
     try {

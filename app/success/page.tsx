@@ -13,16 +13,12 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import Stripe from "stripe";
 
-interface SearchParams {
-  session_id?: string;
-}
-
 interface Props {
-  searchParams: SearchParams;
+  searchParams: Promise<{ session_id?: string }>;
 }
 
 export default async function SuccessPage({ searchParams }: Props) {
-  const sessionId = searchParams.session_id;
+  const sessionId = (await searchParams).session_id;
 
   try {
     const session = (await stripe.checkout.sessions.retrieve(sessionId!, {
@@ -30,12 +26,14 @@ export default async function SuccessPage({ searchParams }: Props) {
     })) as Stripe.Checkout.Session;
 
     const items =
-      session.line_items?.data.map((item) => ({
-        name: item.description,
-        quantity: item.quantity,
-        amount: item.amount_total,
-        currency: session.currency,
-      })) || [];
+      session.line_items?.data.map((item) => {
+        return {
+          name: item.description,
+          quantity: item.quantity,
+          amount: item.amount_total,
+          currency: session.currency,
+        };
+      }) || [];
 
     const totalAmount = session.amount_total || 0;
 
@@ -119,14 +117,13 @@ export default async function SuccessPage({ searchParams }: Props) {
                   )}
                 </div>
                 <div>
-                <p className="text-gray-500">Billing Address</p>
-                <p className="font-medium">{billingAddress?.city}</p>
-                <p className="font-medium">{billingAddress?.line1}</p>
-                <p className="font-medium">{billingAddress?.line2}</p>
-                <p className="font-medium">{billingAddress?.postal_code}</p>
+                  <p className="text-gray-500">Billing Address</p>
+                  <p className="font-medium">{billingAddress?.city}</p>
+                  <p className="font-medium">{billingAddress?.line1}</p>
+                  <p className="font-medium">{billingAddress?.line2}</p>
+                  <p className="font-medium">{billingAddress?.postal_code}</p>
+                </div>
               </div>
-              </div>
-             
             </CardContent>
           </Card>
 
