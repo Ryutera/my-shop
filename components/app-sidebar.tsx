@@ -30,7 +30,7 @@ const items = [
   },
   {
     title: "Purchase History",
-    url: "#",
+    url: "/purchase_history",
     icon: History,
   },
 //   {

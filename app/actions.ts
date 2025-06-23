@@ -7,6 +7,7 @@ import { redirect } from "next/navigation";
 import prisma from "@/lib/prisma";
 import { contentfulClient } from "@/lib/contentful";
 import { ProductFields, ProductFieldsSkeleton } from "@/lib/types";
+import { projectGetSourceMap } from "next/dist/build/swc/generated-native";
 
 export const signUpAction = async (formData: FormData) => {
   console.log(formData)
@@ -310,7 +311,14 @@ export async function removeCartItemFromDB (userId:string, productId:string) {
     }
   })
   
-  
- 
+}
+
+export async function getPurchaseItemsIndb (userId:string){
+const items = await prisma.order.findMany({
+  where:{
+    userId
+  }
+})
+return items
 
 }
