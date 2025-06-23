@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { createClient } from "@/utils/supabase/client";
 import { useCart } from "../context/CartContext";
 import prisma from "@/lib/prisma";
-import { getProduct } from "../actions";
+import { getFavoriteWithUserId, getProduct } from "../actions";
 import FavoriteContent from "@/components/FavoriteContent";
 import NoFavoriteContent from "@/components/NoFavoriteContent";
 import { flushAllTraces } from "next/dist/trace";
@@ -23,14 +23,11 @@ const FavoritePage = () => {
 
       if (data) {
         setIsLoggedIn((prev)=>!prev)
-        const FavoriteItemsInDb = await prisma.favorite.findMany({
-          where: {
-            userId: data.identities[0].id,
-          },
-        });
+        const userId = data.identities[0].id
+        const FavoriteItemsInDb = await  getFavoriteWithUserId(userId)
 
         const results = await Promise.all(
-          FavoriteItemsInDb.map((item) => getProduct(item.id))
+          FavoriteItemsInDb.map((item) => getProduct(item.cmsItemId))
         );
         setProducts(results);
         console.log(FavoriteItemsInDb, "でた");

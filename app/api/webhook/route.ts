@@ -20,11 +20,11 @@ console.log("webhook")
 
   if (event.type === "checkout.session.completed") {
     const session = event.data.object as any;
-console.log("成功")
+
     const userId = session.metadata.user_id;
-    console.log(session.metadata.products,"じぇーそん")
+    
     const items = JSON.parse(session.metadata.products)
-    console.log(items,"でーた")
+  
 
     if (userId) {
         await prisma.order.create({
