@@ -6,7 +6,7 @@ export async function POST(req: Request) {
   const body = await req.text(); 
   const sig = req.headers.get("stripe-signature")!;
   const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET!;
-
+console.log("webhook")
   let event;
 
   console.log("aaa")
@@ -20,9 +20,11 @@ export async function POST(req: Request) {
 
   if (event.type === "checkout.session.completed") {
     const session = event.data.object as any;
-
+console.log("成功")
     const userId = session.metadata.user_id;
-    const items = session.metadata.product_ids
+    console.log(session.metadata.products,"じぇーそん")
+    const items = JSON.parse(session.metadata.products)
+    console.log(items,"でーた")
 
     if (userId) {
         await prisma.order.create({

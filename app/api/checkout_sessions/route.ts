@@ -15,6 +15,14 @@ export async function POST(req:Request) {
 
     console.log(products,"pu")
 
+
+interface Product {
+  id: string
+  name: string
+  price: number
+  image: string
+}
+
     const supabase = await createClient();
     const {
       data: { user },
@@ -44,7 +52,15 @@ export async function POST(req:Request) {
       },
      metadata: {
   user_id: userId || "",
-  product_ids: products.map((p: any) => p.id).join(","),
+  //メタデータは文字列のみ処理可能
+  products: JSON.stringify(
+    products.map((p: Product) => ({
+      id: p.id,
+      name: p.name,
+      price: p.price,
+      
+    })),
+  )
 },
       mode: 'payment',
       locale:'en',
