@@ -17,36 +17,33 @@ const PurchaseHistory = async () => {
 
 
   return (
-    <div className="w-full   p-4 space-y-4">
-    <h1 className="text-2xl font-bold">Purchase History</h1>
-  
-    {orders.map((order: any) => (
-      <Card key={order.id} className="w-full">
-        <CardContent className="p-4">
-          <div className="flex justify-between items-start mb-2">
+    <div className="w-full p-6">
+      <h1 className="text-3xl font-bold mb-8">Purchase History</h1>
+
+      {orders.map((order: any) => (
+        <div key={order.id} className="w-full bg-white border border-gray-200 rounded-lg p-6 mb-6 shadow-sm">
+          <div className="flex justify-between items-center mb-4">
             <div>
-              <p className="text-sm text-gray-500">
-                {new Date(order.createdAt).toLocaleDateString()}
-              </p>
-              <p className="font-medium">£{order.total / 100}</p>
+              <p className="text-gray-500 text-lg mb-3">{new Date(order.createdAt).toLocaleDateString()}</p>
+              <p className="text-2xl"> £{order.total / 100}</p>
             </div>
+           
           </div>
-  
-          <div className="mt-3 space-y-2">
+
+          <div className="space-y-3">
             {order.items.map((item: any, index: number) => (
               <div
                 key={index}
-                className="flex justify-between items-center text-sm border-l-2 border-gray-200 pl-3"
+                className="flex justify-between items-center py-2 border-b border-gray-100 last:border-b-0"
               >
-                <span className="text-gray-700">{item.name}</span>
-                <span className="font-medium">£{item.price?.toLocaleString()}</span>
+                <span className="text-lg text-gray-800">{item.name}</span>
+                <span className="text-lg font-semibold">£{item.price}</span>
               </div>
             ))}
           </div>
-        </CardContent>
-      </Card>
-    ))}
-  </div>
+        </div>
+      ))}
+    </div>
   
   );
 };
