@@ -20,12 +20,12 @@ const items = [
   },
   {
     title: "Favorite Items",
-    url: "/",
+    url: "/favorite",
     icon: Heart,
   },
   {
     title: "Cart Items",
-    url: "/",
+    url: "/cart",
     icon: ShoppingCart,
   },
   {

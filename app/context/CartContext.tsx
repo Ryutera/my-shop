@@ -32,6 +32,33 @@ export const Provider = (props: Props) => {
   //カートの個数を正しく反映するためにuseEffectのトリガーにするためだけどの値
   const [cartVersion, setCartVersion] = useState(0)
 
+  useEffect(() => {
+    if (!userData) {
+      const storedItems = localStorage.getItem("cart_items");
+      if (storedItems) {
+        setItems(JSON.parse(storedItems));
+      }
+  
+      const storedFavs = localStorage.getItem("favorite_items");
+      if (storedFavs) {
+        setFavorite(JSON.parse(storedFavs));
+      }
+    }
+  }, [userData]);
+  
+  useEffect(() => {
+    if (!userData) {
+      localStorage.setItem("cart_items", JSON.stringify(items));
+    }
+  }, [items, userData]);
+  
+  useEffect(() => {
+    if (!userData) {
+      localStorage.setItem("favorite_items", JSON.stringify(favorite));
+    }
+  }, [favorite, userData]);
+  
+
   const addItem = (id: string) => {
     setItems((prev) => {
       const exists = prev.some((i) => i === id);
