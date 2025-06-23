@@ -191,6 +191,15 @@ export async function getProduct(id:string):Promise<Product>{
 }
 
 
+export async function getFavoriteWithUserId(id:string){
+  const data = await prisma.favorite.findMany({
+    where: {
+      userId:id 
+    }
+  });
+  return data
+
+}
 
 export async function addFavoriteToDb(cmsItemId: string) {
   const supabase = await createClient();
