@@ -19,7 +19,8 @@ const Product = async({cloth}:{cloth:any}) => {
   <div className="mt-3 justify-between flex"> 
   <p>{cloth.fields.name}</p>
   <div className="flex flex-row gap-2">
-  <p>£{cloth.fields.price}</p>
+  {cloth.fields.isSoldOut?  <p>Sold Out</p> :  <p>£{cloth.fields.price}</p>}
+
 
   <FavoriteButton id={cloth.sys.id} data={data}/>
 

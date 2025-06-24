@@ -5,9 +5,12 @@ import { createClient } from "@/utils/supabase/server";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import prisma from "@/lib/prisma";
-import { contentfulClient } from "@/lib/contentful";
+import { contentfulClient, contentfulManagementClient } from "@/lib/contentful";
 import { ProductFields, ProductFieldsSkeleton } from "@/lib/types";
-import { projectGetSourceMap } from "next/dist/build/swc/generated-native";
+import { Entry } from "contentful-management";
+
+
+
 
 export const signUpAction = async (formData: FormData) => {
   console.log(formData)
@@ -190,6 +193,26 @@ export async function getProduct(id:string):Promise<Product>{
   };
 }
 
+
+export async function markProductAsSold(id: string) {
+  try {
+    const space = await contentfulManagementClient.getSpace(process.env.CONTENTFUL_SPACE_ID!)
+    const environment = await space.getEnvironment('master')
+    
+   
+    const entry = await environment.getEntry(id)
+    
+    entry.fields.isSoldOut = { 'en-US': true }
+    
+    const updatedEntry = await entry.update()
+    await updatedEntry.publish()
+    
+    return updatedEntry
+  } catch (error) {
+    console.error('Failed to mark product as sold:', error)
+    throw error
+  }
+}
 
 export async function getFavoriteWithUserId(id:string){
   const data = await prisma.favorite.findMany({

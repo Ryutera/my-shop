@@ -1,6 +1,5 @@
 import { createClient } from "@/utils/supabase/server";
 import React from "react";
-import { Card, CardContent } from "@/components/ui/card";
 import {  getPurchaseItemsIndb } from "../actions";
 
 

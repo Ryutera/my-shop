@@ -1,12 +1,13 @@
-import { Asset, EntrySkeletonType } from "contentful"
+import { EntrySkeletonType } from "contentful"
 
 export type ProductFields = {
   
-    name: string
-    price: number
-    description: string
-    thumbnail: Asset
-    images: Asset[]
+  name: { 'en-US': string }
+  price: { 'en-US': number }
+  description: { 'en-US': string }
+  thumbnail: { 'en-US': any }
+  images: { 'en-US': any[] }
+  isSoldOut: { 'en-US': boolean }
   }
  export type ProductFieldsSkeleton = EntrySkeletonType<ProductFields>
 

@@ -1,7 +1,4 @@
 import Product from "@/components/product";
-import ConnectSupabaseSteps from "@/components/tutorial/connect-supabase-steps";
-import SignUpUserSteps from "@/components/tutorial/sign-up-user-steps";
-import { hasEnvVars } from "@/utils/supabase/check-env-vars";
 import { getProducts } from "./actions";
 
 
@@ -11,7 +8,8 @@ export default async function Home() {
   if (!clothes) {
     console.log("no clothes data")
   }
-  // console.log(clothes,"ふく")
+  console.log(clothes,"huku")
+
   return (
     <>
      
