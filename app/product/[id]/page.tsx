@@ -6,12 +6,13 @@ import { Badge } from "@/components/ui/badge";
 import AddToCart from "@/components/AddToCart";
 import AddToWishList from "@/components/AddToWishList";
 import { createClient } from "@/utils/supabase/server";
+import { Button } from "@/components/ui/button";
 
 const ProductPage = async ({ params }: { params: { id: string } }) => {
   const { id } = await params;
   const productData = await getProduct(id);
-  const supabase = await createClient()
-  const { data } =  await  supabase.auth.getUserIdentities()
+  const supabase = await createClient();
+  const { data } = await supabase.auth.getUserIdentities();
 
   if (!productData) {
     console.log("商品データがない");
@@ -49,20 +50,35 @@ const ProductPage = async ({ params }: { params: { id: string } }) => {
             {/* Price */}
             <div className="flex items-center gap-3">
               <span className="text-2xl font-semibold">
-                ${productData.price}
+                {productData.isSoldOut ? "£0" : " ${productData.price}"}
               </span>
-              <Badge
-                variant="outline"
-                className="bg-green-50 text-green-600 border-green-200"
-              >
-                In Stock
-              </Badge>
+              {productData.isSoldOut ? (
+                <Badge
+                  variant="outline"
+                  className="bg-slate-100 text-red-600 border-slate-200"
+                >
+                  Out of Stock
+                </Badge>
+              ) : (
+                <Badge
+                  variant="outline"
+                  className="bg-green-50 text-green-600 border-green-200"
+                >
+                  In Stock
+                </Badge>
+              )}
             </div>
             {/* Actions */}
-            <div className="space-y-3">
-              <AddToCart productData={productData} id={id} userData={data}/>
-              <AddToWishList id={id} userData={data}/>
-            </div>
+            {productData.isSoldOut ? (
+              
+              <br/>
+            ) : (
+              <div className="space-y-3">
+                <AddToCart productData={productData} id={id} userData={data} />
+                <AddToWishList id={id} userData={data} />
+              </div>
+            )}
+
             {/* Description */}
             <div>
               <h3 className="font-medium mb-3">Product Details</h3>

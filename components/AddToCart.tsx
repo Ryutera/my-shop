@@ -40,7 +40,7 @@ const AddToCart = (props: AddToCartProps) => {
 
   return (
     <div
-      className={`transition transform duration-300 translate-y-1 hover:scale-105 ${isAdded ? "cursor-not-allowed" : `cursor-pointer`} `}
+      className={`transition  transform duration-300 translate-y-1 hover:scale-105 ${isAdded ? "cursor-not-allowed" : `cursor-pointer`} `}
     >
       <Button
         className={`w-full `}
