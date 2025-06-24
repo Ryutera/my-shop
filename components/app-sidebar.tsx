@@ -33,11 +33,7 @@ const items = [
     url: "/purchase_history",
     icon: History,
   },
-//   {
-//     title: "Settings",
-//     url: "#",
-//     icon: Settings,
-//   },
+
 ]
 
 export function AppSidebar() {

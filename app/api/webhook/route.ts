@@ -1,6 +1,7 @@
 import { stripe } from "@/lib/stripe";
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
+import { markProductAsSold } from "@/app/actions";
 
 export async function POST(req: Request) {
   const body = await req.text(); 
@@ -9,7 +10,7 @@ export async function POST(req: Request) {
 console.log("webhook")
   let event;
 
-  console.log("aaa")
+  
 
   try {
     event = stripe.webhooks.constructEvent(body, sig, webhookSecret);
@@ -24,7 +25,7 @@ console.log("webhook")
     const userId = session.metadata.user_id;
     
     const items = JSON.parse(session.metadata.products)
-  
+  console.log(items,"あいてむ")
 
     if (userId) {
         await prisma.order.create({
@@ -42,6 +43,8 @@ console.log("webhook")
             }
           })
     }
+    Promise.all(items.map((item:any)=> markProductAsSold(item.id)))
+    
    
   }
 
