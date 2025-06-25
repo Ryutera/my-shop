@@ -49,7 +49,7 @@ export default  function AuthButton({data,userData}:any) {
   return data ? (
     <div className="flex items-center gap-4">
       <ShoppingCartIcon userData={userData} />
-      Hey, {userData?.name}!
+      Welcome, {userData?.name}!
       <form action={signOutAction}>
         <Button type="submit" variant={"outline"}>
           Sign out
