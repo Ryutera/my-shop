@@ -2,11 +2,8 @@
 import React, { useEffect, useState } from "react";
 import { createClient } from "@/utils/supabase/client";
 import { useCart } from "../context/CartContext";
-import prisma from "@/lib/prisma";
 import { getFavoriteWithUserId, getProduct } from "../actions";
 import FavoriteContent from "@/components/FavoriteContent";
-import NoFavoriteContent from "@/components/NoFavoriteContent";
-import { flushAllTraces } from "next/dist/trace";
 
 const FavoritePage = () => {
   const { favorite } = useCart();
