@@ -8,14 +8,14 @@ import AddToWishList from "@/components/AddToWishList";
 import { createClient } from "@/utils/supabase/server";
 
 
-const ProductPage = async ({ params }: { params: { id: string } }) => {
+const ProductPage = async ({ params }: { params: Promise<{ id: string }> }) => {
   const { id } = await params;
   const productData = await getProduct(id);
   const supabase = await createClient();
   const { data } = await supabase.auth.getUserIdentities();
 
   if (!productData) {
-    console.log("商品データがない");
+    console.log("there are no date");
     return <div>There is no product</div>;
   }
 
