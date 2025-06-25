@@ -12,7 +12,9 @@ const Product = async({cloth}:{cloth:any}) => {
     <div>
         <Link href={`/product/${cloth.sys.id}`}>
     <div className='transition transform duration-300 hover:-translate-y-2 hover:shadow-2xl shadow-lg hover:scale-105 hover:cursor-pointer'>
-            <img src={cloth.fields.thumbnail.fields.file.url} alt="" className="h-[400px] "/>
+            <img src={cloth.fields.thumbnail.fields.file.url} alt="" 
+            className="w-full h-48 sm:h-64 md:h-80 lg:h-[400px] object-cover rounded-t-lg"
+            />
             </div>
             </Link>
   
