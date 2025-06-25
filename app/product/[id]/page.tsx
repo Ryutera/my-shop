@@ -55,7 +55,7 @@ export default async function  ProductPage ({ params }:ProductPageProps) {
             {/* Price */}
             <div className="flex items-center gap-3">
               <span className="text-2xl font-semibold">
-                {productData.isSoldOut ? "£0" : " ${productData.price}"}
+                {productData.isSoldOut ? "£0" : ` £${productData.price}`}
               </span>
               {productData.isSoldOut ? (
                 <Badge
