@@ -8,7 +8,12 @@ import AddToWishList from "@/components/AddToWishList";
 import { createClient } from "@/utils/supabase/server";
 
 
-export default async function  ProductPage ({ params }: { params: Promise<{ id: string }> }) {
+interface ProductPageProps {
+  params: Promise<{ id: string }>;
+}
+
+
+export default async function  ProductPage ({ params }:ProductPageProps) {
   const { id } = await params;
   const productData = await getProduct(id);
   const supabase = await createClient();
