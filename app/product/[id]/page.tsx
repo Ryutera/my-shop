@@ -6,7 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import AddToCart from "@/components/AddToCart";
 import AddToWishList from "@/components/AddToWishList";
 import { createClient } from "@/utils/supabase/server";
-import { Button } from "@/components/ui/button";
+
 
 const ProductPage = async ({ params }: { params: { id: string } }) => {
   const { id } = await params;
