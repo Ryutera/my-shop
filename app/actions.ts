@@ -7,7 +7,7 @@ import { redirect } from "next/navigation";
 import prisma from "@/lib/prisma";
 import { contentfulClient, contentfulManagementClient } from "@/lib/contentful";
 import { ProductFields, ProductFieldsSkeleton } from "@/lib/types";
-import { Entry } from "contentful-management";
+
 
 
 
