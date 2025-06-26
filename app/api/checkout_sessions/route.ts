@@ -51,7 +51,7 @@ interface Product {
         allowed_countries: ['JP', 'GB'],
       },
      metadata: {
-  user_id: userId || "",
+  user_id: userId || null,
   //メタデータは文字列のみ処理可能
   products: JSON.stringify(
     products.map((p: Product) => ({
