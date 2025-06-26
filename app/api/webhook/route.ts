@@ -45,7 +45,7 @@ console.log("webhook")
             }
           })
     }
-    Promise.all(items.map((item:any)=> markProductAsSold(item.id)))
+    await Promise.all(items.map(async(item:any)=> markProductAsSold(item.id)))
     
    
   }
