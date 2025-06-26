@@ -27,6 +27,8 @@ console.log("webhook")
     const items = JSON.parse(session.metadata.products)
   console.log(items,"あいてむ")
 
+
+
     if (userId) {
         await prisma.order.create({
             data: {
