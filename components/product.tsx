@@ -9,11 +9,11 @@ const Product = async({cloth}:{cloth:any}) => {
   const { data } =  await  supabase.auth.getUserIdentities()
 
   return (
-    <div>
+    <div className="flex flex-col h-full max-w-sm mx-auto sm:max-w-none sm:mx-0">
         <Link href={`/product/${cloth.sys.id}`}>
     <div className='transition transform duration-300 hover:-translate-y-2 hover:shadow-2xl shadow-lg hover:scale-105 hover:cursor-pointer'>
             <img src={cloth.fields.thumbnail.fields.file.url} alt="" 
-            className="w-full  aspect-[3/4] sm:aspect-[4/5]  h-48 sm:h-64 md:h-80 lg:h-[400px] object-cover rounded-t-lg"
+            className="w-full  aspect-[3/5] sm:aspect-[3/4]  h-48 sm:h-64 md:h-80 lg:h-[400px] object-cover rounded-t-lg"
             />
             </div>
             </Link>
