@@ -37,7 +37,10 @@ interface Product {
         price_data: {
           currency: "gbp",
           product_data: {
-            name:`${product.name}-${product.id}`,
+            name: product.name, 
+    metadata: {
+      product_id: product.id, 
+    },
            
           },
           
