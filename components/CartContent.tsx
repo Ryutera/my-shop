@@ -112,7 +112,7 @@ const CartContent = (props: ContentProps) => {
                   <Link href={`/product/${product.id}`}>{product.name}</Link>
                 </TableCell>
                 <TableCell className="text-gray-900 text-lg py-5 px-6"></TableCell>
-                <TableCell className="text-gray-900 text-lg py-5 px-6">${product?.price.toFixed(2)}</TableCell>
+                <TableCell className="text-gray-900 text-lg py-5 px-6">£{product?.price.toFixed(2)}</TableCell>
                 <TableCell className="py-5 px-6">
                   <Button
                     variant="ghost"
@@ -130,7 +130,7 @@ const CartContent = (props: ContentProps) => {
             <TableRow className="bg-gray-50 border-t border-gray-200">
               <TableCell className="font-semibold text-gray-900 text-lg py-5 px-6">Total</TableCell>
               <TableCell className="font-semibold text-gray-900 text-lg py-5 px-6"></TableCell>
-              <TableCell className="font-bold text-gray-900 text-lg py-5 px-6">${totalAmount.toFixed(2)}</TableCell>
+              <TableCell className="font-bold text-gray-900 text-lg py-5 px-6">£{totalAmount.toFixed(2)}</TableCell>
               <TableCell className="py-5 px-6"></TableCell>
             </TableRow>
           </TableFooter>
