@@ -349,6 +349,8 @@ export async function getPurchaseItemsIndb (userId:string){
 const items = await prisma.order.findMany({
   where:{
     userId
+  },orderBy:{
+    createdAt:"desc"
   }
 })
 return items
