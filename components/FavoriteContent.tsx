@@ -45,7 +45,7 @@ console.log(products,"ぷろだくと")
           <Link href={`/product/${product.id}`}>{product.name}</Link>
         </TableCell>
         <TableCell className="text-gray-900 text-lg py-5 px-6"></TableCell>
-        <TableCell className="text-gray-900 text-lg py-5 px-6">${product?.price.toFixed(2)}</TableCell>
+        <TableCell className="text-gray-900 text-lg py-5 px-6">£{product?.price.toFixed(2)}</TableCell>
         <TableCell className="py-5 px-6">
           <Button
             variant="ghost"
