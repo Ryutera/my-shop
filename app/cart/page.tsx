@@ -5,8 +5,8 @@ import { ProductFields } from "@/lib/types";
 import { getCartItemsInDb, getProduct } from "../actions";
 
 import CartContent from "@/components/CartContent";
-import { createClient } from "@/utils/supabase/client";
 import NoCartContent from "@/components/NoCartContent";
+import { createClient } from "@/utils/supabase/client";
 
 const Cart = () => {
   const { items, removeItem } = useCart();
@@ -16,20 +16,20 @@ const Cart = () => {
 
   useEffect(() => {
     const fetchProducts = async () => {
-      const supabase = await createClient();
+      const supabase = createClient();
       const { data } = await supabase.auth.getUserIdentities();
       setUserData(data);
 
+      // Non-logged-in users: get items from context
       const results = await Promise.all(items.map((id) => getProduct(id)));
-      setProducts(results.filter(Boolean)); // null を除外
+      setProducts(results.filter(Boolean)); 
 
+      // Logged-in users: get items from database
       if (data) {
         const DbItems = await getCartItemsInDb(data.identities[0].id);
-        //cartcontentにcntentfulの商品データを送るため(nameとpriceがある)
         const Items = await Promise.all(
-          DbItems.map((i) => getProduct(i.cmsItemId))
+          DbItems.map((item) => getProduct(item.cmsItemId))
         );
-
         setCartItems(Items);
       }
     };
@@ -37,16 +37,15 @@ const Cart = () => {
     fetchProducts();
   }, [items]);
 
+  // Different data to be passed to cartContent depending on login status, display NocartContent when cart is 0
   return (
     <div className="max-w-3xl mx-auto p-6 md:p-10">
-     
-
       {cartItems.length > 0 ? (
         <CartContent cartItems={cartItems} userData={userData} />
       ) : products.length > 0 ? (
         <CartContent items={products} removeItems={removeItem} />
       ) : (
-        <NoCartContent/>
+        <NoCartContent />
       )}
     </div>
   );

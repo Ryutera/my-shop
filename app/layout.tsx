@@ -43,7 +43,6 @@ export default async function RootLayout({
   if (data) {
     userData = await getUserWithId(data.identities[0].id);
 
-    // console.log(data)
   }
 
   return (

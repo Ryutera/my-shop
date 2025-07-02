@@ -10,8 +10,6 @@ export async function POST(req: Request) {
 console.log("webhook")
   let event;
 
-  
-
   try {
     event = stripe.webhooks.constructEvent(body, sig, webhookSecret);
   } catch (err) {
@@ -25,9 +23,6 @@ console.log("webhook")
     const userId = session.metadata.user_id;
     
     const items = JSON.parse(session.metadata.products)
-  console.log(items,"あいてむ")
-
-
 
     if (userId) {
         await prisma.order.create({
