@@ -45,7 +45,7 @@ export async function POST(req: Request) {
       },
       metadata: {
         user_id: userId || null,
-        //メタデータは文字列のみ処理可能
+        
         products: JSON.stringify(
           products.map((p: Product) => ({
             id: p.id,
