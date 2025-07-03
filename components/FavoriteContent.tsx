@@ -15,7 +15,6 @@ const FavoriteContent = (props:Props) => {
  const {addFavorite} = useCart()
 const {products} = props   
 
-console.log(products,"ぷろだくと")
 
   return (
 
