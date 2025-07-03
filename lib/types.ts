@@ -19,3 +19,10 @@ export type ProductFields = {
   quantity: number;
 };
 
+
+export type OrderItem = {
+  id: string;
+  name: string;
+  price: number;
+};
+

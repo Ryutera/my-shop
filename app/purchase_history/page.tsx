@@ -1,25 +1,29 @@
 import { createClient } from "@/utils/supabase/server";
 import React from "react";
 import {  getPurchaseItemsIndb } from "../actions";
+import { Order } from "@/lib/generated/prisma";
+import { OrderItem } from "@/lib/types";
+
+
+
 
 
 const PurchaseHistory = async () => {
   const supabase = await createClient();
   const { data } = await supabase.auth.getUserIdentities();
-  let orders;
+  let orders:Order[]
   if (data) {
     orders = await getPurchaseItemsIndb(data.identities[0].id);
+   
   } else {
     return <div>You need to login to see purchase histry</div>;
   }
-
-
 
   return (
     <div className="w-full p-6">
       <h1 className="text-3xl font-bold mb-8">Purchase History</h1>
 
-      {orders.map((order: any) => (
+      {orders.map((order: Order) => (
         <div key={order.id} className="w-full bg-white border border-gray-200 rounded-lg p-6 mb-6 shadow-sm">
           <div className="flex justify-between items-center mb-4">
             <div>
@@ -30,7 +34,7 @@ const PurchaseHistory = async () => {
           </div>
 
           <div className="space-y-3">
-            {order.items.map((item: any, index: number) => (
+          {(order.items as OrderItem[]).map((item: OrderItem, index: number)=> (
               <div
                 key={index}
                 className="flex justify-between items-center py-2 border-b border-gray-100 last:border-b-0"

@@ -6,42 +6,38 @@ import { getFavoriteWithUserId, getProduct } from "../actions";
 import FavoriteContent from "@/components/FavoriteContent";
 
 const FavoritePage = () => {
-  const { favorite } = useCart();
+  const { favorite } = useCart(); // Get favorites from context
   const [products, setProducts] = useState<any>();
-  const [isLoggedIn,setIsLoggedIn] = useState<boolean>(false)
-  
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
 
   useEffect(() => {
-   
-  
     const fetchFavoriteData = async () => {
       const supabase = await createClient();
       const { data } = await supabase.auth.getUserIdentities();
 
       if (data) {
-        setIsLoggedIn((prev)=>!prev)
-        const userId = data.identities[0].id
-        const FavoriteItemsInDb = await  getFavoriteWithUserId(userId)
+        // Logged-in user: Get favorites from database
+        setIsLoggedIn((prev) => !prev);
+        const userId = data.identities[0].id;
+        const FavoriteItemsInDb = await getFavoriteWithUserId(userId);
 
         const results = await Promise.all(
           FavoriteItemsInDb.map((item) => getProduct(item.cmsItemId))
         );
         setProducts(results);
-        console.log(FavoriteItemsInDb, "でた");
       } else {
-       
-          const results = await Promise.all(favorite.map((id) => getProduct(id)));
-          console.log(results.filter(Boolean),"results")
-          setProducts(results);
-      
-       
+        const results = await Promise.all(favorite.map((id) => getProduct(id)));
+        console.log(results.filter(Boolean), "results");
+        setProducts(results);
       }
     };
 
     fetchFavoriteData();
+    
   }, [favorite]);
- 
-  return !!products && <FavoriteContent products={products} /> 
+
+//Render only when products are loaded to avoid undefined errors
+  return !!products && <FavoriteContent products={products} />;
 };
 
 export default FavoritePage;
