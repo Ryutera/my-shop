@@ -1,102 +1,19 @@
-Skip to content
-Navigation Menu
-Ryutera
-my-shop
+# Minimal Vintage Clothing E-Commerce Site with Payments
 
-Type / to search
-Code
-Issues
-Pull requests
-Actions
-Projects
-Wiki
-Security
-Insights
-Settings
-my-shop
-/
-README.md
-in
-main
+🛒 A minimalist vintage clothing e-commerce site built using Next.js, Stripe, and Supabase.
 
-Edit
+## 🔍 Overview
 
-Preview
-Indent mode
+This app provides all the essential features of a modern e-commerce site, including user authentication, product browsing, wishlist registration, cart management, and secure checkout. Payments are handled via Stripe, and purchase data is automatically saved through Webhook integration with Supabase.
 
-Spaces
-Indent size
+## 🚀 Tech Stack
 
-2
-Line wrap mode
-
-Soft wrap
-Editing README.md file contents
-17
-18
-19
-20
-21
-22
-23
-24
-25
-26
-27
-28
-29
-30
-31
-32
-33
-34
-35
-36
-37
-38
-39
-40
-41
-42
-43
-44
-45
-46
-47
-48
-49
-50
-51
-52
-53
-54
-55
-56
-57
-58
-59
-60
-61
-62
-63
-64
-65
-66
-67
-68
-69
-70
-71
-72
-73
-74
-75
-76
-77
-78
-79
-80
-81
+- Next.js 15 (App Router)
+- TypeScript
+- Tailwind CSS
+- Supabase (Database & Auth)
+- Stripe (Payment processing)
+- Prisma (ORM)
 - Contentful (Headless CMS for product data)
 
 ## ✨ Features
@@ -154,15 +71,10 @@ CONTENTFUL_MANAGEMENT_TOKEN=
 NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=
 STRIPE_SECRET_KEY=
 STRIPE_WEBHOOK_SECRET=
-
 ```
 ## 🔍 Overview
 
 This app provides all the essential features of a modern e-commerce site, including user authentication, product browsing, wishlist registration, cart management, and secure checkout. Payments are handled via Stripe, and purchase data is automatically saved through Webhook integration with Supabase.
 
 > 📌 **Note:** The current version uses demo product data and Stripe is operating in test mode.  
-> 🛍️ I plan to add real product listings and switch to live payment mode in the near future.
-Use Control + Shift + m to toggle the tab key moving focus. Alternatively, use esc then tab to move to the next interactive element on the page.
-選択されていません
-Attach files by dragging & dropping, selecting or pasting them.
-Editing my-shop/README.md at main · Ryutera/my-shop
+> 🛍️ We plan to add real product listings and switch to live payment mode in the near future.
