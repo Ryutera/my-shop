@@ -6,6 +6,9 @@
 
 This app provides all the essential features of a modern e-commerce site, including user authentication, product browsing, wishlist registration, cart management, and secure checkout. Payments are handled via Stripe, and purchase data is automatically saved through Webhook integration with Supabase.
 
+> 📌 **Note:** The current version uses demo product data and Stripe is operating in test mode.  
+> 🛍️ We plan to add real product listings and switch to live payment mode in the near future.
+
 ## 🚀 Tech Stack
 
 - Next.js 15 (App Router)
@@ -72,9 +75,3 @@ NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=
 STRIPE_SECRET_KEY=
 STRIPE_WEBHOOK_SECRET=
 ```
-## 🔍 Overview
-
-This app provides all the essential features of a modern e-commerce site, including user authentication, product browsing, wishlist registration, cart management, and secure checkout. Payments are handled via Stripe, and purchase data is automatically saved through Webhook integration with Supabase.
-
-> 📌 **Note:** The current version uses demo product data and Stripe is operating in test mode.  
-> 🛍️ We plan to add real product listings and switch to live payment mode in the near future.
