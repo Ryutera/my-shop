@@ -8,7 +8,7 @@ export default async function Home() {
   if (!clothes) {
     console.log("no clothes data")
   }
-  console.log(clothes,"huku")
+
 
   return (
     <>

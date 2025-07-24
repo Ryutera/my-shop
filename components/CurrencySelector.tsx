@@ -1,4 +1,5 @@
-import React, { useContext } from 'react'
+"use client"
+import React, { useContext, useEffect} from 'react'
 import { Select,
     SelectContent,
     SelectGroup,
@@ -15,22 +16,35 @@ const CurrencySelector = () => {
     }
   
     const { currency,changeToEur,changeToGbp,changeToJpy } = context;
-  
+    useEffect(()=>{console.log(currency)},[currency])
+    
+    const handleChange = (value: string) => {
+        switch (value) {
+          case "GBP":
+            changeToGbp();
+            break;
+          case "EUR":
+            changeToEur();
+            break;
+          case "JPY":
+            changeToJpy();
+            break;
+          default:
+            break;
+        }
+      };
+   
   return (
     <div className="ml-2">
-      <Select>
+      <Select onValueChange={handleChange}>
       <SelectTrigger className="w-[100px] h-8 px-2 py-1 text-sm">
         <SelectValue placeholder="Currency" />
       </SelectTrigger>
       <SelectContent>
         <SelectGroup>
-            
-          <SelectItem value="blueberry">GBP</SelectItem>
-          
-          <SelectItem value="grapes">EUR</SelectItem>
-         
-          
-          <SelectItem value="pineapple">JPY</SelectItem>
+        <SelectItem value="GBP">GBP</SelectItem>
+            <SelectItem value="EUR">EUR</SelectItem>
+            <SelectItem value="JPY">JPY</SelectItem>
         </SelectGroup>
       </SelectContent>
     </Select>

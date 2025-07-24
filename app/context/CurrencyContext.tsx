@@ -1,4 +1,5 @@
-import { createContext, ReactNode, useState } from "react";
+"use client"
+import { createContext, ReactNode,  useState } from "react";
 
 type CurrencyContextType= {
     currency: string
@@ -13,15 +14,20 @@ import React from 'react'
 
 export const CurrencyProvider  = ({children}:{children:ReactNode}) => {
     const [currency, setCurrency] = useState("GBP")
+   
 
     const changeToJpy=()=>{
+       
         setCurrency("JPY")
+       
     }
     const changeToEur=()=>{
         setCurrency("EUR")
+        
     }
     const changeToGbp=()=>{
         setCurrency("GBP")
+       
     }
 
   return (
