@@ -22,7 +22,7 @@ interface Props {
 
 const CartContext = createContext<CartContextType | undefined>(undefined)
 
-export const Provider = (props: Props) => {
+export const CartProvider = (props: Props) => {
   const { children, userData } = props
 
   const [items, setItems] = useState<string[]>([])

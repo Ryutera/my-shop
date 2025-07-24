@@ -7,7 +7,7 @@ import { ThemeProvider } from "next-themes";
 import Link from "next/link";
 import "./globals.css";
 import { createClient } from "@/utils/supabase/server";
-import { Provider } from "./context/CartContext";
+import { CartProvider } from "./context/CartContext";
 import { getUserWithId } from "./actions";
 import {
   SidebarInset,
@@ -15,6 +15,7 @@ import {
   SidebarTrigger,
 } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/app-sidebar";
+import { CurrencyProvider } from "./context/CurrencyContext";
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
@@ -48,7 +49,9 @@ export default async function RootLayout({
   return (
     <html lang="en" className={geistSans.className} suppressHydrationWarning>
       <body className="bg-background text-foreground">
-        <Provider userData={data}>
+        <CurrencyProvider>
+        <CartProvider userData={data}>
+          
           <SidebarProvider>
             <AppSidebar />
             <SidebarInset>
@@ -86,7 +89,9 @@ export default async function RootLayout({
               </ThemeProvider>
             </SidebarInset>
           </SidebarProvider>
-        </Provider>
+          
+        </CartProvider>
+        </CurrencyProvider>
       </body>
     </html>
   );
