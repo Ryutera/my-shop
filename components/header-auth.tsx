@@ -1,15 +1,14 @@
-"use client"
-import {  signOutAction } from "@/app/actions";
+"use client";
+import { signOutAction } from "@/app/actions";
 import { hasEnvVars } from "@/utils/supabase/check-env-vars";
 import Link from "next/link";
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
 import ShoppingCartIcon from "./ShoppingCartIcon";
+import CurrencySelector from "./CurrencySelector";
 
 
-
-export default  function AuthButton({data,userData}:any) {
-
+export default function AuthButton({ data, userData }: any) {
   if (!hasEnvVars) {
     return (
       <>
@@ -59,7 +58,7 @@ export default  function AuthButton({data,userData}:any) {
   ) : (
     <div className="flex gap-2 items-center">
       <ShoppingCartIcon />
-
+<CurrencySelector/>
       <Button asChild size="sm" className="ml-2" variant={"outline"}>
         <Link href="/sign-in">Sign in</Link>
       </Button>
