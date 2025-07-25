@@ -1,5 +1,5 @@
 "use client"
-import { createContext, ReactNode,  useState } from "react";
+import { createContext, ReactNode,  useContext,  useState } from "react";
 
 type CurrencyContextType= {
     currency: string
@@ -36,5 +36,6 @@ export const CurrencyProvider  = ({children}:{children:ReactNode}) => {
     </CurrencyContext.Provider>
   )
 }
+
 
 export default CurrencyContext
