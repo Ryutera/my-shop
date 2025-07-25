@@ -1,12 +1,17 @@
 import Link from 'next/link'
-import React from 'react'
 import FavoriteButton from './FavoriteButton'
 import { createClient } from '@/utils/supabase/server'
+import Exchange from './Exchange'
+
 
 
 const Product = async({cloth}:{cloth:any}) => {
   const supabase = await createClient()
   const { data } =  await  supabase.auth.getUserIdentities()
+
+
+
+
 
   return (
     <div className="flex flex-col h-full max-w-sm mx-auto sm:max-w-none sm:mx-0 p-3 sm:p-4">
@@ -22,7 +27,10 @@ const Product = async({cloth}:{cloth:any}) => {
             <div className="mt-4 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 sm:gap-0 px-1">
   <p>{cloth.fields.name}</p>
   <div className="flex flex-row gap-2">
-  {cloth.fields.isSoldOut?  <p>Sold Out</p> :  <p>£{cloth.fields.price}</p>}
+  {cloth.fields.isSoldOut?  <p>Sold Out</p> :  <p><Exchange  
+  priceJpy={cloth.fields.priceJpy}
+  priceEur={cloth.fields.priceEur}
+  priceGbp={cloth.fields.priceGbp}/></p>}
 
 
   <FavoriteButton id={cloth.sys.id} data={data}/>
