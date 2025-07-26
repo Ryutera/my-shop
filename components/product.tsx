@@ -9,10 +9,6 @@ const Product = async({cloth}:{cloth:any}) => {
   const supabase = await createClient()
   const { data } =  await  supabase.auth.getUserIdentities()
 
-
-
-
-
   return (
     <div className="flex flex-col h-full max-w-sm mx-auto sm:max-w-none sm:mx-0 p-3 sm:p-4">
         

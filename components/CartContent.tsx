@@ -73,8 +73,8 @@ const CartContent = (props: ContentProps) => {
 
   const handleRemoveItem = async (product: Product) => {
     if (isLoggedIn) {
-      // ログイン時：DBから削除
-      //userIdとcsmID必要
+     // When logged in: Remove from the database
+// Requires userId and csmID
       if (window.confirm("Do you want to remove this item?")) {
         await removeCartItemFromDB(userData.identities[0].id, product.id);
         setLocalCartItems((prev) =>
@@ -85,7 +85,7 @@ const CartContent = (props: ContentProps) => {
 
       console.log(product);
     } else {
-      // 非ログイン時：ローカル状態から削除
+      // Not logged in: Remove item from local state
       removeItems?.(product.id);
     }
   };

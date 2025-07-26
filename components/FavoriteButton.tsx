@@ -15,6 +15,7 @@ const FavoriteButton = (props:Props) => {
    const {favorite,addFavorite } =useCart()
    const [isFavorited, setIsFavorited] = useState<any>(null);
 
+
    useEffect(()=>{
     const getFavoriteItemFromDatabase = async(id:string) =>{
         const favoriteItem = await  isFavoriteInDatabase(id,data)

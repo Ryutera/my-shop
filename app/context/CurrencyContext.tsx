@@ -1,11 +1,9 @@
 "use client"
-import { createContext, ReactNode,  useContext,  useState } from "react";
+import { createContext, ReactNode, useState } from "react";
 
 type CurrencyContextType= {
     currency: string
-    changeToEur: () => void
-    changeToGbp: ()=>void
-    changeToJpy:  ()=>void
+    setCurrency: React.Dispatch<React.SetStateAction<string>>;
 }
 
 const CurrencyContext = createContext<CurrencyContextType | undefined>(undefined)
@@ -14,24 +12,9 @@ import React from 'react'
 
 export const CurrencyProvider  = ({children}:{children:ReactNode}) => {
     const [currency, setCurrency] = useState("GBP")
-   
-
-    const changeToJpy=()=>{
-       
-        setCurrency("JPY")
-       
-    }
-    const changeToEur=()=>{
-        setCurrency("EUR")
-        
-    }
-    const changeToGbp=()=>{
-        setCurrency("GBP")
-       
-    }
 
   return (
-    <CurrencyContext.Provider value={{currency,changeToEur,changeToGbp,changeToJpy}}>
+    <CurrencyContext.Provider value={{currency,setCurrency}}>
        {children}
     </CurrencyContext.Provider>
   )
