@@ -18,9 +18,9 @@ const Exchange = ({ priceJpy, priceEur, priceGbp }:Props) => {
    
     
  if (currency==="JPY") {
-    return `¥${priceJpy.toLocaleString('JP')}`
+    return `¥${priceJpy?.toLocaleString('JP')}`
  }if (currency==="EUR") {
-     return `€${priceEur.toLocaleString('DE')}`
+     return `€${priceEur?.toLocaleString('DE')}`
  }else{
     return `£${priceGbp.toLocaleString('GB')}`
  }

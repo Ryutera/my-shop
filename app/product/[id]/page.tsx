@@ -20,7 +20,6 @@ export default async function  ProductPage ({ params }:ProductPageProps) {
   const supabase = await createClient();
   const { data } = await supabase.auth.getUserIdentities();
 
-console.log(productData,"ぷろだくと")
   
   if (!productData) {
     console.log("there are no date");
