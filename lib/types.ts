@@ -3,7 +3,9 @@ import { Asset, EntrySkeletonType } from "contentful"
 export type ProductFields = {
   
     name: string
-    price: number
+    priceGbp: number
+    priceJpy: number
+    priceEur: number
     description: string
     thumbnail: Asset
     images: Asset[]

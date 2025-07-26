@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import AddToCart from "@/components/AddToCart";
 import AddToWishList from "@/components/AddToWishList";
 import { createClient } from "@/utils/supabase/server";
+import Exchange from "@/components/Exchange";
 
 
 interface ProductPageProps {
@@ -19,6 +20,8 @@ export default async function  ProductPage ({ params }:ProductPageProps) {
   const supabase = await createClient();
   const { data } = await supabase.auth.getUserIdentities();
 
+console.log(productData,"ぷろだくと")
+  
   if (!productData) {
     console.log("there are no date");
     return <div>There is no product</div>;
@@ -55,7 +58,12 @@ export default async function  ProductPage ({ params }:ProductPageProps) {
             {/* Price */}
             <div className="flex items-center gap-3">
               <span className="text-2xl font-semibold">
-                {productData.isSoldOut ? "£0" : ` £${productData.price}`}
+                {productData.isSoldOut ? "£0" : <Exchange
+                priceJpy ={productData.priceJpy}
+                priceGbp ={productData.priceGbp}
+                priceEur ={productData.priceEur}
+          
+                />}
               </span>
               {productData.isSoldOut ? (
                 <Badge
