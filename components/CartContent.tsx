@@ -58,14 +58,13 @@ const CartContent = (props: ContentProps) => {
 
   const products = isLoggedIn ? localCartItems : items;
 
-  console.log(products);
-
   const getPayment = async () => {
     try {
       const data = await axios.post("/api/checkout_sessions/", {
         products: products,
+        currency: currency,
       });
-      console.log(data.data);
+      console.log(data.data,"でた");
       router.push(data.data.url);
     } catch (error) {
       console.error("Payment error:", error);
