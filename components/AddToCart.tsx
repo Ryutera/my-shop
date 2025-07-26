@@ -39,7 +39,6 @@ const AddToCart = (props: AddToCartProps) => {
     }
   };
 
-  console.log(productData,"でた")
 
   return (
     <div

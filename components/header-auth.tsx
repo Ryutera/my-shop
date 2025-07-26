@@ -5,10 +5,36 @@ import Link from "next/link";
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
 import ShoppingCartIcon from "./ShoppingCartIcon";
-import CurrencySelector from "./CurrencySelector";
+import { useContext, useEffect } from "react";
+import CurrencyContext from "@/app/context/CurrencyContext";
+
 
 
 export default function AuthButton({ data, userData }: any) {
+const context = useContext(CurrencyContext)
+
+  useEffect(()=>{
+    const currencyMap: Record<string, string> = {
+      JP: "JPY",
+      GB: "GBP",
+      FR: "EUR",
+      DE: "EUR",
+      IT: "EUR",
+      //Add later if needed
+    };
+    
+
+    const setCurrencyBasedonIp =async()=>{
+  
+      const res = await fetch(`https://ipinfo.io/?token=${process.env.NEXT_PUBLIC_IPINFO_TOKEN}`)
+      const data = await res.json()
+      const currency = currencyMap[data.country] || "GBP"
+      context?.setCurrency(currency)
+
+        }
+        setCurrencyBasedonIp()
+     },[])
+  
   if (!hasEnvVars) {
     return (
       <>
@@ -58,7 +84,6 @@ export default function AuthButton({ data, userData }: any) {
   ) : (
     <div className="flex gap-2 items-center">
       <ShoppingCartIcon />
-<CurrencySelector/>
       <Button asChild size="sm" className="ml-2" variant={"outline"}>
         <Link href="/sign-in">Sign in</Link>
       </Button>
