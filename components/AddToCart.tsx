@@ -4,6 +4,7 @@ import { Button } from "./ui/button";
 import { useCart } from "@/app/context/CartContext";
 import { ProductFields } from "@/lib/types";
 import { addCartToDb, isCartInDatabase } from "@/app/actions";
+import Exchange from "./Exchange";
 
 interface AddToCartProps {
   productData: ProductFields;
@@ -38,6 +39,8 @@ const AddToCart = (props: AddToCartProps) => {
     }
   };
 
+  console.log(productData,"でた")
+
   return (
     <div
       className={`transition  transform duration-300 translate-y-1 hover:scale-105 ${isAdded ? "cursor-not-allowed" : `cursor-pointer`} `}
@@ -48,9 +51,31 @@ const AddToCart = (props: AddToCartProps) => {
         onClick={() => handleAddToCart (id)}
         disabled={!existingCartItem ? isAdded : true}
       >
-        {existingCartItem? `Already added to Cart - £${productData.price}`:   isAdded
-          ? `Already added to Cart - £${productData.price}`
-          : `Add to Cart - £${productData.price}`}
+        {existingCartItem ? (
+    <>
+      Already added to Cart - <Exchange
+        priceEur={productData.priceEur}
+        priceJpy={productData.priceJpy}
+        priceGbp={productData.priceGbp}
+      />
+    </>
+  ) : isAdded ? (
+    <>
+      Already added to Cart - <Exchange
+        priceEur={productData.priceEur}
+        priceJpy={productData.priceJpy}
+        priceGbp={productData.priceGbp}
+      />
+    </>
+  ) : (
+    <>
+      Add to Cart - <Exchange
+        priceEur={productData.priceEur}
+        priceJpy={productData.priceJpy}
+        priceGbp={productData.priceGbp}
+      />
+    </>
+  )}
       </Button>
     </div>
   );
