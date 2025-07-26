@@ -9,14 +9,15 @@ export async function POST(req: Request) {
     const origin = headersList.get("origin");
     const body = await req.json();
     const products = body.products || [];
-
-    console.log(products, "pu");
+    const currency = body.currency.toLowerCase() || "gbp";
 
     interface Product {
       id: string;
       name: string;
-      price: number;
-      image: string;
+      priceGbp: number;
+      priceJpy: number;
+      priceEur: number;
+      image?: string;
     }
 
     const supabase = await createClient();
@@ -26,31 +27,42 @@ export async function POST(req: Request) {
 
     const userId = user?.id;
 
-    // Create Checkout Sessions from body params.
     const session = await stripe.checkout.sessions.create({
-      line_items: products.map((product: any) => ({
-        price_data: {
-          currency: "gbp",
-          product_data: {
-            name: product.name,
-          },
+      line_items: products.map((product: Product) => {
+        const price =
+          currency === "jpy"
+            ? product.priceJpy
+            : currency === "eur"
+            ? product.priceEur * 100
+            : product.priceGbp * 100;
 
-          unit_amount: product.price * 100,
-        },
-        quantity: 1,
-      })),
+        return {
+          price_data: {
+            currency: currency,
+            product_data: {
+              name: product.name,
+            },
+            unit_amount: price , 
+          },
+          quantity: 1,
+        };
+      }),
       billing_address_collection: "auto",
       shipping_address_collection: {
         allowed_countries: ["JP", "GB"],
       },
       metadata: {
         user_id: userId || null,
-        
         products: JSON.stringify(
           products.map((p: Product) => ({
             id: p.id,
             name: p.name,
-            price: p.price,
+            price:
+              currency === "jpy"
+                ? p.priceJpy
+                : currency === "eur"
+                ? p.priceEur
+                : p.priceGbp,
           }))
         ),
       },
@@ -59,6 +71,7 @@ export async function POST(req: Request) {
       success_url: `${origin}/success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${origin}/?canceled=true`,
     });
+
     return NextResponse.json({ url: session.url });
   } catch (err: any) {
     return NextResponse.json(

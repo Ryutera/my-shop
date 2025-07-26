@@ -6,6 +6,7 @@ import { Button } from './ui/button'
 import { Trash2 } from 'lucide-react'
 import { useCart } from "@/app/context/CartContext"
 import NoFavoriteContent from "./NoFavoriteContent"
+import Exchange from "./Exchange"
 
 
 type Props ={
@@ -44,7 +45,13 @@ const {products} = props
           <Link href={`/product/${product.id}`}>{product.name}</Link>
         </TableCell>
         <TableCell className="text-gray-900 text-lg py-5 px-6"></TableCell>
-        <TableCell className="text-gray-900 text-lg py-5 px-6">£{product?.price.toFixed(2)}</TableCell>
+        <TableCell className="text-gray-900 text-lg py-5 px-6">
+       
+          <Exchange 
+        priceJpy={product?.priceJpy}
+        priceEur={product?.priceEur}
+        priceGbp={product?.priceGbp}
+        /></TableCell>
         <TableCell className="py-5 px-6">
           <Button
             variant="ghost"
