@@ -68,7 +68,7 @@ const ProductImeges = ({ thumbnail, images }: Props) => {
         </Carousel>
 
         <DialogContent className="max-w-[90vw] max-h-[95vh] p-2">
-          <div className="grid grid-cols-3 grid-row items-center">
+          <div className="grid grid-cols-1 sm:grid-cols-3 items-center">
 
             <div className="flex items-center  justify-center">
               <button onClick={() => setDialogSlideIndex((prev) => prev===-1 ? -1: prev - 1)}>
