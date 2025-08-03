@@ -13,11 +13,15 @@ const Product = async({cloth}:{cloth:any}) => {
     <div className="flex flex-col h-full max-w-sm mx-auto sm:max-w-none sm:mx-0 p-3 sm:p-4">
         
         <Link href={`/product/${cloth.sys.id}`}>
-        <div className="transition transform duration-300 hover:-translate-y-2 hover:shadow-2xl shadow-lg hover:scale-105 hover:cursor-pointer mx-2 mb-2">
-            <img src={cloth.fields.thumbnail.fields.file.url} alt="" 
-           className="w-full aspect-[3/5] sm:aspect-[2/3] object-cover rounded-t-lg"
-            />
-            </div>
+       
+            <div className="overflow-hidden rounded-t-lg mx-2 mb-2 shadow-lg transition-transform duration-300 hover:shadow-2xl cursor-pointer">
+    <img
+     src={`${cloth.fields.thumbnail.fields.file.url}?fm=webp&w=800&h=1200&fit=thumb`}
+     alt=""
+     loading="lazy"
+      className="w-full aspect-[3/5] sm:aspect-[2/3] object-cover transition-transform duration-300 hover:scale-105"
+    />
+  </div>
             </Link>
   
             <div className="mt-4 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 sm:gap-0 px-1">
