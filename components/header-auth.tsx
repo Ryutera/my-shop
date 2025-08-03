@@ -82,14 +82,12 @@ const context = useContext(CurrencyContext)
       </form>
     </div>
   ) : (
-    <div className="flex gap-2 items-center">
+    <div className="flex gap-4 items-center">
       <ShoppingCartIcon />
       <Button asChild size="sm" className="ml-2" variant={"outline"}>
-        <Link href="/sign-in">Sign in</Link>
+        <Link href="/sign-in">Login</Link>
       </Button>
-      <Button asChild size="sm" variant={"default"}>
-        <Link href="/sign-up">Sign up</Link>
-      </Button>
+     
     </div>
   );
 }
