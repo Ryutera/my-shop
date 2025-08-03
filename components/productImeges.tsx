@@ -29,7 +29,7 @@ const ProductImeges = ({ thumbnail, images }: Props) => {
           <CarouselContent>
             {/* Thumbnail image */}
             <CarouselItem key="thumbnail">
-              <div className="flex justify-center">
+              <div className="flex justify-center ">
                 <DialogTrigger asChild>
                   <img
                     src={`https:${thumbnail.fields.file?.url}`}
@@ -70,7 +70,7 @@ const ProductImeges = ({ thumbnail, images }: Props) => {
         <DialogContent className="max-w-[90vw] max-h-[95vh] p-2">
           <div className="grid grid-cols-1 sm:grid-cols-3 items-center">
 
-            <div className="flex items-center  justify-center  ">
+            <div className="hidden sm:flex items-center  justify-center  ">
               <button onClick={() => setDialogSlideIndex((prev) => prev===-1 ? -1: prev - 1)}>
               {dialogSlideIndex===-1? <></>:   <ArrowLeft/>}
               </button>
@@ -104,7 +104,7 @@ const ProductImeges = ({ thumbnail, images }: Props) => {
               </CarouselContent>
             </Carousel>
             
-            <div className="flex items-center  justify-center">     
+            <div className="hidden sm:flex items-center  justify-center">     
               <button onClick={() => setDialogSlideIndex((prev) =>prev===images.length-1? prev:prev+1)}>
                 {dialogSlideIndex===images.length-1? <></>:   <ArrowRight/>}
               </button>
