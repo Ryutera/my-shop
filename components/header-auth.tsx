@@ -7,6 +7,7 @@ import { Button } from "./ui/button";
 import ShoppingCartIcon from "./ShoppingCartIcon";
 import { useContext, useEffect } from "react";
 import CurrencyContext from "@/app/context/CurrencyContext";
+import { UserRound, UserRoundCheck } from "lucide-react";
 
 
 
@@ -74,19 +75,22 @@ const context = useContext(CurrencyContext)
   return data ? (
     <div className="flex items-center gap-4">
       <ShoppingCartIcon userData={userData} />
-      Welcome, {userData?.name}!
+   
       <form action={signOutAction}>
-        <Button type="submit" variant={"outline"}>
-          Sign out
-        </Button>
+
+        <Link href="/sign-out">
+         <UserRoundCheck/>
+         </Link>
       </form>
     </div>
   ) : (
     <div className="flex gap-4 items-center">
       <ShoppingCartIcon />
-      <Button asChild size="sm" className="ml-2" variant={"outline"}>
-        <Link href="/sign-in">Login</Link>
-      </Button>
+      {/* <Button asChild size="sm" className="ml-2" variant={"outline"}> */}
+        <Link href="/sign-in">
+        <UserRound/>
+        </Link>
+      {/* </Button> */}
      
     </div>
   );
