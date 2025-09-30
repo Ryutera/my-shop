@@ -1,7 +1,7 @@
 "use client"
 import SearchContext from '@/app/context/SearchContext'
 import { X } from 'lucide-react'
-import React, { useContext, useState } from 'react'
+import React, { useContext} from 'react'
 
 
 const SearchBar = () => {
