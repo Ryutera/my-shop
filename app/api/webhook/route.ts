@@ -1,3 +1,5 @@
+export const runtime = "nodejs";
+
 import { stripe } from "@/lib/stripe";
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
@@ -17,12 +19,17 @@ console.log("webhook")
     return new NextResponse("Webhook Error", { status: 400 });
   }
 
+  console.log("event.type:", event.type);
+
   if (event.type === "checkout.session.completed") {
     const session = event.data.object as any;
 
     const userId = session.metadata.user_id;
     
     const items = JSON.parse(session.metadata.products)
+
+    console.log("items:", items)
+
 
     if (userId) {
         await prisma.order.create({
@@ -39,6 +46,8 @@ console.log("webhook")
                 userId
             }
           })
+
+        
     }
     await Promise.all(items.map(async(item:any)=> markProductAsSold(item.id)))
     

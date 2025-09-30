@@ -1,9 +1,11 @@
 import React from 'react'
 
-const page = () => {
+
+const page = async() => {
+    
   return (
     <div>
-      ログアウト
+      This page is not available at the moment
     </div>
   )
 }
