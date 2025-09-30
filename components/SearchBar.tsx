@@ -1,11 +1,12 @@
 "use client"
 import SearchContext from '@/app/context/SearchContext'
 import { X } from 'lucide-react'
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 
 
 const SearchBar = () => {
     const context = useContext(SearchContext)
+   
     return (
         context.isClicked &&
 
@@ -15,6 +16,8 @@ const SearchBar = () => {
             type="text"
             placeholder="Search products..."
             className="flex  mx-auto w-[80%] border rounded px-3 py-2 focus:outline-none"
+            onChange={(e:any)=>context.setSearchedWord(e.target.value)}
+            value={context.searchedWord}
           />
           <button onClick={context.onClickSearch}>
             <X />
