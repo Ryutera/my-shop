@@ -179,10 +179,14 @@ export async function markProductAsSold(id: string) {
     const environment = await space.getEnvironment("master")
     const entry = await environment.getEntry(id)
 
+
+
     entry.fields.isSoldOut = { "en-US": true }
 
     const updatedEntry = await entry.update()
-    await updatedEntry.publish() 
+    await updatedEntry.publish()
+    
+
 
     return updatedEntry
   } catch (error) {
