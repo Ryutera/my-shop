@@ -17,6 +17,7 @@ import {
 import { AppSidebar } from "@/components/app-sidebar";
 import { CurrencyProvider } from "./context/CurrencyContext";
 import { SearchProvider } from "./context/SearchContext";
+import SearchBar from "@/components/SearchBar";
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
@@ -63,9 +64,11 @@ export default async function RootLayout({
                 enableSystem
                 disableTransitionOnChange
               >
-                <main className="min-h-screen flex flex-col items-center bg-gray-50">
+                <main className="min-h-screen flex flex-col items-center bg-gray-100">
                   <div className="flex-1 w-full flex flex-col gap-20 items-center">
-                    <nav className="w-full flex justify-center border-b border-b-foreground/10 h-16">
+
+                    <nav className="w-full flex justify-center border-b border-b-foreground/10 h-20 border-gray-400 bg-gray-200">
+                    <SearchBar/>
                     <div className="w-full max-w-6xl flex justify-between items-center p-3 px-2 md:px-5 text-sm ">
                         <div className="flex gap-2 md:gap-5  items-center font-semibold">
                           <SidebarTrigger />
