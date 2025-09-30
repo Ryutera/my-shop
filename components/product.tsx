@@ -1,13 +1,20 @@
+"use client"
 import Link from 'next/link'
 import FavoriteButton from './FavoriteButton'
-import { createClient } from '@/utils/supabase/server'
 import Exchange from './Exchange'
+import { createClient } from '@/utils/supabase/client'
+import { useEffect, useState } from 'react'
 
 
 
-const Product = async({cloth}:{cloth:any}) => {
-  const supabase = await createClient()
-  const { data } =  await  supabase.auth.getUserIdentities()
+const Product = ({cloth}:{cloth:any}) => {
+  const supabase = createClient()
+  const [userData, setUserData] = useState<any>(null);
+
+   useEffect(() => {
+   
+    supabase.auth.getUser().then(({ data }) => setUserData(data.user));
+  }, [supabase]);
 
   return (
     <div className="flex flex-col h-full max-w-sm mx-auto sm:max-w-none sm:mx-0 p-3 sm:p-4">
@@ -33,7 +40,7 @@ const Product = async({cloth}:{cloth:any}) => {
   priceGbp={cloth.fields.priceGbp}/></p>}
 
 
-  <FavoriteButton id={cloth.sys.id} data={data}/>
+  <FavoriteButton id={cloth.sys.id} data={userData}/>
 
   </div>
 

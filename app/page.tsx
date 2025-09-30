@@ -1,15 +1,17 @@
-import Product from "@/components/product";
+
+
 import { getProducts } from "./actions";
+import ProductsGrid from "@/components/ProductsGrid";
 
 
 
 export default async function Home() {
+
   const clothes = await getProducts()
+
   if (!clothes) {
     console.log("no clothes data")
   }
-
-
 
 
   return (
@@ -19,9 +21,7 @@ export default async function Home() {
         {/* <h2 className="font-medium text-xl mb-4">Next steps</h2>
         {hasEnvVars ? <SignUpUserSteps /> : <ConnectSupabaseSteps />} */}
 
-{clothes.map((cloth) => (
-  <Product cloth={cloth} key={cloth.sys.id} />
-))}
+<ProductsGrid items={clothes ?? []} />
 
 
       </main>
