@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/app-sidebar";
 import { CurrencyProvider } from "./context/CurrencyContext";
+import { SearchProvider } from "./context/SearchContext";
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
@@ -50,6 +51,7 @@ export default async function RootLayout({
     <html lang="en" className={geistSans.className} suppressHydrationWarning>
       <body className="bg-background text-foreground">
         <CurrencyProvider>
+        <SearchProvider>
         <CartProvider userData={data}>
           
           <SidebarProvider>
@@ -64,7 +66,7 @@ export default async function RootLayout({
                 <main className="min-h-screen flex flex-col items-center bg-gray-50">
                   <div className="flex-1 w-full flex flex-col gap-20 items-center">
                     <nav className="w-full flex justify-center border-b border-b-foreground/10 h-16">
-                    <div className="w-full max-w-6xl flex justify-between items-center p-3 px-2 md:px-5 text-sm">
+                    <div className="w-full max-w-6xl flex justify-between items-center p-3 px-2 md:px-5 text-sm ">
                         <div className="flex gap-2 md:gap-5  items-center font-semibold">
                           <SidebarTrigger />
                           <Link href={"/"}>My Shop</Link>
@@ -91,6 +93,7 @@ export default async function RootLayout({
           </SidebarProvider>
           
         </CartProvider>
+        </SearchProvider>
         </CurrencyProvider>
       </body>
     </html>

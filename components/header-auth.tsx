@@ -8,18 +8,17 @@ import ShoppingCartIcon from "./ShoppingCartIcon";
 import { useContext, useEffect, useState } from "react";
 import CurrencyContext from "@/app/context/CurrencyContext";
 import { Search, UserRound, UserRoundCheck } from "lucide-react";
+import SearchContext from "@/app/context/SearchContext";
 
 
 
 export default function AuthButton({ data, userData }: any) {
-  const [isClicked, setIsClicked] = useState(false)
-  const context = useContext(CurrencyContext)
+ 
+  const currencycontext = useContext(CurrencyContext)
+  const searchcontext = useContext(SearchContext)
 
-  const onClickSearch = () => {
-    setIsClicked((prev) => !prev)
-  }
 
-  console.log(isClicked)
+
 
   useEffect(() => {
     const currencyMap: Record<string, string> = {
@@ -38,7 +37,7 @@ export default function AuthButton({ data, userData }: any) {
       const res = await fetch(`https://ipinfo.io/?token=${process.env.NEXT_PUBLIC_IPINFO_TOKEN}`)
       const data = await res.json()
       const currency = currencyMap[data.country] || "GBP"
-      context?.setCurrency(currency)
+      currencycontext?.setCurrency(currency)
 
     }
     setCurrencyBasedonIp()
@@ -84,7 +83,7 @@ export default function AuthButton({ data, userData }: any) {
   return data ? (
     <div className="flex items-center gap-4">
 
-      <button onClick={onClickSearch}>
+      <button onClick={searchcontext.onClickSearch}>
         <Search />
       </button>
 
@@ -102,7 +101,7 @@ export default function AuthButton({ data, userData }: any) {
   ) : (
     <div className="flex gap-4 items-center">
 
-       <button onClick={onClickSearch}>
+       <button onClick={searchcontext.onClickSearch}>
         <Search />
       </button>
 
