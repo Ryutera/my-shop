@@ -2,7 +2,7 @@ import DeployButton from "@/components/deploy-button";
 import { EnvVarWarning } from "@/components/env-var-warning";
 import HeaderAuth from "@/components/header-auth";
 import { hasEnvVars } from "@/utils/supabase/check-env-vars";
-import { Geist } from "next/font/google";
+import { Public_Sans} from "next/font/google";
 import { ThemeProvider } from "next-themes";
 import Link from "next/link";
 import "./globals.css";
@@ -29,10 +29,10 @@ export const metadata = {
   description: "The fastest way to build apps with Next.js and Supabase",
 };
 
-const geistSans = Geist({
-  display: "swap",
+const publicSans =  Public_Sans({
+    display: "swap",
   subsets: ["latin"],
-});
+})
 
 export default async function RootLayout({
   children,
@@ -49,7 +49,7 @@ export default async function RootLayout({
   }
 
   return (
-    <html lang="en" className={geistSans.className} suppressHydrationWarning>
+    <html lang="en" className={publicSans.className} suppressHydrationWarning>
       <body className="bg-background text-foreground">
         <CurrencyProvider>
         <SearchProvider>

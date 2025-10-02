@@ -44,7 +44,7 @@ const onClickSearch = () => {
   }, [pathname])
 
 
-    console.log(isClicked)
+    
 
     return (
         <SearchContext.Provider value={{ onClickSearch, isClicked, searchedWord, setSearchedWord }}>
