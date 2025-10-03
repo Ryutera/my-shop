@@ -49,7 +49,7 @@ const ProductImeges = ({ thumbnail, images }: Props) => {
                   <img
                     src={`https:${thumbnail.fields.file?.url}`}
                     alt=""
-                    className="h-[600px] object-cover rounded-lg"
+                    className="h-[600px] object-cover "
                     onClick={() => setDialogSlideIndex(-1)}
                   />
                 </DialogTrigger>
@@ -65,7 +65,7 @@ const ProductImeges = ({ thumbnail, images }: Props) => {
                       <img
                         src={`https:${image.fields.file.url}`}
                         alt=""
-                        className="h-[600px] object-cover rounded-lg"
+                        className="h-[600px] object-cover"
                         onClick={() => setDialogSlideIndex(index)}
                       />
                     </DialogTrigger>
@@ -103,7 +103,7 @@ const ProductImeges = ({ thumbnail, images }: Props) => {
                       <img
                         src={`https:${thumbnail.fields.file?.url}`}
                         alt=""
-                        className={`h-[90vh] max-w-full object-cover rounded-lg  ${isZoomed ? "cursor-zoom-out" : "cursor-zoom-in"}`}
+                        className={`h-[90vh] max-w-full object-cover   ${isZoomed ? "cursor-zoom-out" : "cursor-zoom-in"}`}
                       />
                     </div>
                   </CarouselItem>
@@ -114,7 +114,7 @@ const ProductImeges = ({ thumbnail, images }: Props) => {
                         <img
                           src={`https:${images[dialogSlideIndex].fields.file.url}`}
                           alt=""
-                           className={`h-[90vh] max-w-full object-cover rounded-lg  ${isZoomed ? "cursor-zoom-out" : "cursor-zoom-in"}`}
+                           className={`h-[90vh] max-w-full object-cover   ${isZoomed ? "cursor-zoom-out" : "cursor-zoom-in"}`}
                         />
                       )}
                     </div>
@@ -129,6 +129,7 @@ const ProductImeges = ({ thumbnail, images }: Props) => {
               </button>
 
             </div>
+            
           </div>
         </DialogContent>
       </Dialog>
