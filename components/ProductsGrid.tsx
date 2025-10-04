@@ -9,29 +9,30 @@ type ProductsGridProps = { items: Entry<any>[] };
 
 const ProductsGrid = ({ items }: ProductsGridProps) => {
 
-    const { searchedWord } = useContext(SearchContext)
+  const { searchedWord } = useContext(SearchContext)
   const filteredItems = searchedWord
-  ? items.filter((i) =>
+    ? items.filter((i) =>
       String(i.fields?.name ?? "").toLowerCase().includes(searchedWord.toLowerCase())
     )
-  : items;
+    : items;
 
-    return (
-        filteredItems.length === 0? 
-         <div className="flex justify-center items-center w-full min-h-[50vh]">
-            <NoResults word={searchedWord} />
-        </div> : 
-        <>
-          <main className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 px-2 md:px-4">
-        {/* <h2 className="font-medium text-xl mb-4">Next steps</h2>
+  return (
+    filteredItems.length === 0 ?
+      <div className="flex justify-center items-center w-full min-h-[50vh]">
+        <NoResults word={searchedWord} />
+      </div> :
+      <>
+        <main className="grid grid-cols-2
+            lg:grid-cols-3 gap-4 md:gap-6 px-2 md:px-4">
+          {/* <h2 className="font-medium text-xl mb-4">Next steps</h2>
         {hasEnvVars ? <SignUpUserSteps /> : <ConnectSupabaseSteps />} */}
 
-            {filteredItems.map((item) => (
-                <Product cloth={item} key={item.sys.id} />
-            ))}
-              </main>
-        </>
-    )
+          {filteredItems.map((item) => (
+            <Product cloth={item} key={item.sys.id} />
+          ))}
+        </main>
+      </>
+  )
 }
 
 export default ProductsGrid
