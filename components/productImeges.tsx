@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Carousel,
   CarouselContent,
@@ -25,6 +25,14 @@ const ProductImeges = ({ thumbnail, images }: Props) => {
   const [position, setPosition] = useState({ x: 0, y: 0 })  // 画像の位置
   const [isDragging, setIsDragging] = useState(false)       // ドラッグ中？
   const [dragStart, setDragStart] = useState({ x: 0, y: 0 }) // ドラッグ開始位置
+  
+  const [isTouchDevice, setIsTouchDevice] = useState(false);
+
+  useEffect(() => {
+  // タッチ操作が可能かチェック
+  const checkTouch = window.matchMedia("(pointer: coarse)").matches;
+  setIsTouchDevice(checkTouch);
+}, []);
 
   const handleZoomToggle = () => {
     if (isZoomed) {
@@ -137,11 +145,12 @@ const ProductImeges = ({ thumbnail, images }: Props) => {
               </button>
             </div>
 
-            <Carousel className={` duration-500 ${isZoomed && "scale-[2.2]"}`}>
+            <Carousel className={` duration-500 ${isZoomed && "scale-[1.7]"}`}>
               <CarouselContent >
                 {dialogSlideIndex < 0 ? (
                   <CarouselItem key="thumbnail">
-                    <div className="flex justify-center  items-center min-h-[95vh]" onClick={handleZoomToggle}
+                    <div className="flex justify-center  items-center min-h-[95vh]"
+                      onClick={isTouchDevice? undefined: handleZoomToggle}
                       onMouseDown={handleMouseDown}
                       onMouseMove={handleMouseMove}
                       onMouseUp={handleMouseUp}
@@ -151,7 +160,7 @@ const ProductImeges = ({ thumbnail, images }: Props) => {
                       <img
                         src={`https:${thumbnail.fields.file?.url}`}
                         alt=""
-                        className={`h-[90vh] max-w-full object-cover  transition-transform 
+                        className={`h-[100vh] sm:h-[90vh] max-w-full object-cover transition-transform 
                           ${isZoomed ? (isDragging ? "cursor-grabbing" : "cursor-grab") : "cursor-zoom-in"
                           }
                          `
@@ -179,8 +188,8 @@ const ProductImeges = ({ thumbnail, images }: Props) => {
                         <img
                           src={`https:${images[dialogSlideIndex].fields.file.url}`}
                           alt=""
-                          className={`h-[90vh] max-w-full object-cover   ${isZoomed ? (isDragging ? "cursor-grabbing" : "cursor-grab") : "cursor-zoom-in"
-                          }`}
+                          className={`h-[100vh] sm:h-[90vh] max-w-full object-cover   ${isZoomed ? (isDragging ? "cursor-grabbing" : "cursor-grab") : "cursor-zoom-in"
+                            }`}
 
 
                           style={isZoomed ? {
