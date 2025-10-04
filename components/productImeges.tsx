@@ -160,7 +160,7 @@ const ProductImeges = ({ thumbnail, images }: Props) => {
                       <img
                         src={`https:${thumbnail.fields.file?.url}`}
                         alt=""
-                        className={`h-[100vh] sm:h-[90vh] max-w-full object-cover transition-transform 
+                        className={`h-[95vh] sm:h-[90vh] max-w-full object-cover transition-transform 
                           ${isZoomed ? (isDragging ? "cursor-grabbing" : "cursor-grab") : "cursor-zoom-in"
                           }
                          `
@@ -188,7 +188,7 @@ const ProductImeges = ({ thumbnail, images }: Props) => {
                         <img
                           src={`https:${images[dialogSlideIndex].fields.file.url}`}
                           alt=""
-                          className={`h-[100vh] sm:h-[90vh] max-w-full object-cover   ${isZoomed ? (isDragging ? "cursor-grabbing" : "cursor-grab") : "cursor-zoom-in"
+                          className={`h-[95vh] sm:h-[90vh] max-w-full object-cover   ${isZoomed ? (isDragging ? "cursor-grabbing" : "cursor-grab") : "cursor-zoom-in"
                             }`}
 
 
