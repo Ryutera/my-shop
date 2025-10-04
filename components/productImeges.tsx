@@ -8,8 +8,9 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import { Asset } from "contentful";
-import { Dialog, DialogContent, DialogTrigger, DialogTitle, DialogOverlay } from "./ui/dialog";
+import { Dialog, DialogContent, DialogTrigger, DialogTitle } from "./ui/dialog";
 import { ArrowLeft, ArrowRight } from "lucide-react";
+
 type Props = {
   thumbnail: Asset;
   images: Asset[];
@@ -20,12 +21,23 @@ const ProductImeges = ({ thumbnail, images }: Props) => {
   const [isZoomed, setIsZoomed] = useState(false)
   const [open, setOpen] = useState(false)
 
+  //パン操作
+  const [position, setPosition] = useState({ x: 0, y: 0 })  // 画像の位置
+  const [isDragging, setIsDragging] = useState(false)       // ドラッグ中？
+  const [dragStart, setDragStart] = useState({ x: 0, y: 0 }) // ドラッグ開始位置
+
   const handleZoomToggle = () => {
-    setIsZoomed((prev) => !prev)
+    if (isZoomed) {
+      // ズームアウト時は位置もリセット
+      setIsZoomed(false)
+      setPosition({ x: 0, y: 0 })
+    } else {
+      setIsZoomed(true)
+    }
   }
 
-  
-  
+
+
   const handleContentClick = (e: React.MouseEvent) => {
     if (e.target === e.currentTarget) {
       setOpen((prev) => !prev)
@@ -34,6 +46,35 @@ const ProductImeges = ({ thumbnail, images }: Props) => {
     }
   }
 
+
+  const handleMouseDown = (e: React.MouseEvent) => {
+    if (isZoomed) {
+      e.stopPropagation()
+      setIsDragging(true)
+      setDragStart({
+        x: e.clientX - position.x,
+        y: e.clientY - position.y,
+      })
+    }
+  }
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (isDragging && isZoomed) {
+      setPosition({
+        x: e.clientX - dragStart.x,
+        y: e.clientY - dragStart.y,
+      })
+    }
+  }
+
+  const handleMouseLeave = () => {
+    setIsDragging(false)
+  }
+
+
+  const handleMouseUp = () => {
+    setIsDragging(false)
+  }
 
 
   return (
@@ -46,6 +87,7 @@ const ProductImeges = ({ thumbnail, images }: Props) => {
             <CarouselItem key="thumbnail">
               <div className="flex justify-center ">
                 <DialogTrigger asChild>
+
                   <img
                     src={`https:${thumbnail.fields.file?.url}`}
                     alt=""
@@ -85,7 +127,7 @@ const ProductImeges = ({ thumbnail, images }: Props) => {
 
 
 
-        <DialogContent className="max-w-[100vw] max-h-[100vh] p-2 bg-black bg-opacity-20 " >
+        <DialogContent className="max-w-[100vw] max-h-[100vh] p-2 bg-black bg-opacity-20">
 
           <div className="grid grid-cols-1 sm:grid-cols-3 items-center" onClick={handleContentClick}>
 
@@ -95,27 +137,61 @@ const ProductImeges = ({ thumbnail, images }: Props) => {
               </button>
             </div>
 
-            <Carousel>
-              <CarouselContent>
+            <Carousel className={` duration-500 ${isZoomed && "scale-[2.2]"}`}>
+              <CarouselContent >
                 {dialogSlideIndex < 0 ? (
                   <CarouselItem key="thumbnail">
-                    <div className={`flex justify-center  items-center min-h-[95vh] ${isZoomed && "scale-150"}`} onClick={handleZoomToggle}>
+                    <div className="flex justify-center  items-center min-h-[95vh]" onClick={handleZoomToggle}
+                      onMouseDown={handleMouseDown}
+                      onMouseMove={handleMouseMove}
+                      onMouseUp={handleMouseUp}
+                      onMouseLeave={handleMouseLeave}
+                    >
+
                       <img
                         src={`https:${thumbnail.fields.file?.url}`}
                         alt=""
-                        className={`h-[90vh] max-w-full object-cover   ${isZoomed ? "cursor-zoom-out" : "cursor-zoom-in"}`}
+                        className={`h-[90vh] max-w-full object-cover  transition-transform 
+                          ${isZoomed ? (isDragging ? "cursor-grabbing" : "cursor-grab") : "cursor-zoom-in"
+                          }
+                         `
+                        }
+
+                        style={isZoomed ? {
+                          transform: `scale(2.7) translate(${position.x / 2.7}px, ${position.y / 2.7}px)`,
+                          transition: isDragging ? 'none' : 'transform 0.5s'
+                        } : undefined}
+
+
+
                       />
+
                     </div>
                   </CarouselItem>
                 ) : (
                   <CarouselItem key={dialogSlideIndex}>
-                   <div className={`flex justify-center  items-center min-h-[95vh] ${isZoomed && "scale-150"}`} onClick={handleZoomToggle}>
+                    <div className="flex justify-center  items-center min-h-[95vh]" onClick={handleZoomToggle}
+                      onMouseDown={handleMouseDown}
+                      onMouseMove={handleMouseMove}
+                      onMouseUp={handleMouseUp}
+                      onMouseLeave={handleMouseLeave}>
                       {images[dialogSlideIndex]?.fields.file?.url && (
                         <img
                           src={`https:${images[dialogSlideIndex].fields.file.url}`}
                           alt=""
-                           className={`h-[90vh] max-w-full object-cover   ${isZoomed ? "cursor-zoom-out" : "cursor-zoom-in"}`}
+                          className={`h-[90vh] max-w-full object-cover   ${isZoomed ? (isDragging ? "cursor-grabbing" : "cursor-grab") : "cursor-zoom-in"
+                          }`}
+
+
+                          style={isZoomed ? {
+                            transform: `scale(2.7) translate(${position.x / 2.7}px, ${position.y / 2.7}px)`,
+                            transition: isDragging ? 'none' : 'transform 0.5s'
+                          } : undefined}
+
+
                         />
+
+
                       )}
                     </div>
                   </CarouselItem>
@@ -129,7 +205,7 @@ const ProductImeges = ({ thumbnail, images }: Props) => {
               </button>
 
             </div>
-            
+
           </div>
         </DialogContent>
       </Dialog>
