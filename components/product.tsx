@@ -17,7 +17,7 @@ const Product = ({ cloth }: { cloth: any }) => {
   }, [supabase]);
 
   return (
-    <div className="flex flex-col h-full max-w-sm mx-auto sm:max-w-none sm:mx-0 p-3 sm:p-4">
+    <div className="flex flex-col h-full max-w-sm mx-auto sm:max-w-none sm:mx-0 p-1 sm:p-4">
 
       <Link href={`/product/${cloth.sys.id}`}>
 
@@ -26,7 +26,7 @@ const Product = ({ cloth }: { cloth: any }) => {
             src={`${cloth.fields.thumbnail.fields.file.url}?fm=webp&w=800&h=1200&fit=thumb`}
             alt=""
             loading="lazy"
-            className="w-full aspect-[3/5] sm:aspect-[2/3] object-cover transition-transform duration-300 hover:scale-105"
+            className="w-full aspect-[3/5.5] sm:aspect-[2/3] object-cover transition-transform duration-300 hover:scale-105"
           />
         </div>
       </Link>
