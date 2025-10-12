@@ -135,7 +135,7 @@ const ProductImeges = ({ thumbnail, images }: Props) => {
 
 
 
-        <DialogContent className="max-w-[100vw] max-h-[100vh] p-2 bg-black bg-opacity-20">
+        <DialogContent className="max-w-[100vw] max-h-[100dvh] p-2 bg-black bg-opacity-20">
 
           <div className="grid grid-cols-1 sm:grid-cols-3 items-center" onClick={handleContentClick}>
 
@@ -149,7 +149,7 @@ const ProductImeges = ({ thumbnail, images }: Props) => {
               <CarouselContent >
                 {dialogSlideIndex < 0 ? (
                   <CarouselItem key="thumbnail">
-                    <div className="flex justify-center  items-center min-h-[95vh]"
+                    <div className="flex justify-center  items-center min-h-[95dvh]"
                       onClick={isTouchDevice? undefined: handleZoomToggle}
                       onMouseDown={handleMouseDown}
                       onMouseMove={handleMouseMove}
@@ -160,7 +160,7 @@ const ProductImeges = ({ thumbnail, images }: Props) => {
                       <img
                         src={`https:${thumbnail.fields.file?.url}`}
                         alt=""
-                        className={`h-[95vh] sm:h-[90vh] max-w-full object-cover transition-transform 
+                        className={`h-[95dvh] sm:h-[90dvh] max-w-full object-cover transition-transform 
                           ${isZoomed ? (isDragging ? "cursor-grabbing" : "cursor-grab") : "cursor-zoom-in"
                           }
                          `
@@ -179,7 +179,7 @@ const ProductImeges = ({ thumbnail, images }: Props) => {
                   </CarouselItem>
                 ) : (
                   <CarouselItem key={dialogSlideIndex}>
-                    <div className="flex justify-center  items-center min-h-[95vh]" onClick={handleZoomToggle}
+                    <div className="flex justify-center  items-center min-h-[95dvh]" onClick={handleZoomToggle}
                       onMouseDown={handleMouseDown}
                       onMouseMove={handleMouseMove}
                       onMouseUp={handleMouseUp}
@@ -188,7 +188,7 @@ const ProductImeges = ({ thumbnail, images }: Props) => {
                         <img
                           src={`https:${images[dialogSlideIndex].fields.file.url}`}
                           alt=""
-                          className={`h-[95vh] sm:h-[90vh] max-w-full object-cover   ${isZoomed ? (isDragging ? "cursor-grabbing" : "cursor-grab") : "cursor-zoom-in"
+                          className={`h-[95dvh] sm:h-[90dvh] max-w-full object-cover   ${isZoomed ? (isDragging ? "cursor-grabbing" : "cursor-grab") : "cursor-zoom-in"
                             }`}
 
 
