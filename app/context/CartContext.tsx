@@ -71,11 +71,11 @@ export const CartProvider = (props: Props) => {
 
 
   const removeItem = (id: string) => {
-    if (window.confirm("Do you want to remove this item?")) {
+    
       setItems((prev) => {
         return prev.filter((i) => i !== id)
       })
-    }
+    
   }
 
 

@@ -91,7 +91,7 @@ export default function AuthButton({ data, userData }: any) {
 
       <form action={signOutAction}>
 
-        <Link href={`account/${userData.id}`}>
+        <Link href={`/account/${userData.id}`}>
           <UserRoundCheck />
         </Link>
       </form>
