@@ -25,7 +25,7 @@ const ProductsGrid = ({ items }: ProductsGridProps) => {
 ) : (
   <section className="mx-auto max-w-6xl px-3 md:px-6">
     <header className="mb-5 md:mb-7 flex items-end justify-between">
-      <h2 className="text-xl md:text-2xl px-10 ">
+      <h2 className="text-xl md:text-2xl px-3 sm:px-10 ">
         NEW ARRIVALS
          <span className="ml-2 text-xs md:text-sm text-gray-500">新着</span>
       </h2>
