@@ -43,7 +43,7 @@ const Cart = () => {
       {cartItems.length > 0 ? (
         <CartContent cartItems={cartItems} userData={userData} />
       ) : products.length > 0 ? (
-        <CartContent items={products} removeItems={removeItem} />
+        <CartContent items={products} removeItem={removeItem} />
       ) : (
         <NoCartContent />
       )}

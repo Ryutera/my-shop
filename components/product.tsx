@@ -21,7 +21,7 @@ const Product = ({ cloth }: { cloth: any }) => {
 
       <Link href={`/product/${cloth.sys.id}`}>
 
-        <div className="overflow-hidden rounded-t-lg mx-2 mb-2 shadow-lg transition-transform duration-300 hover:shadow-2xl cursor-pointer">
+        <div className="overflow-hidden  mx-2 mb-2 shadow-lg transition-transform duration-300 hover:shadow-2xl cursor-pointer">
           <img
             src={`${cloth.fields.thumbnail.fields.file.url}?fm=webp&w=800&h=1200&fit=thumb`}
             alt=""
@@ -31,7 +31,7 @@ const Product = ({ cloth }: { cloth: any }) => {
         </div>
       </Link>
 
-      <div className="mt-4 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 sm:gap-0 px-1">
+      <div className="mt-4 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 sm:gap-0 px-1 text-sm sm:text-base">
         <p>{cloth.fields.name}</p>
         <div className="flex flex-row gap-2">
           {cloth.fields.isSoldOut ? <p>Sold Out</p> : <p><Exchange

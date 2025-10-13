@@ -1,3 +1,6 @@
+
+
+
 "use client";
 import {
   Table,
@@ -19,6 +22,8 @@ import NoCartContent from "./NoCartContent";
 import { useCart } from "@/app/context/CartContext";
 import Exchange from "./Exchange";
 import CurrencyContext from "@/app/context/CurrencyContext";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "./ui/alert-dialog";
+
 
 interface Product {
   sys: any;
@@ -32,13 +37,13 @@ interface Product {
 interface ContentProps {
   cartItems?: Product[];
   items?: any[];
-  removeItems?: (id: string) => void;
+  removeItem?: (id: string) => void;
   userData?: any;
 }
 
 const CartContent = (props: ContentProps) => {
   const router = useRouter();
-  const { cartItems, items, removeItems, userData } = props;
+  const { cartItems, items, removeItem, userData } = props;
   const [localCartItems, setLocalCartItems] = useState<Product[]>(
     cartItems || []
   );
@@ -64,7 +69,7 @@ const CartContent = (props: ContentProps) => {
         products: products,
         currency: currency,
       });
-      console.log(data.data,"でた");
+
       router.push(data.data.url);
     } catch (error) {
       console.error("Payment error:", error);
@@ -73,20 +78,20 @@ const CartContent = (props: ContentProps) => {
 
   const handleRemoveItem = async (product: Product) => {
     if (isLoggedIn) {
-     // When logged in: Remove from the database
-// Requires userId and csmID
-      if (window.confirm("Do you want to remove this item?")) {
-        await removeCartItemFromDB(userData.identities[0].id, product.id);
-        setLocalCartItems((prev) =>
-          prev.filter((item) => item.id !== product.id)
-        );
-        refreshCart();
-      }
+      //      When logged in: Remove from the database
+      // Requires userId and csmID
 
-      console.log(product);
+      await removeCartItemFromDB(userData.identities[0].id, product.id);
+      setLocalCartItems((prev) =>
+        prev.filter((item) => item.id !== product.id)
+      );
+      refreshCart();
+
+
+
     } else {
       // Not logged in: Remove item from local state
-      removeItems?.(product.id);
+      removeItem?.(product.id);
     }
   };
 
@@ -99,7 +104,7 @@ const CartContent = (props: ContentProps) => {
     } else {
       return (acc += curr.priceGbp);
     }
-  },0 || 0);
+  }, 0 || 0);
 
 
 
@@ -145,14 +150,37 @@ const CartContent = (props: ContentProps) => {
                   />
                 </TableCell>
                 <TableCell className="py-5 px-6">
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className="h-8 w-8 p-0 hover:bg-gray-100 text-gray-400 hover:text-gray-600"
-                    onClick={() => handleRemoveItem(product)}
-                  >
-                    <Trash2 className="h-5 w-5" />
-                  </Button>
+
+
+
+
+                  <AlertDialog>
+                    {/* ネストされた <button> は HTML 的に無効 */}
+                    <AlertDialogTrigger asChild>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="h-8 w-8 p-0 hover:bg-gray-100 text-gray-400 hover:text-gray-600"
+                      >
+                        <Trash2 className="h-5 w-5" />
+                      </Button>
+                    </AlertDialogTrigger>
+                    <AlertDialogContent>
+                      <AlertDialogHeader>
+                       <AlertDialogTitle>Remove this item from your cart?</AlertDialogTitle>
+<AlertDialogDescription>
+  This item will be removed from your cart.（このアイテムはカートから削除されます）
+</AlertDialogDescription>
+                      </AlertDialogHeader>
+                      <AlertDialogFooter>
+                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                        <AlertDialogAction onClick={() => handleRemoveItem(product)}>Continue</AlertDialogAction>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialog>
+
+
+
                 </TableCell>
               </TableRow>
             ))}
@@ -164,7 +192,7 @@ const CartContent = (props: ContentProps) => {
               </TableCell>
               <TableCell className="font-semibold text-gray-900 text-lg py-5 px-6"></TableCell>
               <TableCell className="font-bold text-gray-900 text-lg py-5 px-6">{
-              currency==="JPY" ? `¥${totalAmount.toLocaleString('JP')}` :    currency==="EUR"  ? `€${totalAmount.toLocaleString('DE')}` :   `£${totalAmount.toLocaleString('GB')}` 
+                currency === "JPY" ? `¥${totalAmount.toLocaleString('JP')}` : currency === "EUR" ? `€${totalAmount.toLocaleString('DE')}` : `£${totalAmount.toLocaleString('GB')}`
               }
 
               </TableCell>
@@ -189,3 +217,4 @@ const CartContent = (props: ContentProps) => {
 };
 
 export default CartContent;
+
