@@ -14,6 +14,8 @@ const Cart = () => {
   const [cartItems, setCartItems] = useState<any[]>([]);
   const [userData, setUserData] = useState<any>(null);
 
+
+
   useEffect(() => {
     const fetchProducts = async () => {
       const supabase = createClient();
@@ -37,9 +39,11 @@ const Cart = () => {
     fetchProducts();
   }, [items]);
 
+
+
   // Different data to be passed to cartContent depending on login status, display NocartContent when cart is 0
   return (
-    <div className="max-w-3xl mx-auto p-6 md:p-10">
+    <div className="w-full mx-auto max-w-5xl lg:max-w-6xl xl:max-w-7xl p-6 md:p-10">
       {cartItems.length > 0 ? (
         <CartContent cartItems={cartItems} userData={userData} />
       ) : products.length > 0 ? (

@@ -23,6 +23,7 @@ import { useCart } from "@/app/context/CartContext";
 import Exchange from "./Exchange";
 import CurrencyContext from "@/app/context/CurrencyContext";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "./ui/alert-dialog";
+import Product from "./product";
 
 
 interface Product {
@@ -32,6 +33,7 @@ interface Product {
   priceGbp: number;
   priceJpy: number;
   priceEur: number;
+  thumbnail: any;
 }
 
 interface ContentProps {
@@ -112,17 +114,21 @@ const CartContent = (props: ContentProps) => {
     return <NoCartContent />;
   }
 
+
+
+
+
   return (
     <div className="flex flex-col w-full gap-6">
       <div className="mb-8 flex items-center justify-between">
         <h2 className="text-2xl font-semibold text-gray-900">Your Cart</h2>
         <div className="text-lg text-gray-500">{products.length} items</div>
       </div>
-      <div className="border border-gray-200 rounded-xl overflow-hidden bg-white shadow">
+      <div className="border border-gray-200 rounded-xl overflow-hidden bg-white shadow lg:p-10">
         <Table>
           <TableHeader>
             <TableRow className="border-b border-gray-200">
-              <TableHead className="font-semibold text-gray-900 text-lg py-5 px-6 text-left">
+              <TableHead className="font-semibold text-gray-900 text-lg py-5  lg:pl-12 text-left ">
                 Product
               </TableHead>
               <TableHead className="w-18"></TableHead>
@@ -139,7 +145,19 @@ const CartContent = (props: ContentProps) => {
                 className="border-b border-gray-100 last:border-b-0"
               >
                 <TableCell className="text-gray-900 text-lg py-5 px-6 hover:text-blue-500">
-                  <Link href={`/product/${product.id}`}>{product.name}</Link>
+
+
+                  <div className="flex md:flex-row  flex-col  items-center gap-8">
+
+                    <img
+                      src={`${product.thumbnail.fields.file.url}?fm=webp&w=800&h=1200&fit=thumb`}
+                      alt=""
+                      loading="lazy"
+                      className="md:w-[20%] md:h-[20%]  object-cover border border-gray-200 flex-shrink-0 transition-transform duration-200 group-hover:scale-[1.03]"
+                    />
+                    <Link href={`/product/${product.id}`}><p className="text-center text-sm md:text-lg">{product.name}</p></Link>
+                  </div>
+
                 </TableCell>
                 <TableCell className="text-gray-900 text-lg py-5 px-6"></TableCell>
                 <TableCell className="text-gray-900 text-lg py-5 px-6">
@@ -167,10 +185,10 @@ const CartContent = (props: ContentProps) => {
                     </AlertDialogTrigger>
                     <AlertDialogContent>
                       <AlertDialogHeader>
-                       <AlertDialogTitle>Remove this item from your cart?</AlertDialogTitle>
-<AlertDialogDescription>
-  This item will be removed from your cart.（このアイテムはカートから削除されます）
-</AlertDialogDescription>
+                        <AlertDialogTitle>Remove this item from your cart?</AlertDialogTitle>
+                        <AlertDialogDescription>
+                          This item will be removed from your cart.（このアイテムはカートから削除されます）
+                        </AlertDialogDescription>
                       </AlertDialogHeader>
                       <AlertDialogFooter>
                         <AlertDialogCancel>Cancel</AlertDialogCancel>
@@ -187,13 +205,17 @@ const CartContent = (props: ContentProps) => {
           </TableBody>
           <TableFooter>
             <TableRow className="bg-gray-50 border-t border-gray-200">
-              <TableCell className="font-semibold text-gray-900 text-lg py-5 px-6">
+              <TableCell className="font-semibold text-gray-900 text-lg py-5 lg:pl-14">
                 Total
               </TableCell>
               <TableCell className="font-semibold text-gray-900 text-lg py-5 px-6"></TableCell>
-              <TableCell className="font-bold text-gray-900 text-lg py-5 px-6">{
+              <TableCell className="font-bold text-gray-900 text-lg py-5 px-6">
+                
+                   {
                 currency === "JPY" ? `¥${totalAmount.toLocaleString('JP')}` : currency === "EUR" ? `€${totalAmount.toLocaleString('DE')}` : `£${totalAmount.toLocaleString('GB')}`
               }
+                 
+               
 
               </TableCell>
               <TableCell className="py-5 px-6"></TableCell>
@@ -202,7 +224,7 @@ const CartContent = (props: ContentProps) => {
         </Table>
       </div>
 
-      <div className="flex justify-end">
+      <div className="flex justify-end mt-10">
         <Button
           size="lg"
           onClick={getPayment}

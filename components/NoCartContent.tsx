@@ -15,9 +15,13 @@ const NoCartContent = () => {
         </div>
         <h3 className="text-xl font-medium text-gray-900">
           Your cart is empty
+          <div className="text-sm text-gray-500 mt-1">カートに商品がありません</div>
         </h3>
         <p className="text-gray-500 text-base">
           Add some products to your cart to see them here.
+            {/* <div className="text-sm text-gray-400 mt-1">
+            カートに商品を追加すると、ここに表示されます。
+          </div> */}
         </p>
       </div>
     </div>
