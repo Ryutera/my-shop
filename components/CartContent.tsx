@@ -1,122 +1,103 @@
-
-
-
-"use client";
+"use client"
+import { Table, TableBody, TableCell, TableFooter, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+import { Button } from "@/components/ui/button"
+import Link from "next/link"
+import { Trash2 } from "lucide-react"
+import { useRouter } from "next/navigation"
+import axios from "axios"
+import { useContext, useEffect, useState } from "react"
+import { removeCartItemFromDB } from "@/app/actions"
+import NoCartContent from "./NoCartContent"
+import { useCart } from "@/app/context/CartContext"
+import Exchange from "./Exchange"
+import CurrencyContext from "@/app/context/CurrencyContext"
 import {
-  Table,
-  TableBody,
-  TableCell,
-  TableFooter,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
-import { Trash2 } from "lucide-react";
-import { useRouter } from "next/navigation";
-import axios from "axios";
-import { useContext, useEffect, useState } from "react";
-import { removeCartItemFromDB } from "@/app/actions";
-import NoCartContent from "./NoCartContent";
-import { useCart } from "@/app/context/CartContext";
-import Exchange from "./Exchange";
-import CurrencyContext from "@/app/context/CurrencyContext";
-import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "./ui/alert-dialog";
-import Product from "./product";
-
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "./ui/alert-dialog"
+import CartContentForMobile from "./CartContentForMobile"
 
 interface Product {
-  sys: any;
-  id: string;
-  name: string;
-  priceGbp: number;
-  priceJpy: number;
-  priceEur: number;
-  thumbnail: any;
+  sys: any
+  id: string
+  name: string
+  priceGbp: number
+  priceJpy: number
+  priceEur: number
+  thumbnail: any
 }
 
 interface ContentProps {
-  cartItems?: Product[];
-  items?: any[];
-  removeItem?: (id: string) => void;
-  userData?: any;
+  cartItems?: Product[]
+  items?: any[]
+  removeItem?: (id: string) => void
+  userData?: any
 }
 
 const CartContent = (props: ContentProps) => {
-  const router = useRouter();
-  const { cartItems, items, removeItem, userData } = props;
-  const [localCartItems, setLocalCartItems] = useState<Product[]>(
-    cartItems || []
-  );
-  const { refreshCart } = useCart();
-  const context = useContext(CurrencyContext);
+  const router = useRouter()
+  const { cartItems, items, removeItem, userData } = props
+  const [localCartItems, setLocalCartItems] = useState<Product[]>(cartItems || [])
+  const { refreshCart } = useCart() // Use the imported useCart hook
+  const context = useContext(CurrencyContext)
 
-  const currency = context?.currency;
+  const currency = context?.currency
 
   useEffect(() => {
     if (cartItems) {
-      setLocalCartItems(cartItems);
+      setLocalCartItems(cartItems)
     }
-  }, [cartItems]);
+  }, [cartItems])
 
   // ログイン状態を判定　!!はbooleanに変換するもの
-  const isLoggedIn = !!cartItems;
+  const isLoggedIn = !!cartItems
 
-  const products = isLoggedIn ? localCartItems : items;
+  const products = isLoggedIn ? localCartItems : items
 
   const getPayment = async () => {
     try {
       const data = await axios.post("/api/checkout_sessions/", {
         products: products,
         currency: currency,
-      });
+      })
 
-      router.push(data.data.url);
+      router.push(data.data.url)
     } catch (error) {
-      console.error("Payment error:", error);
+      console.error("Payment error:", error)
     }
-  };
+  }
 
   const handleRemoveItem = async (product: Product) => {
     if (isLoggedIn) {
-      //      When logged in: Remove from the database
-      // Requires userId and csmID
-
-      await removeCartItemFromDB(userData.identities[0].id, product.id);
-      setLocalCartItems((prev) =>
-        prev.filter((item) => item.id !== product.id)
-      );
-      refreshCart();
-
-
-
+      await removeCartItemFromDB(userData.identities[0].id, product.id)
+      setLocalCartItems((prev) => prev.filter((item) => item.id !== product.id))
+      refreshCart()
     } else {
-      // Not logged in: Remove item from local state
-      removeItem?.(product.id);
+      removeItem?.(product.id)
     }
-  };
+  }
 
   const totalAmount = products?.reduce((acc: number, curr: Product) => {
     if (currency === "JPY") {
-      return (acc += curr.priceJpy);
+      return (acc += curr.priceJpy)
     }
     if (currency === "EUR") {
-      return (acc += curr.priceEur);
+      return (acc += curr.priceEur)
     } else {
-      return (acc += curr.priceGbp);
+      return (acc += curr.priceGbp)
     }
-  }, 0 || 0);
-
-
+  }, 0 || 0)
 
   if (!products || products.length === 0) {
-    return <NoCartContent />;
+    return <NoCartContent />
   }
-
-
-
-
 
   return (
     <div className="flex flex-col w-full gap-6">
@@ -124,56 +105,43 @@ const CartContent = (props: ContentProps) => {
         <h2 className="text-2xl font-semibold text-gray-900">Your Cart</h2>
         <div className="text-lg text-gray-500">{products.length} items</div>
       </div>
-      <div className="border border-gray-200 rounded-xl overflow-hidden bg-white shadow lg:p-10">
+
+
+{/* モバイル表示用 */}
+      <CartContentForMobile products={products} currency={currency} totalAmount={totalAmount} handleRemoveItem={handleRemoveItem}/>
+
+      <div className="hidden md:block border border-gray-200 rounded-xl overflow-hidden bg-white shadow lg:p-10">
         <Table>
           <TableHeader>
             <TableRow className="border-b border-gray-200">
-              <TableHead className="font-semibold text-gray-900 text-lg py-5  lg:pl-12 text-left ">
-                Product
-              </TableHead>
+              <TableHead className="font-semibold text-gray-900 text-lg py-5 lg:pl-12 text-left">Product</TableHead>
               <TableHead className="w-18"></TableHead>
-              <TableHead className="font-semibold text-gray-900 text-lg py-5 px-6 text-left">
-                Price
-              </TableHead>
+              <TableHead className="font-semibold text-gray-900 text-lg py-5 px-6 text-left">Price</TableHead>
               <TableHead className="w-16 py-5 px-6"></TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {products.map((product: Product, index: number) => (
-              <TableRow
-                key={product.id || index}
-                className="border-b border-gray-100 last:border-b-0"
-              >
+              <TableRow key={product.id || index} className="border-b border-gray-100 last:border-b-0">
                 <TableCell className="text-gray-900 text-lg py-5 px-6 hover:text-blue-500">
-
-
-                  <div className="flex md:flex-row  flex-col  items-center gap-8">
-
+                  <div className="flex items-center gap-8">
                     <img
                       src={`${product.thumbnail.fields.file.url}?fm=webp&w=800&h=1200&fit=thumb`}
-                      alt=""
+                      alt={product.name}
                       loading="lazy"
-                      className="md:w-[20%] md:h-[20%]  object-cover border border-gray-200 flex-shrink-0 transition-transform duration-200 group-hover:scale-[1.03]"
+                      className="w-[15%] h-[15%] object-cover border border-gray-200 flex-shrink-0 transition-transform duration-200 hover:scale-[1.03]"
                     />
-                    <Link href={`/product/${product.id}`}><p className="text-center text-sm md:text-lg">{product.name}</p></Link>
+                    <Link href={`/product/${product.id}`}>
+                      <p className="text-lg">{product.name}</p>
+                    </Link>
                   </div>
-
                 </TableCell>
                 <TableCell className="text-gray-900 text-lg py-5 px-6"></TableCell>
                 <TableCell className="text-gray-900 text-lg py-5 px-6">
-                  <Exchange
-                    priceEur={product?.priceEur}
-                    priceJpy={product?.priceJpy}
-                    priceGbp={product?.priceGbp}
-                  />
+                  <Exchange priceEur={product?.priceEur} priceJpy={product?.priceJpy} priceGbp={product?.priceGbp} />
                 </TableCell>
                 <TableCell className="py-5 px-6">
-
-
-
-
                   <AlertDialog>
-                    {/* ネストされた <button> は HTML 的に無効 */}
                     <AlertDialogTrigger asChild>
                       <Button
                         variant="ghost"
@@ -196,27 +164,20 @@ const CartContent = (props: ContentProps) => {
                       </AlertDialogFooter>
                     </AlertDialogContent>
                   </AlertDialog>
-
-
-
                 </TableCell>
               </TableRow>
             ))}
           </TableBody>
           <TableFooter>
             <TableRow className="bg-gray-50 border-t border-gray-200">
-              <TableCell className="font-semibold text-gray-900 text-lg py-5 lg:pl-14">
-                Total
-              </TableCell>
+              <TableCell className="font-semibold text-gray-900 text-lg py-5 lg:pl-14">Total</TableCell>
               <TableCell className="font-semibold text-gray-900 text-lg py-5 px-6"></TableCell>
               <TableCell className="font-bold text-gray-900 text-lg py-5 px-6">
-                
-                   {
-                currency === "JPY" ? `¥${totalAmount.toLocaleString('JP')}` : currency === "EUR" ? `€${totalAmount.toLocaleString('DE')}` : `£${totalAmount.toLocaleString('GB')}`
-              }
-                 
-               
-
+                {currency === "JPY"
+                  ? `¥${totalAmount.toLocaleString("JP")}`
+                  : currency === "EUR"
+                    ? `€${totalAmount.toLocaleString("DE")}`
+                    : `£${totalAmount.toLocaleString("GB")}`}
               </TableCell>
               <TableCell className="py-5 px-6"></TableCell>
             </TableRow>
@@ -235,8 +196,7 @@ const CartContent = (props: ContentProps) => {
         </Button>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default CartContent;
-
+export default CartContent
