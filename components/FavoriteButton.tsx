@@ -13,21 +13,28 @@ interface Props{
 const FavoriteButton = (props:Props) => {
     const {id,data} = props
    const {favorite,addFavorite } =useCart()
-   const [isFavorited, setIsFavorited] = useState<any>(null);
+  
 
 
-   useEffect(()=>{
-    const getFavoriteItemFromDatabase = async(id:string) =>{
-        const favoriteItem = await  isFavoriteInDatabase(id,data)
-        setIsFavorited(favoriteItem)
-    }
-    getFavoriteItemFromDatabase(id)
-   },[data])
+
+
+//    useEffect(()=>{
+//     const getFavoriteItemFromDatabase = async(id:string) =>{
+//         const favoriteItem = await  isFavoriteInDatabase(id,data)
+
+       
+//        if (favoriteItem) {
+//            addFavorite(favoriteItem?.cmsItemId)
+//         }
+       
+//     }
+//     getFavoriteItemFromDatabase(id)
+//    },[])
 
   return (
     <div className="hover:cursor-pointer" onClick={()=>addFavorite(id)}>
         {/* ログイン時にはデータベースの情報に基づいて色を変更する */}
-  <Heart   color={isFavorited? "red" :  favorite.find((f)=>f===id) ? "red" : "gray"}  />
+  <Heart   color={ favorite.find((f)=>f===id) ? "red" : "gray" }  />
   </div>
   )
 }

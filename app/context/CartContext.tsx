@@ -2,7 +2,7 @@
 
 import { createContext, type ReactNode, useContext, useEffect, useState } from "react"
 
-import { addFavoriteToDb, removeFavoriteFromDb } from "../actions"
+import { addFavoriteToDb, getFavoriteWithUserId, isFavoriteInDatabase, removeFavoriteFromDb } from "../actions"
 
 type CartContextType = {
   items: string[] // Cart items (product IDs)
@@ -10,6 +10,7 @@ type CartContextType = {
   cartVersion: number // Version number to trigger cart updates
   addItem: (id: string) => void
   removeItem: (id: string) => void
+
   clearCart: () => void
   addFavorite: (id: string) => void
   refreshCart: () => void
@@ -29,6 +30,27 @@ export const CartProvider = (props: Props) => {
   const [favorite, setFavorite] = useState<string[]>([])
   // Cart version to trigger useEffect in other components when cart changes
   const [cartVersion, setCartVersion] = useState(0)
+
+
+
+//ログイン時にfavoriteItemsをfavoriteに登録する
+useEffect(()=>{
+    const getFavoriteItemFromDatabase = async(id:string) =>{
+        const favoriteItem = await  getFavoriteWithUserId(id)
+
+             
+       if (favoriteItem) {
+           
+           const favoriteIds = favoriteItem.map(item => item.cmsItemId)
+
+           setFavorite(favoriteIds) 
+        }
+       
+    }
+    getFavoriteItemFromDatabase(userData.id)
+   },[])
+
+
 
   // Load data from localStorage on initial load (non-logged-in users only)
   useEffect(() => {
@@ -88,6 +110,9 @@ export const CartProvider = (props: Props) => {
       setFavorite(filteredFavoritelist)
       if (userData) {
         await removeFavoriteFromDb(id) // Also remove from database if logged in
+
+         const filteredFavoritelist = favorite.filter((f) => f !== id)
+      setFavorite(filteredFavoritelist)
       }
     } else {
       // Add to favorites
@@ -111,9 +136,10 @@ export const CartProvider = (props: Props) => {
     setCartVersion((prev) => prev + 1)
   }
 
+
   return (
     <CartContext.Provider
-      value={{ items, addItem, removeItem, clearCart, favorite, addFavorite, refreshCart, cartVersion }}
+      value={{ items, addItem, removeItem, clearCart, favorite,addFavorite, refreshCart, cartVersion }}
     >
       {children}
     </CartContext.Provider>
