@@ -37,7 +37,10 @@ const FavoritePage = () => {
   }, [favorite]);
 
 //Render only when products are loaded to avoid undefined errors
-  return !!products && <FavoriteContent products={products} />;
+  return !!products && 
+     <div className="w-full mx-auto max-w-5xl lg:max-w-6xl xl:max-w-7xl p-6 md:p-10">
+  <FavoriteContent products={products} />
+  </div>;
 };
 
 export default FavoritePage;

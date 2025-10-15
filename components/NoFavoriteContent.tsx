@@ -4,7 +4,7 @@ import React from "react";
 const NoFavoriteContent = () => {
   return (
     <>
-     <div className="mb-8 flex items-center justify-between">
+     <div className="mb-8 flex items-center justify-between flex-col md:flex-row">
         <h2 className="text-2xl font-semibold text-gray-900">Your Favorite Items</h2>
         <div className="text-lg text-gray-500">0 items</div>
         </div>
@@ -15,6 +15,7 @@ const NoFavoriteContent = () => {
         </div>
         <h3 className="text-xl font-medium text-gray-900">
           There is no favorite items
+           <div className="text-sm text-gray-500 mt-1">お気に入りのアイテムが登録されていません</div>
         </h3>
         <p className="text-gray-500 text-base">
           Add some products to your favorite lists to see them here.

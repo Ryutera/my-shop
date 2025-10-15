@@ -26,6 +26,8 @@ const AddToWishList = (props:Props) => {
     getFavoriteItemFromDatabase(id)
    },[])
 
+
+
    
 
   return (
