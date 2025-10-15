@@ -87,7 +87,7 @@ export default async function  ProductPage ({ params }:ProductPageProps) {
             ) : (
               <div className="space-y-3">
                 <AddToCart productData={productData} id={id} userData={data} />
-                <AddToWishList id={id} userData={data} />
+                <AddToWishList id={id}  />
               </div>
             )}
 

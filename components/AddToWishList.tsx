@@ -7,29 +7,14 @@ import { isFavoriteInDatabase } from '@/app/actions'
 
 interface Props{
     id:string
-    userData: any
 }
 
 const AddToWishList = (props:Props) => {
-    const {id,userData} = props
+    const {id} = props
     const {favorite,addFavorite} = useCart()
   
    
-  //  FavoriteButtonでデータベースの情報を元にfavoriteの値を変更するロジックが走っている。これを走らせると多分同じidが重複して登録することで逆に外れてしまう。しかし顧客が何かしらの理由でurlを登録していて直接この/[id]のページに遷移した場合はデータベース情報の参照が行われない？
-  //  useEffect(()=>{
-  //   const getFavoriteItemFromDatabase = async(id:string) =>{
-  //       const favoriteItem = await  isFavoriteInDatabase(id,userData)
-  //       if (favoriteItem) {
-  //          addFavorite(favoriteItem?.cmsItemId)
-  //       }
-       
-  //   }
-  //   getFavoriteItemFromDatabase(id)
-  //  },[])
 
-
-
-   
 
   return (
     <Button

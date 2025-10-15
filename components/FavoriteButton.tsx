@@ -1,35 +1,19 @@
 "use client"
-import { isFavoriteInDatabase } from '@/app/actions'
+
 import { useCart } from '@/app/context/CartContext'
 import { Heart } from 'lucide-react'
-import { useEffect, useState } from 'react'
 
 interface Props{
     id:string
-    data:any
+   
 }
 
 
 const FavoriteButton = (props:Props) => {
-    const {id,data} = props
+    const {id} = props
    const {favorite,addFavorite } =useCart()
   
 
-
-
-
-//    useEffect(()=>{
-//     const getFavoriteItemFromDatabase = async(id:string) =>{
-//         const favoriteItem = await  isFavoriteInDatabase(id,data)
-
-       
-//        if (favoriteItem) {
-//            addFavorite(favoriteItem?.cmsItemId)
-//         }
-       
-//     }
-//     getFavoriteItemFromDatabase(id)
-//    },[])
 
   return (
     <div className="hover:cursor-pointer" onClick={()=>addFavorite(id)}>

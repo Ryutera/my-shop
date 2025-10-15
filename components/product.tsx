@@ -40,7 +40,7 @@ const Product = ({ cloth }: { cloth: any }) => {
             priceGbp={cloth.fields.priceGbp} /></p>}
 
 
-          <FavoriteButton id={cloth.sys.id} data={userData} />
+          <FavoriteButton id={cloth.sys.id} />
 
         </div>
 
