@@ -367,3 +367,12 @@ export async function getPurchaseItemsIndb(userId: string) {
 
   return items
 }
+
+
+
+export  async function submitInquiry (formData:FormData){
+
+  const name = formData.get("name")
+  console.log(name,"name")
+
+}
