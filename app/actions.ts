@@ -7,6 +7,7 @@ import { redirect } from "next/navigation"
 import prisma from "@/lib/prisma"
 import { contentfulClient, contentfulManagementClient } from "@/lib/contentful"
 import type { ProductFields, ProductFieldsSkeleton } from "@/lib/types"
+import { Resend } from "resend"
 
 
 export const signUpAction = async (formData: FormData) => {
@@ -373,6 +374,30 @@ export async function getPurchaseItemsIndb(userId: string) {
 export  async function submitInquiry (formData:FormData){
 
   const name = formData.get("name")
-  console.log(name,"name")
+  const phone = formData.get("phone")
+  const email = formData.get("email")
+  const subject = formData.get("subject")
+  const inquiry = formData.get("inquiry")
+  
+  console.log(name, phone, subject, inquiry)
+
+
+  const resend = new Resend(process.env.RESEND_API_KEY);
+
+await resend.emails.send({
+  //ここをemailにする必要があるが任意のメールアドレスから受け取るにはドメインをresendに登録する必要がある。
+  from: 'yourname@resend.dev',
+  to: 'kuya9823@gmail.com',
+  subject: subject as string,
+  html: `
+  <div>
+  <p>名前:${name}</p>
+  <p>電話番号:${phone || "なし"}</p>
+  問い合わせ内容: ${inquiry}
+  </div>
+  `
+});
+
+console.log("done")
 
 }
