@@ -47,7 +47,7 @@ useEffect(()=>{
         }
        
     }
-    getFavoriteItemFromDatabase(userData.id)
+    getFavoriteItemFromDatabase(userData?.id)
    },[])
 
 
