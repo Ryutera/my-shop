@@ -374,12 +374,11 @@ export async function getPurchaseItemsIndb(userId: string) {
 export  async function submitInquiry (formData:FormData){
 
   const name = formData.get("name")
-  const phone = formData.get("phone")
   const email = formData.get("email")
+  const phone = formData.get("phone")
   const subject = formData.get("subject")
   const inquiry = formData.get("inquiry")
-  
-  console.log(name, phone, subject, inquiry)
+
 
 
   const resend = new Resend(process.env.RESEND_API_KEY);
