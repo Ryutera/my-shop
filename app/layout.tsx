@@ -47,6 +47,8 @@ export default async function RootLayout({
     userData = await getUserWithId(data.identities[0].id);
 
   }
+  
+ 
 
   return (
     <html lang="en" className={publicSans.className} suppressHydrationWarning>
@@ -55,7 +57,7 @@ export default async function RootLayout({
         <SearchProvider>
         <CartProvider userData={data}>
           
-          <SidebarProvider>
+          <SidebarProvider >
             <AppSidebar />
             <SidebarInset>
               <ThemeProvider

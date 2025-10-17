@@ -1,3 +1,4 @@
+"use client"
 import { Home, Heart, ShoppingCart, History, Shirt, Watch, Gem } from "lucide-react"
 
 import {
@@ -9,7 +10,13 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  useSidebar,
+
+
 } from "@/components/ui/sidebar"
+import Link from "next/link"
+import { useRouter } from "next/navigation"
+
 
 // Main menu items
 const mainItems = [
@@ -27,20 +34,30 @@ const categoryItems = [
 ]
 
 export function AppSidebar() {
+  const {
+
+    toggleSidebar
+
+  } = useSidebar()
+
+
+
+
   return (
-    <Sidebar>
-      <SidebarContent>    
+    <Sidebar >
+      <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel  className="mt-10">Main Menu</SidebarGroupLabel>
+          <SidebarGroupLabel className="mt-10">Main Menu</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {mainItems.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
-                    <a href={item.url}>
+                    {/* <a>タグのリンクはページを再読み込みしてstateの値などをリセットしてしまう */}
+                    <Link href={item.url} onClick={() => toggleSidebar()}>
                       <item.icon />
                       <span>{item.title}</span>
-                    </a>
+                    </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}

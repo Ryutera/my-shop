@@ -12,8 +12,9 @@ const FavoritePage = () => {
 
   useEffect(() => {
     const fetchFavoriteData = async () => {
-      const supabase = await createClient();
+      const supabase = createClient();
       const { data } = await supabase.auth.getUserIdentities();
+
 
       if (data) {
         // Logged-in user: Get favorites from database
@@ -27,7 +28,8 @@ const FavoritePage = () => {
         setProducts(results);
       } else {
         const results = await Promise.all(favorite.map((id) => getProduct(id)));
-        console.log(results.filter(Boolean), "results");
+        console.log(results,"results")
+       ;
         setProducts(results);
       }
     };
