@@ -33,6 +33,21 @@ export default async function SuccessPage({ searchParams }: Props) {
     const totalAmount = session.amount_total || 0
     const billingAddress = session.customer_details?.address
 
+
+    const formatPrice = (amount: number, currency: string) => {
+  switch (currency.toLowerCase()) {
+    case "jpy":
+      return `${amount.toLocaleString("ja-JP")} JPY`
+    case "eur":
+    case "gbp":
+      return `${(amount / 100).toFixed(2)} ${currency.toUpperCase()}`
+    default:
+      return `${amount} ${currency.toUpperCase()}`
+  }
+}
+
+
+
     return (
       <div className="min-h-screen bg-gray-50 py-6 sm:py-12 px-3 sm:px-4">
         <div className="container mx-auto max-w-2xl">
@@ -62,8 +77,10 @@ export default async function SuccessPage({ searchParams }: Props) {
                     <div className="flex-1">
                       <p className="font-medium text-sm sm:text-base break-words">{item.name}</p>
                     </div>
+
                     <Badge variant="secondary" className="self-start sm:self-auto text-xs sm:text-sm">
-                      {(item.amount / 100).toFixed(2)} {item?.currency?.toUpperCase()}
+                     <span>{formatPrice(item.amount, item.currency!)}</span>
+
                     </Badge>
                   </div>
                 ))}
@@ -71,7 +88,7 @@ export default async function SuccessPage({ searchParams }: Props) {
                 <div className="flex justify-between items-center font-semibold text-base sm:text-lg">
                   <span>Total</span>
                   <span>
-                    {(totalAmount / 100).toFixed(2)} {items[0].currency?.toUpperCase()}
+                   {formatPrice(totalAmount, items[0].currency!)}
                   </span>
                 </div>
               </div>

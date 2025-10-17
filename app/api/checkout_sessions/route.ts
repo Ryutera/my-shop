@@ -31,7 +31,7 @@ export async function POST(req: Request) {
       line_items: products.map((product: Product) => {
         const price =
           currency === "jpy"
-            ? product.priceJpy 
+            ? product.priceJpy  
             : currency === "eur"
             ? product.priceEur * 100
             : product.priceGbp * 100;
