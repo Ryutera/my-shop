@@ -13,12 +13,12 @@ const Cart = () => {
   const [products, setProducts] = useState<ProductFields[]>([]);
   const [cartItems, setCartItems] = useState<any[]>([]);
   const [userData, setUserData] = useState<any>(null);
-  const [isLoading , setIsloading] = useState(false)
+
 
 
   useEffect(() => {
     const fetchProducts = async () => {
-      setIsloading(true)
+     
 
       const supabase = createClient();
       const { data } = await supabase.auth.getUserIdentities();
@@ -37,7 +37,7 @@ const Cart = () => {
         setCartItems(Items);
       }
 
-      setIsloading(false)
+      
     };
 
     fetchProducts();
@@ -50,14 +50,7 @@ const Cart = () => {
   // Different data to be passed to cartContent depending on login status, display NocartContent when cart is 0
   return (
   <div className="w-full mx-auto max-w-5xl lg:max-w-6xl xl:max-w-7xl p-6 md:p-10">
-    {isLoading ? (
-      // 🌀 ローディング中
-      <div className="flex flex-col items-center justify-center h-[60vh] text-gray-500">
-        
-        <div className="animate-spin rounded-full h-10 w-10 border-t-4 border-gray-300 mb-3"></div>
-        <p>Loading your cart...</p>
-      </div>
-    ) : cartItems.length > 0 ? (
+    {cartItems.length > 0 ? (
       <CartContent cartItems={cartItems} userData={userData} />
     ) : products.length > 0 ? (
       <CartContent items={products} removeItem={removeItem} />
