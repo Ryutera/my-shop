@@ -90,7 +90,7 @@ export default async function SuccessPage({ searchParams }: Props) {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
                 <div className="space-y-3">
                   <div>
-                    <p className="text-gray-500 text-xs sm:text-sm">Payment Method</p>
+                    <p className="text-gray-500 text-xs sm:text-sm">Payment Method/支払い方法</p>
                     <p className="font-medium text-sm sm:text-base">{session.payment_method_types?.[0] || "Card"}</p>
                   </div>
                   {session.customer_details?.email && (

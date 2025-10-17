@@ -12,13 +12,15 @@ const PurchaseHistory = async () => {
   const supabase = await createClient();
   const { data } = await supabase.auth.getUserIdentities();
   let orders:Order[]
+  
   if (data) {
     orders = await getPurchaseItemsIndb(data.identities[0].id);
-   
+  
   } else {
     return <div>You need to login to see purchase histry</div>;
   }
 
+ 
   return (
     <div className="w-full p-6">
       <h1 className="text-3xl font-bold mb-8">Purchase History</h1>
@@ -28,7 +30,7 @@ const PurchaseHistory = async () => {
           <div className="flex justify-between items-center mb-4">
             <div>
               <p className="text-gray-500 text-lg mb-3">{new Date(order.createdAt).toLocaleDateString()}</p>
-              <p className="text-2xl"> £{order.total / 100}</p>
+              <p className="text-2xl"> {order.total} {(order.items as OrderItem[])[0].currency}</p>
             </div>
            
           </div>
@@ -40,7 +42,7 @@ const PurchaseHistory = async () => {
                 className="flex justify-between items-center py-2 border-b border-gray-100 last:border-b-0"
               >
                 <span className="text-lg text-gray-800">{item.name}</span>
-                <span className="text-lg font-semibold">£{item.price}</span>
+                <span className="text-lg font-semibold">{item.price} {item.currency}</span>
               </div>
             ))}
           </div>

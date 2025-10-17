@@ -2,8 +2,6 @@
 import { signOutAction } from "@/app/actions";
 import { hasEnvVars } from "@/utils/supabase/check-env-vars";
 import Link from "next/link";
-import { Badge } from "./ui/badge";
-import { Button } from "./ui/button";
 import ShoppingCartIcon from "./ShoppingCartIcon";
 import { useContext, useEffect, useState } from "react";
 import CurrencyContext from "@/app/context/CurrencyContext";
@@ -91,7 +89,7 @@ export default function AuthButton({ data, userData }: any) {
 
       <form action={signOutAction}>
 
-        <Link href={`/account/${userData.id}`}>
+        <Link href={`${userData ??"/account/${userData.id" }}`}>
           <UserRoundCheck />
         </Link>
       </form>

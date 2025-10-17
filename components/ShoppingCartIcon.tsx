@@ -40,7 +40,7 @@ searchCartItems ()
        // cartItems.length が 0 より大きい場合にのみ表示
        cartItems.length > 0 && (
          <span className="absolute -top-1.5 -right-1.5 
-                        bg-red-500 text-white 
+                        bg-red-400 text-white 
                         text-xs font-semibold 
                         px-1.5 py-0.5
                         rounded-full 
@@ -56,7 +56,7 @@ searchCartItems ()
       // 未ログインユーザー（ローカルストレージなど）の場合
       items.length > 0 && (
         <span className="absolute -top-1.5 -right-1.5 
-                       bg-red-500 text-white 
+                       bg-red-400 text-white 
                        text-xs font-semibold 
                        px-1.5 py-0.5 
                        rounded-full 
