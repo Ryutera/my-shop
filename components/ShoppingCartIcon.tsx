@@ -30,24 +30,46 @@ searchCartItems ()
   },[cartVersion,userId,items])
 
   return (
-    <div className="relative inline-block hover:scale-110 transition-transform duration-200 cursor-pointer">
-        <Link href="/cart">
-        
+   <div className="relative inline-block hover:scale-110 transition-transform duration-200 cursor-pointer">
+    <Link href="/cart">
       <ShoppingCart className="w-6 h-6 text-gray-700" />
-      
-      </Link>
-      
-      { userId?
-       <span className="absolute -top-2 -right-2 bg-red-400 text-white text-xs font-bold px-2 py-0.5 rounded-full">
-       {cartItems.length > 0 ? cartItems.length:0 }
-     </span>
-      :  
+    </Link>
+    
+    {/* ログインユーザーの場合 */}
+    {userId ? (
+       // cartItems.length が 0 より大きい場合にのみ表示
+       cartItems.length > 0 && (
+         <span className="absolute -top-1.5 -right-1.5 
+                        bg-red-500 text-white 
+                        text-xs font-semibold 
+                        px-1.5 py-0.5
+                        rounded-full 
+                        border border-white 
+                        min-w-[18px] h-[18px] flex items-center justify-center 
+                        leading-none 
+                        shadow-sm 
+                        ">
+           {cartItems.length}
+         </span>
+       )
+    ) : (
+      // 未ログインユーザー（ローカルストレージなど）の場合
       items.length > 0 && (
-        <span className="absolute -top-2 -right-2 bg-red-400 text-white text-xs font-bold px-2 py-0.5 rounded-full">
+        <span className="absolute -top-1.5 -right-1.5 
+                       bg-red-500 text-white 
+                       text-xs font-semibold 
+                       px-1.5 py-0.5 
+                       rounded-full 
+                       border border-white 
+                       min-w-[18px] h-[18px] flex items-center justify-center 
+                       leading-none 
+                       shadow-sm
+                       ">
           {items.length}
         </span>
-      )}
-    </div>
+      )
+    )}
+</div>
   )
 }
 
