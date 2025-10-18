@@ -32,20 +32,21 @@ const ProductsGrid = ({ items, label }: ProductsGridProps) => {
   </div>
 ) : (
   <section className="mx-auto max-w-6xl px-3 md:px-6">
-    <header className="mb-12 md:mb-10 flex items-end justify-between">
-      <h2 className="text-xl md:text-2xl px-3 sm:px-10 ">
-        {label === "NEW ARRIVALS" ? (
-          <>
-            {label}
-            <span className="ml-2 text-xs md:text-sm text-gray-500">新着</span>
-          </>
-        ) : (
-          label.toUpperCase()
-        )}
-      </h2>
+    <header className="mb-8 md:mb-10">
+  <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-2 sm:gap-4">
+    <h2 className="px-1 sm:px-10 text-lg sm:text-2xl leading-tight tracking-[0.01em] text-center">
+      <span className="uppercase ">{label}</span>
+      {label === "NEW ARRIVALS" && (
+        <span className="ml-1.5 sm:ml-2 text-[11px] sm:text-sm text-gray-500 align-baseline block md:inline pt-2 md:pt-0">
+          新着
+        </span>
+      )}
+    </h2>
 
-      <div className="ml-4 h-px flex-1 bg-gradient-to-r from-gray-300/70 to-transparent" />
-    </header>
+    {/* 区切り線はモバイルでは非表示、横幅を圧迫しない */}
+    <div className="hidden sm:block ml-4 h-px flex-1 bg-gradient-to-r from-gray-300/70 to-transparent" />
+  </div>
+</header>
 
     <div
       className="grid grid-cols-2 lg:grid-cols-3 gap-2 md:gap-6 mt-10"
