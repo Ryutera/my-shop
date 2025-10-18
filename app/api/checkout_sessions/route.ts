@@ -33,8 +33,8 @@ export async function POST(req: Request) {
           currency === "jpy"
             ? product.priceJpy  
             : currency === "eur"
-            ? product.priceEur * 100
-            : product.priceGbp * 100;
+            ? (product.priceEur * 100)
+            : (product.priceGbp * 100);
 
         return {
           price_data: {
@@ -62,7 +62,7 @@ export async function POST(req: Request) {
           ? p.priceJpy
           : currency === "eur"
           ? p.priceEur
-          : p.priceGbp,
+          : p.priceGbp ,
       currency: currency.toUpperCase()
           }))
         ),

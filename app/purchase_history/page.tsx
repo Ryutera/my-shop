@@ -22,6 +22,8 @@ const PurchaseHistory = async () => {
 
 
   const formatPrice = (price:number, currency:string) =>{
+
+   
 switch (currency) {
   case "JPY":
     
@@ -39,6 +41,33 @@ switch (currency) {
   }
 
 
+
+  const formatTotalPrice = (price:number, currency:string) =>{
+
+   
+switch (currency) {
+  case "JPY":
+    
+    return `${price.toLocaleString('JP')}` ;
+
+     case "EUR":
+    
+    return `${price / 100}`;
+     case "GBP":
+    
+    return `${price  / 100}`
+
+}
+
+  }
+
+
+
+  
+
+
+
+
   return (
     <div className="w-full p-6">
       <h1 className="text-3xl font-bold mb-8">Purchase History</h1>
@@ -48,7 +77,7 @@ switch (currency) {
           <div className="flex justify-between items-center mb-4">
             <div>
               <p className="text-gray-500 text-lg mb-3">{new Date(order.createdAt).toLocaleDateString()}</p>
-              <p className="text-2xl"> {formatPrice(order.total,(order.items as OrderItem[])[0].currency )} {(order.items as OrderItem[])[0].currency}</p>
+              <p className="text-2xl"> {formatTotalPrice(order.total,(order.items as OrderItem[])[0].currency )} {(order.items as OrderItem[])[0].currency}</p>
             </div>
 
           </div>
@@ -61,6 +90,7 @@ switch (currency) {
               >
                 <span className="text-lg text-gray-800">{item.name}</span>
                 <span className="text-lg font-semibold">
+                  
 {formatPrice(item.price, item.currency)} 
 
                   &nbsp;
