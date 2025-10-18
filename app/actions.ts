@@ -191,6 +191,10 @@ export async function markProductAsSold(id: string) {
 
     return updatedEntry
   } catch (error) {
+
+  
+
+
     console.error("Failed to mark product as sold:", error)
     throw error
   }

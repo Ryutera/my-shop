@@ -9,7 +9,7 @@ export async function POST(req: Request) {
   const body = await req.text(); 
   const sig = req.headers.get("stripe-signature")!;
   const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET!;
-console.log("webhook")
+
   let event;
 
   try {
@@ -21,22 +21,22 @@ console.log("webhook")
 
   console.log("event.type:", event.type);
 
+
+
   if (event.type === "checkout.session.completed") {
     const session = event.data.object as any;
 
     const userId = session.metadata.user_id;
     
     const items = JSON.parse(session.metadata.products)
-
-    console.log("items:", items)
-
+   
 
     if (userId) {
         await prisma.order.create({
             data: {
               userId,
               items,
-              total: session.amount_total,
+              total: session.amount_total  ,
               status: "completed",
             },
           });
@@ -47,8 +47,13 @@ console.log("webhook")
             }
           })
 
+
+          
+
         
     }
+
+   
     await Promise.all(items.map(async(item:any)=> markProductAsSold(item.id)))
     
    
