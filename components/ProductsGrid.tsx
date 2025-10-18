@@ -20,7 +20,7 @@ const ProductsGrid = ({ items }: ProductsGridProps) => {
     <>
 {filteredItems.length === 0 ? (
   <div className="flex justify-center items-center w-full min-h-[50vh]">
-    <NoResults word={searchedWord} />
+    <NoResults  />
   </div>
 ) : (
   <section className="mx-auto max-w-6xl px-3 md:px-6">

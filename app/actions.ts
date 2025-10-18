@@ -173,6 +173,16 @@ export async function getProduct(id: string): Promise<Product> {
   }
 }
 
+export async function getProductsByCategory(category: string) {
+  const entries = await contentfulClient.getEntries<ProductFieldsSkeleton>({
+    content_type: "clothes",     
+      "fields.category": category,
+      order: "-sys.createdAt",  
+  } as any)
+
+  return entries.items
+}
+
 
 export async function markProductAsSold(id: string) {
   try {
