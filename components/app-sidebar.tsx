@@ -140,7 +140,8 @@ export function AppSidebar() {
                           <Link
                             href={url}
                             aria-current={active ? "page" : undefined}
-                            onClick={closeIfMobile}
+                             onClick={() => toggleSidebar()}
+                            
                           >
                             <span className="truncate">{item.title}</span>
                           </Link>
@@ -175,7 +176,7 @@ export function AppSidebar() {
                       <Link
                         href={it.url}
                         aria-current={active ? "page" : undefined}
-                        onClick={closeIfMobile}
+                         onClick={() => toggleSidebar()}
                       >
                         <span className="truncate text-gray-500">{it.title}</span>
                       </Link>

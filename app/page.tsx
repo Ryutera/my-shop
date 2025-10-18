@@ -17,7 +17,7 @@ export default async function Home() {
   return (
     <>
    
-<ProductsGrid items={clothes ?? []} />
+<ProductsGrid items={clothes ?? []} label={"NEW ARRIVALS"}/>
 
     </>
   );

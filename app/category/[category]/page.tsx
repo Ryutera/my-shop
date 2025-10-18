@@ -10,7 +10,7 @@ const page = async({params}:{params:Promise<{category:string}>}) => {
     }
   return (
     <div>
-     <ProductsGrid items={ItemsByCategory ?? []} />
+     <ProductsGrid items={ItemsByCategory ?? []} label={category} />
     </div>
   )
 }
