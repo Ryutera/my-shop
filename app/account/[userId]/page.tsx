@@ -1,17 +1,114 @@
-import { signOutAction } from '@/app/actions'
-import React from 'react'
+import { createClient } from "@/utils/supabase/server";
+import React from "react";
+
+import { Order } from "@/lib/generated/prisma";
+import { OrderItem } from "@/lib/types";
+import { getPurchaseItemsIndb } from "@/app/actions";
 
 
-const page = async() => {
+
+
+
+const page = async () => {
+  const supabase = await createClient();
+  const { data } = await supabase.auth.getUserIdentities();
+  let orders: Order[]
+
+  if (data) {
+    orders = await getPurchaseItemsIndb(data.identities[0].id);
+
+  } else {
+    return ;
+  }
+
+
+  const formatPrice = (price:number, currency:string) =>{
+
+   
+switch (currency) {
+  case "JPY":
     
-  return (
-    <div>
-      This page is not available at the moment
-      <div>
-        <button className='bg-gray-200 p-1 rounded mt-10' onClick={signOutAction}>Logout</button>
-      </div>
-    </div>
-  )
+    return `${price.toLocaleString('JP')}` ;
+
+     case "EUR":
+    
+    return `${price.toLocaleString('DE')}`;
+     case "GBP":
+    
+    return `${price.toLocaleString('GB')}`
+
 }
 
-export default page
+  }
+
+
+
+  const formatTotalPrice = (price:number, currency:string) =>{
+
+   
+switch (currency) {
+  case "JPY":
+    
+    return `${price.toLocaleString('JP')}` ;
+
+     case "EUR":
+    
+    return `${price / 100}`;
+     case "GBP":
+    
+    return `${price  / 100}`
+
+}
+
+  }
+
+
+
+  
+
+
+
+
+  return (
+    <div className="w-full p-6">
+      <h1 className="text-3xl font-bold mb-8">Purchase History</h1>
+
+      { 
+      orders.length ? orders.map((order: Order) => (
+        <div key={order.id} className="w-full bg-white border border-gray-200 rounded-lg p-6 mb-6 shadow-sm">
+          <div className="flex justify-between items-center mb-4">
+            <div>
+              <p className="text-gray-500 text-lg mb-3">{new Date(order.createdAt).toLocaleDateString()}</p>
+              <p className="text-2xl"> {formatTotalPrice(order.total,(order.items as OrderItem[])[0].currency )} {(order.items as OrderItem[])[0].currency}</p>
+            </div>
+
+          </div>
+
+          <div className="space-y-3">
+            {(order.items as OrderItem[]).map((item: OrderItem, index: number) => (
+              <div
+                key={index}
+                className="flex justify-between items-center py-2 border-b border-gray-100 last:border-b-0"
+              >
+                <span className="text-lg text-gray-800">{item.name}</span>
+                <span className="text-lg font-semibold">
+                  
+{formatPrice(item.price, item.currency)} 
+
+                  &nbsp;
+
+                  {item.currency}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )) : <div>Theis not purchase history</div>
+     
+
+      }
+    </div>
+
+  );
+};
+
+export default page;
