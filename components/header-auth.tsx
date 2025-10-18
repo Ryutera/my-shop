@@ -90,7 +90,7 @@ export default function AuthButton({ data, userData }: any) {
       <form action={signOutAction}>
 
 {/* signup時に一瞬userdata.idがnullになるためそれを回避 */}
-        <Link href={`${userData ??"/account/${userData.id" }}`}>
+       <Link href={userData ? `/account/${userData.id}`:"/"}>
           <UserRoundCheck />
         </Link>
       </form>

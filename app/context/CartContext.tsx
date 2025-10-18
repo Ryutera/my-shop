@@ -32,7 +32,6 @@ export const CartProvider = (props: Props) => {
   const [cartVersion, setCartVersion] = useState(0)
 
 
-  console.log(favorite,"favorite")
 
 
 //ログイン時にfavoriteItemsをfavoriteに登録する
