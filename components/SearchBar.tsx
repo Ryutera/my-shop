@@ -6,6 +6,12 @@ import React, { useContext} from 'react'
 
 const SearchBar = () => {
     const context = useContext(SearchContext)
+    const { setSearchedWord } = useContext(SearchContext)
+
+    const handleClose = () => {
+        context.onClickSearch()
+        setSearchedWord("")
+    }
    
     return (
         context.isClicked &&
@@ -19,7 +25,7 @@ const SearchBar = () => {
             onChange={(e:any)=>context.setSearchedWord(e.target.value)}
             value={context.searchedWord}
           />
-          <button onClick={context.onClickSearch}>
+          <button onClick={handleClose} >
             <X />
           </button>
         </div>
