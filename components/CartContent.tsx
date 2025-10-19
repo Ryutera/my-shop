@@ -35,36 +35,33 @@ interface Product {
 }
 
 interface ContentProps {
-  cartItems?: Product[]
-  items?: any[]
+  cartItems?: any
   removeItem?: (id: string) => void
-  userData?: any
+ 
 }
 
 const CartContent = (props: ContentProps) => {
   const router = useRouter()
-  const { cartItems, items, removeItem, userData } = props
-  const [localCartItems, setLocalCartItems] = useState<Product[]>(cartItems || [])
-  const { refreshCart } = useCart() // Use the imported useCart hook
+  const { cartItems,} = props
+  const { refreshCart,userId,removeItem } = useCart() // Use the imported useCart hook
   const context = useContext(CurrencyContext)
 
   const currency = context?.currency
 
-  useEffect(() => {
-    if (cartItems) {
-      setLocalCartItems(cartItems)
-    }
-  }, [cartItems])
 
-  // ログイン状態を判定　!!はbooleanに変換するもの
-  const isLoggedIn = !!cartItems
+useEffect(()=>{},[cartItems])
 
-  const products = isLoggedIn ? localCartItems : items
+
+
+
+ 
+
+
 
   const getPayment = async () => {
     try {
       const data = await axios.post("/api/checkout_sessions/", {
-        products: products,
+        products: cartItems,
         currency: currency,
       })
 
@@ -75,16 +72,18 @@ const CartContent = (props: ContentProps) => {
   }
 
   const handleRemoveItem = async (product: Product) => {
-    if (isLoggedIn) {
-      await removeCartItemFromDB(userData.identities[0].id, product.id)
-      setLocalCartItems((prev) => prev.filter((item) => item.id !== product.id))
+    if (userId) {
+      await removeCartItemFromDB(userId, product.id)
+     
       refreshCart()
     } else {
       removeItem?.(product.id)
     }
   }
 
-  const totalAmount = products?.reduce((acc: number, curr: Product) => {
+
+  
+  const totalAmount = cartItems?.reduce((acc: number, curr: Product) => {
     if (currency === "JPY") {
       return (acc += curr.priceJpy)
     }
@@ -95,7 +94,7 @@ const CartContent = (props: ContentProps) => {
     }
   }, 0 || 0)
 
-  if (!products || products.length === 0) {
+  if (!cartItems || cartItems.length === 0) {
     return <NoCartContent />
   }
 
@@ -103,13 +102,13 @@ const CartContent = (props: ContentProps) => {
     <div className="flex flex-col w-full gap-6">
       <div className="mb-8 flex items-center justify-between">
         <h2 className="text-2xl font-semibold text-gray-900">Your Cart</h2>
-        <div className="text-lg text-gray-500">{products.length} items</div>
+        <div className="text-lg text-gray-500">{cartItems.length} items</div>
       </div>
 
 
 {/* モバイル表示用 */}
-      <CartContentForMobile products={products} currency={currency} totalAmount={totalAmount} handleRemoveItem={handleRemoveItem}/>
-
+      <CartContentForMobile products={cartItems} currency={currency} totalAmount={totalAmount as number} handleRemoveItem={handleRemoveItem}/>
+{/* PC表示用 */}
       <div className="hidden md:block border border-gray-200 rounded-xl overflow-hidden bg-white shadow lg:p-10">
         <Table>
           <TableHeader>
@@ -121,7 +120,7 @@ const CartContent = (props: ContentProps) => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {products.map((product: Product, index: number) => (
+            {cartItems.map((product: Product, index: number) => (
               <TableRow key={product.id || index} className="border-b border-gray-100 last:border-b-0">
                 <TableCell className="text-gray-900 text-lg py-5 px-6 hover:text-blue-500">
                   <div className="flex items-center gap-8">
@@ -174,10 +173,10 @@ const CartContent = (props: ContentProps) => {
               <TableCell className="font-semibold text-gray-900 text-lg py-5 px-6"></TableCell>
               <TableCell className="font-bold text-gray-900 text-lg py-5 px-6">
                 {currency === "JPY"
-                  ? `¥${totalAmount.toLocaleString("JP")}`
+                  ? `¥${totalAmount?.toLocaleString("JP")}`
                   : currency === "EUR"
-                    ? `€${totalAmount.toLocaleString("DE")}`
-                    : `£${totalAmount.toLocaleString("GB")}`}
+                    ? `€${totalAmount?.toLocaleString("DE")}`
+                    : `£${totalAmount?.toLocaleString("GB")}`}
               </TableCell>
               <TableCell className="py-5 px-6"></TableCell>
             </TableRow>
@@ -190,7 +189,7 @@ const CartContent = (props: ContentProps) => {
           size="lg"
           onClick={getPayment}
           className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 text-lg font-semibold"
-          disabled={!products || products.length === 0}
+          disabled={!cartItems || cartItems.length === 0}
         >
           Go to Payment
         </Button>

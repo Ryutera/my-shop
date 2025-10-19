@@ -10,6 +10,7 @@ type CartContextType = {
   favorite: string[] // Favorite items (product IDs)
   cartVersion: number // Version number to trigger cart updates
   cartItems: any[] | ProductFields[]
+  userId:string | null
 
 
   addItem: (id: string) => void
@@ -42,10 +43,7 @@ export const CartProvider = (props: Props) => {
   const [cartVersion, setCartVersion] = useState(0)
   const [cartItems, setCartItems] = useState<any[]>([]);
 
-
-  console.log(cartItemsId, "カート")
-
-  const userId = userData.identities[0].id
+  const userId = userData?.identities[0].id 
 
 
 
@@ -191,9 +189,24 @@ export const CartProvider = (props: Props) => {
     }
   }
 
+
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+
+      getCartItems()
+
+
+    };
+
+    fetchProducts();
+  }, [cartItemsId]);
+
+  
+
   return (
     <CartContext.Provider
-      value={{ cartItemsId, addItem, removeItem, clearCart, favorite, addFavorite, refreshCart, checkIfItemInDatabase, getCartItems, cartVersion, cartItems  }}
+      value={{ cartItemsId, addItem, removeItem, clearCart, favorite, addFavorite, refreshCart, checkIfItemInDatabase, getCartItems, cartVersion, cartItems, userId  }}
     >
       {children}
     </CartContext.Provider>

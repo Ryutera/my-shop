@@ -10,11 +10,12 @@ import SearchContext from "@/app/context/SearchContext";
 
 
 
+
 export default function AuthButton({ data, userData }: any) {
 
   const currencycontext = useContext(CurrencyContext)
   const searchcontext = useContext(SearchContext)
-
+  
 
 
 
@@ -89,7 +90,7 @@ export default function AuthButton({ data, userData }: any) {
       <Heart className="w-6 h-6 text-gray-700" />
     </Link>
 
-      <ShoppingCartIcon userData={userData} />
+      <ShoppingCartIcon  />
 
     
 
