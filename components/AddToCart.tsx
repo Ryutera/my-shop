@@ -18,7 +18,7 @@ const AddToCart = (props: AddToCartProps) => {
 
 console.log(existingCartItem,"existingcart")
   
-  const { addItem, items,   checkIfItemInDatabase} = useCart();
+  const { addItem, cartItemsId,   checkIfItemInDatabase} = useCart();
 
   useEffect(() => {
    const  handleDatabasechec = async()=>{
@@ -30,7 +30,7 @@ handleDatabasechec()
 
   }, []);
 
-  const isAdded = items.some((i) => i === id);
+  const isAdded = cartItemsId.some((i) => i === id);
 
   // console.log(items)
   const handleAddToCart  = async (id: string) => {

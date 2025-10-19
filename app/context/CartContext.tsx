@@ -2,12 +2,15 @@
 
 import { createContext, type ReactNode, useContext, useEffect, useState } from "react"
 
-import { addCartToDb, addFavoriteToDb, getFavoriteWithUserId, isCartInDatabase, isFavoriteInDatabase, removeFavoriteFromDb } from "../actions"
+import { addCartToDb, addFavoriteToDb, getCartItemsInDb, getFavoriteWithUserId, getProduct, isCartInDatabase, isFavoriteInDatabase, removeFavoriteFromDb } from "../actions"
+import { ProductFields } from "@/lib/types"
 
 type CartContextType = {
-  items: string[] // Cart items (product IDs)
+  cartItemsId: string[] // Cart items (product IDs)
   favorite: string[] // Favorite items (product IDs)
   cartVersion: number // Version number to trigger cart updates
+  cartItems: any[] | ProductFields[]
+
 
   addItem: (id: string) => void
   removeItem: (id: string) => void
@@ -16,8 +19,9 @@ type CartContextType = {
   addFavorite: (id: string) => void
   refreshCart: () => void
 
-  checkIfItemInDatabase: (id:string) =>void
-  
+  checkIfItemInDatabase: (id: string) => void
+  getCartItems: () => void
+
 }
 
 
@@ -32,34 +36,35 @@ const CartContext = createContext<CartContextType | undefined>(undefined)
 export const CartProvider = (props: Props) => {
   const { children, userData } = props
 
-  const [items, setItems] = useState<string[]>([])
+  const [cartItemsId, setCartItemsId] = useState<string[]>([])
   const [favorite, setFavorite] = useState<string[]>([])
   // Cart version to trigger useEffect in other components when cart changes
   const [cartVersion, setCartVersion] = useState(0)
-
-  
-  console.log(items,"カート")
-
-const userId = userData.identities[0].id
+  const [cartItems, setCartItems] = useState<any[]>([]);
 
 
+  console.log(cartItemsId, "カート")
 
-//ログイン時にfavoriteItemsをfavoriteに登録する
-useEffect(()=>{
-    const getFavoriteItemFromDatabase = async(id:string) =>{
-        const favoriteItem = await  getFavoriteWithUserId(id)
+  const userId = userData.identities[0].id
 
-             
-       if (favoriteItem) {
-           
-           const favoriteIds = favoriteItem.map(item => item.cmsItemId)
 
-           setFavorite(favoriteIds) 
-        }
-       
+
+  //ログイン時にfavoriteItemsをfavoriteに登録する
+  useEffect(() => {
+    const getFavoriteItemFromDatabase = async (id: string) => {
+      const favoriteItem = await getFavoriteWithUserId(id)
+
+
+      if (favoriteItem) {
+
+        const favoriteIds = favoriteItem.map(item => item.cmsItemId)
+
+        setFavorite(favoriteIds)
+      }
+
     }
     getFavoriteItemFromDatabase(userId)
-   },[])
+  }, [])
 
 
 
@@ -68,10 +73,10 @@ useEffect(()=>{
   // Load data from localStorage on initial load (non-logged-in users only)
   useEffect(() => {
     if (!userData) {
-    
+
       const storedItems = localStorage.getItem("cart_items")
       if (storedItems) {
-        setItems(JSON.parse(storedItems))
+        setCartItemsId(JSON.parse(storedItems))
       }
 
       const storedFavs = localStorage.getItem("favorite_items")
@@ -84,9 +89,9 @@ useEffect(()=>{
   // Save cart items to localStorage when items change (non-logged-in users only)
   useEffect(() => {
     if (!userData) {
-      localStorage.setItem("cart_items", JSON.stringify(items))
+      localStorage.setItem("cart_items", JSON.stringify(cartItemsId))
     }
-  }, [items, userData])
+  }, [cartItemsId, userData])
 
   // Save favorite items to localStorage when favorites change (non-logged-in users only)
   useEffect(() => {
@@ -96,25 +101,25 @@ useEffect(()=>{
   }, [favorite, userData])
 
 
-  
-   const checkIfItemInDatabase = async (id:string) => {
+
+  const checkIfItemInDatabase = async (id: string) => {
     if (userData) {
-       const item = await isCartInDatabase(id, userId);
-       console.log(items,"アイテム")
+      const item = await isCartInDatabase(id, userId);
+      
       return item
-    }else{
+    } else {
       return
     }
-     
-    };
 
-  const addItem = async(id: string) => {
-    setItems((prev) => {
+  };
+
+  const addItem = async (id: string) => {
+    setCartItemsId((prev) => {
       const exists = prev.some((i) => i === id)
       if (exists) return prev // Don't add if already exists
       return [...prev, id]
     })
-      if (userData) {
+    if (userData) {
       await addCartToDb(userId, id);
       refreshCart()
     }
@@ -122,11 +127,11 @@ useEffect(()=>{
 
 
   const removeItem = (id: string) => {
-    
-      setItems((prev) => {
-        return prev.filter((i) => i !== id)
-      })
-    
+
+    setCartItemsId((prev) => {
+      return prev.filter((i) => i !== id)
+    })
+
   }
 
 
@@ -140,8 +145,8 @@ useEffect(()=>{
       if (userData) {
         await removeFavoriteFromDb(id) // Also remove from database if logged in
 
-         const filteredFavoritelist = favorite.filter((f) => f !== id)
-      setFavorite(filteredFavoritelist)
+        const filteredFavoritelist = favorite.filter((f) => f !== id)
+        setFavorite(filteredFavoritelist)
       }
     } else {
       // Add to favorites
@@ -154,9 +159,9 @@ useEffect(()=>{
 
   // Clear all cart items
   const clearCart = () => {
-    setItems([])
+    setCartItemsId([])
     if (!userData) {
-      localStorage.removeItem("cart_items") 
+      localStorage.removeItem("cart_items")
     }
   }
 
@@ -166,9 +171,29 @@ useEffect(()=>{
   }
 
 
+
+  const getCartItems = async () => {
+
+
+    // Logged-in users: get items from database
+    if (userData) {
+      const DbItems = await getCartItemsInDb(userId);
+      const Items = await Promise.all(
+        DbItems.map((item) => getProduct(item.cmsItemId))
+      );
+      setCartItems(Items);
+    }else{
+      
+    // Non-logged-in users: get items from context
+    const results = await Promise.all(cartItemsId.map((id) => getProduct(id)));
+    setCartItems(results.filter(Boolean));
+
+    }
+  }
+
   return (
     <CartContext.Provider
-      value={{ items, addItem, removeItem, clearCart, favorite,addFavorite, refreshCart, checkIfItemInDatabase , cartVersion }}
+      value={{ cartItemsId, addItem, removeItem, clearCart, favorite, addFavorite, refreshCart, checkIfItemInDatabase, getCartItems, cartVersion, cartItems  }}
     >
       {children}
     </CartContext.Provider>
