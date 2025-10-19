@@ -2,19 +2,25 @@
 
 import { createContext, type ReactNode, useContext, useEffect, useState } from "react"
 
-import { addFavoriteToDb, getFavoriteWithUserId, isFavoriteInDatabase, removeFavoriteFromDb } from "../actions"
+import { addCartToDb, addFavoriteToDb, getFavoriteWithUserId, isCartInDatabase, isFavoriteInDatabase, removeFavoriteFromDb } from "../actions"
 
 type CartContextType = {
   items: string[] // Cart items (product IDs)
   favorite: string[] // Favorite items (product IDs)
   cartVersion: number // Version number to trigger cart updates
+
   addItem: (id: string) => void
   removeItem: (id: string) => void
 
   clearCart: () => void
   addFavorite: (id: string) => void
   refreshCart: () => void
+
+  checkIfItemInDatabase: (id:string) =>void
+  
 }
+
+
 
 interface Props {
   children: ReactNode
@@ -31,6 +37,10 @@ export const CartProvider = (props: Props) => {
   // Cart version to trigger useEffect in other components when cart changes
   const [cartVersion, setCartVersion] = useState(0)
 
+  
+  console.log(items,"カート")
+
+const userId = userData.identities[0].id
 
 
 
@@ -48,8 +58,10 @@ useEffect(()=>{
         }
        
     }
-    getFavoriteItemFromDatabase(userData?.id)
+    getFavoriteItemFromDatabase(userId)
    },[])
+
+
 
 
 
@@ -84,12 +96,28 @@ useEffect(()=>{
   }, [favorite, userData])
 
 
-  const addItem = (id: string) => {
+  
+   const checkIfItemInDatabase = async (id:string) => {
+    if (userData) {
+       const item = await isCartInDatabase(id, userId);
+       console.log(items,"アイテム")
+      return item
+    }else{
+      return
+    }
+     
+    };
+
+  const addItem = async(id: string) => {
     setItems((prev) => {
       const exists = prev.some((i) => i === id)
       if (exists) return prev // Don't add if already exists
       return [...prev, id]
     })
+      if (userData) {
+      await addCartToDb(userId, id);
+      refreshCart()
+    }
   }
 
 
@@ -140,7 +168,7 @@ useEffect(()=>{
 
   return (
     <CartContext.Provider
-      value={{ items, addItem, removeItem, clearCart, favorite,addFavorite, refreshCart, cartVersion }}
+      value={{ items, addItem, removeItem, clearCart, favorite,addFavorite, refreshCart, checkIfItemInDatabase , cartVersion }}
     >
       {children}
     </CartContext.Provider>

@@ -3,29 +3,31 @@ import React, { useEffect, useState } from "react";
 import { Button } from "./ui/button";
 import { useCart } from "@/app/context/CartContext";
 import { ProductFields } from "@/lib/types";
-import { addCartToDb, isCartInDatabase } from "@/app/actions";
 import Exchange from "./Exchange";
 
 interface AddToCartProps {
   productData: ProductFields;
   id: string;
-  userData: any;
+  
 }
 
 const AddToCart = (props: AddToCartProps) => {
-  const { productData, id, userData } = props;
-  const [existingCartItem, setExistingCartItem] = useState<any>(null);
+  const { productData, id } = props;
 
-  const userId = userData?.identities[0].id;
+    const [existingCartItem, setExistingCartItem] = useState<any>(null);
 
-  const { addItem, items,refreshCart } = useCart();
+console.log(existingCartItem,"existingcart")
+  
+  const { addItem, items,   checkIfItemInDatabase} = useCart();
 
   useEffect(() => {
-    const checkIfItemInDatabase = async () => {
-      const item = await isCartInDatabase(id, userId);
-      setExistingCartItem(item);
-    };
-    checkIfItemInDatabase();
+   const  handleDatabasechec = async()=>{
+const result = await checkIfItemInDatabase(id)
+setExistingCartItem(result);
+   }
+
+handleDatabasechec()
+
   }, []);
 
   const isAdded = items.some((i) => i === id);
@@ -33,10 +35,7 @@ const AddToCart = (props: AddToCartProps) => {
   // console.log(items)
   const handleAddToCart  = async (id: string) => {
     addItem(id);
-    if (userData) {
-      await addCartToDb(userId, id);
-      refreshCart()
-    }
+  
   };
 
 

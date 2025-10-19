@@ -53,7 +53,7 @@ searchCartItems ()
          </span>
        )
     ) : (
-      // 未ログインユーザー（ローカルストレージなど）の場合
+      // 未ログインユーザーの場合
       items.length > 0 && (
         <span className="absolute -top-1.5 -right-1.5 
                        bg-red-400 text-white 

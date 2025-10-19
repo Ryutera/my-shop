@@ -5,7 +5,6 @@ import ProductImeges from "@/components/productImeges";
 import { Badge } from "@/components/ui/badge";
 import AddToCart from "@/components/AddToCart";
 import AddToWishList from "@/components/AddToWishList";
-import { createClient } from "@/utils/supabase/server";
 import Exchange from "@/components/Exchange";
 
 
@@ -17,9 +16,7 @@ interface ProductPageProps {
 export default async function  ProductPage ({ params }:ProductPageProps) {
   const { id } = await params;
   const productData = await getProduct(id);
-  const supabase = await createClient();
-  const { data } = await supabase.auth.getUserIdentities();
-
+ 
   
   if (!productData) {
     console.log("there are no date");
@@ -86,7 +83,7 @@ export default async function  ProductPage ({ params }:ProductPageProps) {
               <br/>
             ) : (
               <div className="space-y-3">
-                <AddToCart productData={productData} id={id} userData={data} />
+                <AddToCart productData={productData} id={id}  />
                 <AddToWishList id={id}  />
               </div>
             )}
