@@ -38,6 +38,7 @@ const categorySlugs = [
 
 const infoItems = [
   { title: "About", url: "/about" },
+  {title:"Contact" , url: "/contact"},
   { title: "Shipping & Delivery", url: "/info/shipping" },
   { title: "Returns / Refunds", url: "/info/returns" },
   { title: "特定商取引法に基づく表記", url: "/legal/tokusho" },
