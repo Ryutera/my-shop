@@ -18,7 +18,7 @@ const FavoriteButton = (props:Props) => {
   return (
     <div className="hover:cursor-pointer" onClick={()=>addFavorite(id)}>
         {/* ログイン時にはデータベースの情報に基づいて色を変更する */}
-  <Heart   color={ favorite.find((f)=>f===id) ? "red" : "gray" }  />
+  <Heart  className='y-4 w-4 md:y-5 md:w-5 ' color={ favorite.find((f)=>f===id) ? "red" : "gray" }  />
   </div>
   )
 }

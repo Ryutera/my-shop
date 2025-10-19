@@ -2,7 +2,7 @@ import DeployButton from "@/components/deploy-button";
 import { EnvVarWarning } from "@/components/env-var-warning";
 import HeaderAuth from "@/components/header-auth";
 import { hasEnvVars } from "@/utils/supabase/check-env-vars";
-import { Public_Sans} from "next/font/google";
+import {  Source_Sans_3, Work_Sans} from "next/font/google";
 import { ThemeProvider } from "next-themes";
 import Link from "next/link";
 import "./globals.css";
@@ -29,11 +29,11 @@ export const metadata = {
   description: "The fastest way to build apps with Next.js and Supabase",
 };
 
-const publicSans =  Public_Sans({
-    display: "swap",
+const sourceSans = Source_Sans_3({
   subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  display: "swap",
 })
-
 export default async function RootLayout({
   children,
 }: Readonly<{
@@ -51,7 +51,7 @@ export default async function RootLayout({
  
 
   return (
-    <html lang="en" className={publicSans.className} suppressHydrationWarning>
+    <html lang="en" className={sourceSans.className} suppressHydrationWarning>
       <body className="bg-background text-foreground">
         <CurrencyProvider>
         <SearchProvider>
