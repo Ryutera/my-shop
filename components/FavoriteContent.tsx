@@ -3,11 +3,12 @@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import Link from "next/link"
 import { Button } from "./ui/button"
-import {ShoppingCartIcon, Trash2 } from "lucide-react"
+import { ShoppingCartIcon, Trash2 } from "lucide-react"
 
 import NoFavoriteContent from "./NoFavoriteContent"
 import Exchange from "./Exchange"
 import { useProductState } from "@/app/context/UserProductStateProvider"
+
 
 
 
@@ -26,7 +27,11 @@ interface FavoriteContentProps {
 }
 
 const FavoriteContent = ({ products }: FavoriteContentProps) => {
-  const { addFavorite,addCartItem} = useProductState()
+  const { addFavorite, addCartItem, cartItems } = useProductState()
+
+
+console.log(cartItems[0].id,"カート")
+const ids = cartItems.map((item:any)=>item.id)
 
   return products.length !== 0 ? (
     <div className="flex flex-col w-full gap-6">
@@ -62,26 +67,40 @@ const FavoriteContent = ({ products }: FavoriteContentProps) => {
                 </div>
               </div>
 
-              {/* 削除ボタン */}
-              <div className="flex-shrink-0">
 
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="h-8 w-8 p-0 hover:bg-gray-100 text-gray-400 hover:text-gray-600"
-                  onClick={() => addFavorite(product.id)}
-                >
-                  <Trash2 className="h-4 w-4" />
-                </Button>
+              <div className="flex flex-col justify-between">
+                <div >
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="h-8 w-8 p-0 hover:bg-gray-100 text-gray-400 hover:text-gray-600"
+                    onClick={() => addCartItem(product.id)}
+                  >
 
+                    <ShoppingCartIcon />
+                  </Button>
+                </div>
+
+                {/* 削除ボタン */}
+                <div >
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="h-8 w-8 p-0 hover:bg-gray-100 text-gray-400 hover:text-gray-600"
+                    onClick={() => addFavorite(product.id)}
+                  >
+                    <Trash2 className="h-3 w-3" />
+                  </Button>
+                </div>
               </div>
+
             </div>
           </div>
         ))}
       </div>
 
 
-
+      {/* PC表示 */}
       <div className="hidden md:block border border-gray-200 rounded-xl overflow-hidden bg-white shadow lg:p-10">
         <Table>
           <TableHeader>
@@ -113,18 +132,17 @@ const FavoriteContent = ({ products }: FavoriteContentProps) => {
                   <Exchange priceEur={product?.priceEur} priceJpy={product?.priceJpy} priceGbp={product?.priceGbp} />
                 </TableCell>
                 <TableCell className="py-5 px-6">
-
-                  <Button
+ <Button
                     variant="ghost"
                     size="sm"
                     className="h-8 w-8 p-0 hover:bg-gray-100 text-gray-400 hover:text-gray-600"
-                   onClick={()=>addCartItem(product.id)}
-                    >
-                      
+                    onClick={ids.includes(product.id) ? ()=>{alert("すでに追加されています。")} :   () => addCartItem(product.id)}
+                  >
+
                     <ShoppingCartIcon />
-                  </Button>
-
-
+                  </Button>  
+                  
+ 
                   <Button
                     variant="ghost"
                     size="sm"
