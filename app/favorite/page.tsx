@@ -19,7 +19,7 @@ const FavoritePage = () => {
           setProducts(results);
         } else {
           const results = await Promise.all(favorite.map((id) => getProductFromContentful(id)));
-          console.log(results, "results")
+    
             ;
           setProducts(results);
         }

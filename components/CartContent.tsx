@@ -5,8 +5,7 @@ import Link from "next/link"
 import { Trash2 } from "lucide-react"
 import { useRouter } from "next/navigation"
 import axios from "axios"
-import { useContext, useEffect, useState } from "react"
-import { removeCartItemFromDB } from "@/app/actions"
+import { useContext,  useState } from "react"
 import NoCartContent from "./NoCartContent"
 
 import Exchange from "./Exchange"
@@ -196,10 +195,10 @@ return (
         <Button
           size="lg"
           onClick={getPayment}
-          className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 text-lg font-semibold"
+          className="bg-black text-white  px-8 py-3 md:px-10 md:py-6 hover:text-gray-600 hover:bg-white hover:border-2 hover:border-black  transition duration-400 "
           disabled={!cartItems || cartItems.length === 0}
         >
-          Go to Payment
+          Checkout
         </Button>
       </div>
     </div>

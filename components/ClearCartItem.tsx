@@ -1,9 +1,10 @@
 "use client"
-import { useCart } from '@/app/context/UserProductStateProvider'
+
+import { useProductState } from '@/app/context/UserProductStateProvider'
 import React, { useEffect } from 'react'
 
 const ClearCartItem = () => {
-const {clearCart} = useCart()
+const {clearCart} = useProductState()
     useEffect(()=>{
 clearCart()
     },[])

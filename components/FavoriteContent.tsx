@@ -29,8 +29,6 @@ interface FavoriteContentProps {
 const FavoriteContent = ({ products }: FavoriteContentProps) => {
   const { addFavorite, addCartItem, cartItems } = useProductState()
 
-
-console.log(cartItems[0].id,"カート")
 const ids = cartItems.map((item:any)=>item.id)
 
   return products.length !== 0 ? (

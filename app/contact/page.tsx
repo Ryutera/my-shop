@@ -2,15 +2,9 @@ import ContactSubmitButton from '@/components/ContactSubmitButton'
 import { submitInquiry } from '../actions'
 
 
-
 const page = () => {
-
-
-
     return (
         <div className='flex flex-col items-center justify-center'>
-
-
             <p className='text-xl md:text-2xl px-3 sm:px-10'>
                 CONTACT
             </p>
@@ -18,9 +12,6 @@ const page = () => {
             <p className=''>
                 お問い合わせ内容をご記入ください
             </p>
-
-
-
 
             <div className='w-full'>
                 <form action={submitInquiry}>
@@ -51,8 +42,6 @@ const page = () => {
                         <textarea id="inquiry" name="inquiry" className="block w-full border bg-gray-100 p-2" rows={6} required />
                     </div>
                     <ContactSubmitButton />
-
-
                 </form>
             </div>
         </div>

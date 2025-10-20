@@ -2,7 +2,7 @@
 
 import { createContext, type ReactNode, useContext, useEffect, useState } from "react"
 
-import { addCartToDb, addFavoriteToDb, getCartItemsInDb, getFavoriteWithUserId, getProductFromContentful, isCartInDatabase, isFavoriteInDatabase, removeCartItemFromDB, removeFavoriteFromDb } from "../actions"
+import { addCartToDb, addFavoriteToDb, getCartItemsInDb, getFavoriteWithUserId, getProductFromContentful,removeCartItemFromDB, removeFavoriteFromDb } from "../actions"
 import { ProductFields } from "@/lib/types"
 
 type UserProductStateContextType = {
@@ -31,12 +31,12 @@ export const CartProvider = (props: Props) => {
   const [cartItemsIds, serCartItemsIds] = useState<string[]>([])
   const [cartItems, setCartItems] = useState<any[]>([]);
 
+  //Store cmsID basedon login Status
   const [favorite, setFavorite] = useState<string[]>([])
   
   const userId = userData?.identities[0].id
 
-  console.log(cartItems, "カートの中身")
-  console.log(cartItemsIds, "カートのid")
+  console.log(favorite,"フェイバリットの中身")
 
     // Load data from localStorage on initial load (non-logged-in users only)
     //非ログイン時にカートとお気に入りをローカルデータから追加
