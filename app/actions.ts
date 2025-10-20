@@ -164,7 +164,7 @@ export type Product = ProductFields & { id: string }
 
 // Get specific product by product ID
 
-export async function getProduct(id: string): Promise<Product> {
+export async function getProductFromContentful(id: string): Promise<Product> {
   const entry = await contentfulClient.getEntry<ProductFieldsSkeleton>(id)
 
   return {

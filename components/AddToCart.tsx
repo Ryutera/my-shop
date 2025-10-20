@@ -8,34 +8,36 @@ import Exchange from "./Exchange";
 interface AddToCartProps {
   productData: ProductFields;
   id: string;
-  
+
 }
 
 const AddToCart = (props: AddToCartProps) => {
   const { productData, id } = props;
 
-    const [existingCartItem, setExistingCartItem] = useState<any>(null);
+  const [existingCartItem, setExistingCartItem] = useState<any>(null);
 
-console.log(existingCartItem,"existingcart")
-  
-  const { addItem, cartItemsId,   checkIfItemInDatabase} = useCart();
+  console.log(existingCartItem, "existingcart")
+
+  const { addItem, cartItemsId, cartItems,checkIfItemInDatabase } = useCart();
 
   useEffect(() => {
-   const  handleDatabasechec = async()=>{
-const result = await checkIfItemInDatabase(id)
-setExistingCartItem(result);
-   }
+    const handleDatabasecheck = async () => {
+      const result = await checkIfItemInDatabase(id)
+      setExistingCartItem(result);
+    }
 
-handleDatabasechec()
+    handleDatabasecheck()
 
-  }, []);
+  }, [cartItems]);
+
+
 
   const isAdded = cartItemsId.some((i) => i === id);
 
   // console.log(items)
-  const handleAddToCart  = async (id: string) => {
+  const handleAddToCart = async (id: string) => {
     addItem(id);
-  
+
   };
 
 
@@ -46,34 +48,34 @@ handleDatabasechec()
       <Button
         className={`w-full `}
         size="lg"
-        onClick={() => handleAddToCart (id)}
+        onClick={() => handleAddToCart(id)}
         disabled={!existingCartItem ? isAdded : true}
       >
         {existingCartItem ? (
-    <>
-      Already added to Cart - <Exchange
-        priceEur={productData.priceEur}
-        priceJpy={productData.priceJpy}
-        priceGbp={productData.priceGbp}
-      />
-    </>
-  ) : isAdded ? (
-    <>
-      Already added to Cart - <Exchange
-        priceEur={productData.priceEur}
-        priceJpy={productData.priceJpy}
-        priceGbp={productData.priceGbp}
-      />
-    </>
-  ) : (
-    <>
-      Add to Cart - <Exchange
-        priceEur={productData.priceEur}
-        priceJpy={productData.priceJpy}
-        priceGbp={productData.priceGbp}
-      />
-    </>
-  )}
+          <>
+            Already added to Cart - <Exchange
+              priceEur={productData.priceEur}
+              priceJpy={productData.priceJpy}
+              priceGbp={productData.priceGbp}
+            />
+          </>
+        ) : isAdded ? (
+          <>
+            Already added to Cart - <Exchange
+              priceEur={productData.priceEur}
+              priceJpy={productData.priceJpy}
+              priceGbp={productData.priceGbp}
+            />
+          </>
+        ) : (
+          <>
+            Add to Cart - <Exchange
+              priceEur={productData.priceEur}
+              priceJpy={productData.priceJpy}
+              priceGbp={productData.priceGbp}
+            />
+          </>
+        )}
       </Button>
     </div>
   );

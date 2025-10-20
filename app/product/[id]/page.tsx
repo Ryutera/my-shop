@@ -1,4 +1,4 @@
-import { getProduct } from "@/app/actions";
+import { getProductFromContentful } from "@/app/actions";
 import React from "react";
 
 import ProductImeges from "@/components/productImeges";
@@ -15,7 +15,7 @@ interface ProductPageProps {
 
 export default async function  ProductPage ({ params }:ProductPageProps) {
   const { id } = await params;
-  const productData = await getProduct(id);
+  const productData = await getProductFromContentful(id);
  
   
   if (!productData) {

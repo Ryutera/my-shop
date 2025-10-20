@@ -42,14 +42,13 @@ interface ContentProps {
 
 const CartContent = (props: ContentProps) => {
   const router = useRouter()
-  const { cartItems,} = props
-  const { refreshCart,userId,removeItem } = useCart() // Use the imported useCart hook
+  const { cartItems} = props
+  const { refreshCart,userId,removeItem,  } = useCart() // Use the imported useCart hook
   const context = useContext(CurrencyContext)
 
   const currency = context?.currency
 
 
-useEffect(()=>{},[cartItems])
 
 
 

@@ -8,8 +8,8 @@ import { useCart } from "@/app/context/CartContext"
 
 
 const ShoppingCartIcon = () => {
-  const {cartItemsId} = useCart()
-  const count = cartItemsId.length
+  const {cartItems} = useCart()
+  const count = cartItems.length
   const [mounted,setMounted] = useState(false)
 
   
@@ -37,7 +37,15 @@ const ShoppingCartIcon = () => {
           {count}
         </span>
          </div>
-      ):<></>
+      ):
+      (
+        <div className="relative inline-block hover:scale-110 transition-transform duration-200 cursor-pointer">
+      <Link href="/cart" aria-label="Open cart ">
+        <ShoppingCart className="w-6 h-6 text-gray-700" />
+      </Link>
+       
+         </div>
+      )
    
   )
 }
