@@ -15,6 +15,7 @@ type UserProductStateContextType = {
   clearCart: () => void
   addFavorite: (id: string) => void
   getCartItems: () => void
+
 }
 
 interface Props {

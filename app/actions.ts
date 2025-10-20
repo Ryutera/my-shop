@@ -149,20 +149,13 @@ export async function getUserWithId(id: string) {
 }
 
 
-// Get specific product by product ID
 
-export async function getProduct(id: string): Promise<Product> {
-  const entry = await contentfulClient.getEntry<ProductFieldsSkeleton>(id)
 
-  return {
-    id: entry.sys.id,
-    ...entry.fields,
-  }
-}
+
 
 // Get all products from Contentful
 
-export async function getProducts() {
+export async function getProductsFromContentful() {
   const entries = await contentfulClient.getEntries({
     content_type: "clothes",
   })

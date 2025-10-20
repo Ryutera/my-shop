@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 
-import { getFavoriteWithUserId, getProduct } from "../actions";
+import { getFavoriteWithUserId, getProductFromContentful,} from "../actions";
 import FavoriteContent from "@/components/FavoriteContent";
 import { useProductState } from "../context/UserProductStateProvider";
 
@@ -12,19 +12,15 @@ const FavoritePage = () => {
 
   useEffect(() => {
     const fetchFavoriteData = async () => {
-
-
       if (userId) {
-      
-      
         const FavoriteItemsInDb = await getFavoriteWithUserId(userId);
 
         const results = await Promise.all(
-          FavoriteItemsInDb.map((item) => getProduct(item.cmsItemId))
+          FavoriteItemsInDb.map((item) => getProductFromContentful(item.cmsItemId))
         );
         setProducts(results);
       } else {
-        const results = await Promise.all(favorite.map((id) => getProduct(id)));
+        const results = await Promise.all(favorite.map((id) => getProductFromContentful(id)));
         console.log(results,"results")
        ;
         setProducts(results);
