@@ -15,7 +15,8 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
 import { Trash2 } from "lucide-react"
-import { useCart } from "@/app/context/UserProductStateProvider"
+import { useProductState } from "@/app/context/UserProductStateProvider"
+
 
 type Props = {
   itemId: string
@@ -23,11 +24,11 @@ type Props = {
 }
 
 export function CartItemWithConfirm({ itemId, itemName }: Props) {
-  const { removeItem } = useCart()
+  const { removeCartItem } = useProductState()
   const [open, setOpen] = useState(false)
 
   const handleRemove = () => {
-    removeItem(itemId)
+    removeCartItem(itemId)
     setOpen(false)
   }
 
