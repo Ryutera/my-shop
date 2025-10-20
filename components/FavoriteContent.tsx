@@ -26,7 +26,7 @@ interface FavoriteContentProps {
 }
 
 const FavoriteContent = ({ products }: FavoriteContentProps) => {
-  const { addFavorite,addItem } = useProductState()
+  const { addFavorite,addCartItem} = useProductState()
 
   return products.length !== 0 ? (
     <div className="flex flex-col w-full gap-6">
@@ -118,7 +118,7 @@ const FavoriteContent = ({ products }: FavoriteContentProps) => {
                     variant="ghost"
                     size="sm"
                     className="h-8 w-8 p-0 hover:bg-gray-100 text-gray-400 hover:text-gray-600"
-                   onClick={()=>addItem(product.id)}
+                   onClick={()=>addCartItem(product.id)}
                     >
                       
                     <ShoppingCartIcon />

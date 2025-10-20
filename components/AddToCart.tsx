@@ -13,12 +13,10 @@ interface AddToCartProps {
 
 const AddToCart = (props: AddToCartProps) => {
   const { productData, id } = props;
-
   const [existingCartItem] = useState<any>(null);
-
   console.log(existingCartItem, "existingcart")
-
-  const { addItem, cartItems} = useProductState();
+  const { addCartItem, cartItems } = useProductState();
+  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
 
@@ -28,9 +26,15 @@ const AddToCart = (props: AddToCartProps) => {
 
   const isAdded = cartItems.some((i) => i.id === id);
 
-  // console.log(items)
+
   const handleAddToCart = async (id: string) => {
-    addItem(id);
+    setLoading(true)
+    try {
+      await Promise.resolve(addCartItem(id))
+    } finally {
+      setLoading(false)
+    }
+
 
   };
 
@@ -45,7 +49,7 @@ const AddToCart = (props: AddToCartProps) => {
         onClick={() => handleAddToCart(id)}
         disabled={!existingCartItem ? isAdded : true}
       >
-        {isAdded ? (
+        {loading ? "Adding..." : isAdded ? (
           <>
             Already added to Cart - <Exchange
               priceEur={productData.priceEur}
