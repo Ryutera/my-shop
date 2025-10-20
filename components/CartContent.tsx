@@ -92,7 +92,7 @@ const CartContent = (props: ContentProps) => {
 
 
 {/* モバイル表示用 */}
-      {/* <CartContentForMobile products={cartItems} currency={currency} totalAmount={totalAmount as number} handleRemoveItem={handleRemoveItem}/> */}
+      <CartContentForMobile cartitems={cartItems} currency={currency} totalAmount={totalAmount as number} removeCartItem={removeCartItem}/>
 {/* PC表示用 */}
       <div className="hidden md:block border border-gray-200 rounded-xl overflow-hidden bg-white shadow lg:p-10">
         <Table>

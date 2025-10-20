@@ -6,20 +6,17 @@ import { getFavoriteWithUserId, getProduct } from "../actions";
 import FavoriteContent from "@/components/FavoriteContent";
 
 const FavoritePage = () => {
-  const { favorite } = useCart(); // Get favorites from context
+  const { favorite ,userId} = useCart(); // Get favorites from context
   const [products, setProducts] = useState<any>();
-  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+
 
   useEffect(() => {
     const fetchFavoriteData = async () => {
-      const supabase = createClient();
-      const { data } = await supabase.auth.getUserIdentities();
 
 
-      if (data) {
-        // Logged-in user: Get favorites from database
-        setIsLoggedIn((prev) => !prev);
-        const userId = data.identities[0].id;
+      if (userId) {
+      
+      
         const FavoriteItemsInDb = await getFavoriteWithUserId(userId);
 
         const results = await Promise.all(

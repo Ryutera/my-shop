@@ -18,7 +18,7 @@ type CartContextType = {
 
   clearCart: () => void
   addFavorite: (id: string) => void
-  refreshCart: () => void
+
 
   checkIfItemInDatabase: (id: string) => void
   getCartItems: () => void
@@ -123,7 +123,7 @@ const items = await Promise.all(itemPromises);
 
 
 setCartItems(items);
-      refreshCart()
+     
     }else{
          setCartItemsId((prev) => {
       const exists = prev.some((i) => i === id)
@@ -138,9 +138,14 @@ setCartItems(items);
    const removeCartItem = async (id:string) => {
     if (userId) {
       await removeCartItemFromDB(userId, id)
+
+      const DbItems = await getCartItemsInDb(userId);
+      const Items = await Promise.all(
+        DbItems.map((item) => getProductFromContentful(item.cmsItemId))
+      );
+      setCartItems(Items);
       
-     
-      refreshCart()
+
     } else {
        setCartItemsId((prev) => {
       return prev.filter((i) => i !== id)
@@ -178,11 +183,6 @@ setCartItems(items);
     if (!userData) {
       localStorage.removeItem("cart_items")
     }
-  }
-
-  // Increment cart version to trigger re-renders in other components
-  const refreshCart = () => {
-    setCartVersion((prev) => prev + 1)
   }
 
 
@@ -223,7 +223,7 @@ useEffect(() => {
 
   return (
     <CartContext.Provider
-      value={{ cartItemsId, addItem, removeCartItem, clearCart, favorite, addFavorite, refreshCart, checkIfItemInDatabase, getCartItems, cartVersion, cartItems, userId  }}
+      value={{ cartItemsId, addItem, removeCartItem, clearCart, favorite, addFavorite, checkIfItemInDatabase, getCartItems, cartVersion, cartItems, userId  }}
     >
       {children}
     </CartContext.Provider>
