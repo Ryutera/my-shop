@@ -15,7 +15,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
 import { Trash2 } from "lucide-react"
-import { useCart } from "@/app/context/CartContext"
+import { useCart } from "@/app/context/UserProductStateProvider"
 
 type Props = {
   itemId: string

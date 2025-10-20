@@ -1,6 +1,7 @@
 "use client"
 
-import { useCart } from '@/app/context/CartContext'
+
+import { useProductState } from '@/app/context/UserProductStateProvider'
 import { Heart } from 'lucide-react'
 
 interface Props{
@@ -11,7 +12,7 @@ interface Props{
 
 const FavoriteButton = (props:Props) => {
     const {id} = props
-   const {favorite,addFavorite } =useCart()
+   const {favorite,addFavorite } =useProductState()
   
 
 

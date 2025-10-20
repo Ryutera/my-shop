@@ -1,42 +1,41 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { Button } from "./ui/button";
-import { useCart } from "@/app/context/CartContext";
 import { ProductFields } from "@/lib/types";
-import { addCartToDb, isCartInDatabase } from "@/app/actions";
 import Exchange from "./Exchange";
+import { useProductState } from "@/app/context/UserProductStateProvider";
 
 interface AddToCartProps {
   productData: ProductFields;
   id: string;
-  userData: any;
+
 }
 
 const AddToCart = (props: AddToCartProps) => {
-  const { productData, id, userData } = props;
-  const [existingCartItem, setExistingCartItem] = useState<any>(null);
-
-  const userId = userData?.identities[0].id;
-
-  const { addItem, items,refreshCart } = useCart();
+  const { productData, id } = props;
+  const [existingCartItem] = useState<any>(null);
+  console.log(existingCartItem, "existingcart")
+  const { addCartItem, cartItems } = useProductState();
+  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
-    const checkIfItemInDatabase = async () => {
-      const item = await isCartInDatabase(id, userId);
-      setExistingCartItem(item);
-    };
-    checkIfItemInDatabase();
-  }, []);
 
-  const isAdded = items.some((i) => i === id);
+  }, [cartItems]);
 
-  // console.log(items)
-  const handleAddToCart  = async (id: string) => {
-    addItem(id);
-    if (userData) {
-      await addCartToDb(userId, id);
-      refreshCart()
+
+
+  const isAdded = cartItems.some((i) => i.id === id);
+
+
+  const handleAddToCart = async (id: string) => {
+    setLoading(true)
+    try {
+      await Promise.resolve(addCartItem(id))
+    } finally {
+      setLoading(false)
     }
+
+
   };
 
 
@@ -47,34 +46,26 @@ const AddToCart = (props: AddToCartProps) => {
       <Button
         className={`w-full `}
         size="lg"
-        onClick={() => handleAddToCart (id)}
+        onClick={() => handleAddToCart(id)}
         disabled={!existingCartItem ? isAdded : true}
       >
-        {existingCartItem ? (
-    <>
-      Already added to Cart - <Exchange
-        priceEur={productData.priceEur}
-        priceJpy={productData.priceJpy}
-        priceGbp={productData.priceGbp}
-      />
-    </>
-  ) : isAdded ? (
-    <>
-      Already added to Cart - <Exchange
-        priceEur={productData.priceEur}
-        priceJpy={productData.priceJpy}
-        priceGbp={productData.priceGbp}
-      />
-    </>
-  ) : (
-    <>
-      Add to Cart - <Exchange
-        priceEur={productData.priceEur}
-        priceJpy={productData.priceJpy}
-        priceGbp={productData.priceGbp}
-      />
-    </>
-  )}
+        {loading ? "Adding..." : isAdded ? (
+          <>
+            Already added to Cart - <Exchange
+              priceEur={productData.priceEur}
+              priceJpy={productData.priceJpy}
+              priceGbp={productData.priceGbp}
+            />
+          </>
+        ) : (
+          <>
+            Add to Cart - <Exchange
+              priceEur={productData.priceEur}
+              priceJpy={productData.priceJpy}
+              priceGbp={productData.priceGbp}
+            />
+          </>
+        )}
       </Button>
     </div>
   );

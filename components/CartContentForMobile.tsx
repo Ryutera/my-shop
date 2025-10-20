@@ -26,39 +26,39 @@ interface Product {
 }
 
 interface Props{
-    products:Product[]
+    cartitems:Product[]
     currency:any
     totalAmount:number
-    handleRemoveItem:(product:Product)=>void
+    removeCartItem:(id:string)=>void
 }
 
 
-const CartContentForMobile = ({products,currency,totalAmount, handleRemoveItem}:Props) => {
+const CartContentForMobile = ({cartitems,currency,totalAmount, removeCartItem}:Props) => {
   return (
    <>
    {/* モバイル用合計 */}
       <div className="md:hidden flex flex-col gap-3">
-        {products.map((product: Product, index: number) => (
-          <div key={product.id || index} className="bg-white border border-gray-200 rounded-lg p-3 shadow-sm">
+        {cartitems.map((cartitem: Product, index: number) => (
+          <div key={cartitem.id || index} className="bg-white border border-gray-200 rounded-lg p-3 shadow-sm">
             <div className="flex gap-3">
               {/* 商品画像 */}
               <div className="flex-shrink-0">
                 <img
-                  src={`${product.thumbnail.fields.file.url}?fm=webp&w=200&h=300&fit=thumb`}
-                  alt={product.name}
+                  src={`${cartitem?.thumbnail?.fields.file.url}?fm=webp&w=200&h=300&fit=thumb`}
+                  alt={cartitem.name}
                   className="w-20 h-20 object-contain rounded bg-gray-50 border border-gray-100"
                 />
               </div>
 
               {/* 商品情報 */}
               <div className="flex-1 min-w-0 flex flex-col justify-between">
-                <Link href={`/product/${product.id}`}>
+                <Link href={`/product/${cartitem.id}`}>
                   <h3 className="text-sm font-medium text-gray-900 hover:text-blue-500 line-clamp-2 mb-1">
-                    {product.name}
+                    {cartitem.name}
                   </h3>
                 </Link>
                 <div className="text-base font-semibold text-gray-900">
-                  <Exchange priceEur={product?.priceEur} priceJpy={product?.priceJpy} priceGbp={product?.priceGbp} />
+                  <Exchange priceEur={cartitem?.priceEur} priceJpy={cartitem?.priceJpy} priceGbp={cartitem?.priceGbp} />
                 </div>
               </div>
 
@@ -83,7 +83,7 @@ const CartContentForMobile = ({products,currency,totalAmount, handleRemoveItem}:
                     </AlertDialogHeader>
                     <AlertDialogFooter>
                       <AlertDialogCancel>Cancel</AlertDialogCancel>
-                      <AlertDialogAction onClick={() => handleRemoveItem(product)}>Continue</AlertDialogAction>
+                      <AlertDialogAction onClick={() => removeCartItem(cartitem.id)}>Continue</AlertDialogAction>
                     </AlertDialogFooter>
                   </AlertDialogContent>
                 </AlertDialog>

@@ -8,7 +8,7 @@ import axios from "axios"
 import { useContext, useEffect, useState } from "react"
 import { removeCartItemFromDB } from "@/app/actions"
 import NoCartContent from "./NoCartContent"
-import { useCart } from "@/app/context/CartContext"
+
 import Exchange from "./Exchange"
 import CurrencyContext from "@/app/context/CurrencyContext"
 import {
@@ -23,6 +23,7 @@ import {
   AlertDialogTrigger,
 } from "./ui/alert-dialog"
 import CartContentForMobile from "./CartContentForMobile"
+import { useProductState } from "@/app/context/UserProductStateProvider"
 
 interface Product {
   sys: any
@@ -35,36 +36,25 @@ interface Product {
 }
 
 interface ContentProps {
-  cartItems?: Product[]
-  items?: any[]
+  cartItems?: any
   removeItem?: (id: string) => void
-  userData?: any
+
 }
 
 const CartContent = (props: ContentProps) => {
   const router = useRouter()
-  const { cartItems, items, removeItem, userData } = props
-  const [localCartItems, setLocalCartItems] = useState<Product[]>(cartItems || [])
-  const { refreshCart } = useCart() // Use the imported useCart hook
+  const { cartItems } = props
   const context = useContext(CurrencyContext)
+  const { removeCartItem } = useProductState()
+ const [loading,setLoading] = useState(false)
 
   const currency = context?.currency
 
-  useEffect(() => {
-    if (cartItems) {
-      setLocalCartItems(cartItems)
-    }
-  }, [cartItems])
-
-  // ログイン状態を判定　!!はbooleanに変換するもの
-  const isLoggedIn = !!cartItems
-
-  const products = isLoggedIn ? localCartItems : items
 
   const getPayment = async () => {
     try {
       const data = await axios.post("/api/checkout_sessions/", {
-        products: products,
+        products: cartItems,
         currency: currency,
       })
 
@@ -74,17 +64,24 @@ const CartContent = (props: ContentProps) => {
     }
   }
 
-  const handleRemoveItem = async (product: Product) => {
-    if (isLoggedIn) {
-      await removeCartItemFromDB(userData.identities[0].id, product.id)
-      setLocalCartItems((prev) => prev.filter((item) => item.id !== product.id))
-      refreshCart()
-    } else {
-      removeItem?.(product.id)
-    }
-  }
 
-  const totalAmount = products?.reduce((acc: number, curr: Product) => {
+
+
+const handleRemoveCartItem = async (id: string) => {
+setLoading(true)
+  try {
+    await Promise.resolve(removeCartItem(id))
+   
+  } catch (e) {
+    console.error(e)
+   
+  } finally {
+    setLoading(false)
+  }
+}
+
+
+  const totalAmount = cartItems?.reduce((acc: number, curr: Product) => {
     if (currency === "JPY") {
       return (acc += curr.priceJpy)
     }
@@ -95,21 +92,30 @@ const CartContent = (props: ContentProps) => {
     }
   }, 0 || 0)
 
-  if (!products || products.length === 0) {
+  if (!cartItems || cartItems.length === 0) {
     return <NoCartContent />
   }
 
-  return (
+return (
+
+   <div className="relative">
+    {loading && (
+      <div className="fixed inset-0 z-[60] grid place-items-center bg-white/80 backdrop-blur-sm">
+        <div className="animate-spin rounded-full h-10 w-10 border-t-4 border-gray-400 border-solid" />
+      </div>
+    )}
+
+    <div className={loading ? "pointer-events-none" : ""}>
     <div className="flex flex-col w-full gap-6">
       <div className="mb-8 flex items-center justify-between">
         <h2 className="text-2xl font-semibold text-gray-900">Your Cart</h2>
-        <div className="text-lg text-gray-500">{products.length} items</div>
+        <div className="text-lg text-gray-500">{cartItems.length} items</div>
       </div>
 
 
-{/* モバイル表示用 */}
-      <CartContentForMobile products={products} currency={currency} totalAmount={totalAmount} handleRemoveItem={handleRemoveItem}/>
-
+      {/* モバイル表示用 */}
+      <CartContentForMobile cartitems={cartItems} currency={currency} totalAmount={totalAmount as number} removeCartItem={handleRemoveCartItem} />
+      {/* PC表示用 */}
       <div className="hidden md:block border border-gray-200 rounded-xl overflow-hidden bg-white shadow lg:p-10">
         <Table>
           <TableHeader>
@@ -121,24 +127,24 @@ const CartContent = (props: ContentProps) => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {products.map((product: Product, index: number) => (
-              <TableRow key={product.id || index} className="border-b border-gray-100 last:border-b-0">
+            {cartItems.map((cartitem: Product, index: number) => (
+              <TableRow key={cartitem.id || index} className="border-b border-gray-100 last:border-b-0">
                 <TableCell className="text-gray-900 text-lg py-5 px-6 hover:text-blue-500">
                   <div className="flex items-center gap-8">
                     <img
-                      src={`${product.thumbnail.fields.file.url}?fm=webp&w=800&h=1200&fit=thumb`}
-                      alt={product.name}
+                      src={`${cartitem?.thumbnail?.fields.file.url}?fm=webp&w=800&h=1200&fit=thumb`}
+                      alt={cartitem.name}
                       loading="lazy"
                       className="w-[15%] h-[15%] object-cover border border-gray-200 flex-shrink-0 transition-transform duration-200 hover:scale-[1.03]"
                     />
-                    <Link href={`/product/${product.id}`}>
-                      <p className="text-lg">{product.name}</p>
+                    <Link href={`/cartitem/${cartitem.id}`}>
+                      <p className="text-lg">{cartitem.name}</p>
                     </Link>
                   </div>
                 </TableCell>
                 <TableCell className="text-gray-900 text-lg py-5 px-6"></TableCell>
                 <TableCell className="text-gray-900 text-lg py-5 px-6">
-                  <Exchange priceEur={product?.priceEur} priceJpy={product?.priceJpy} priceGbp={product?.priceGbp} />
+                  <Exchange priceEur={cartitem?.priceEur} priceJpy={cartitem?.priceJpy} priceGbp={cartitem?.priceGbp} />
                 </TableCell>
                 <TableCell className="py-5 px-6">
                   <AlertDialog>
@@ -148,7 +154,8 @@ const CartContent = (props: ContentProps) => {
                         size="sm"
                         className="h-8 w-8 p-0 hover:bg-gray-100 text-gray-400 hover:text-gray-600"
                       >
-                        <Trash2 className="h-5 w-5" />
+                    <Trash2 className="h-5 w-5" />
+                       
                       </Button>
                     </AlertDialogTrigger>
                     <AlertDialogContent>
@@ -160,7 +167,7 @@ const CartContent = (props: ContentProps) => {
                       </AlertDialogHeader>
                       <AlertDialogFooter>
                         <AlertDialogCancel>Cancel</AlertDialogCancel>
-                        <AlertDialogAction onClick={() => handleRemoveItem(product)}>Continue</AlertDialogAction>
+                        <AlertDialogAction onClick={() => handleRemoveCartItem(cartitem.id)}>Continue</AlertDialogAction>
                       </AlertDialogFooter>
                     </AlertDialogContent>
                   </AlertDialog>
@@ -174,10 +181,10 @@ const CartContent = (props: ContentProps) => {
               <TableCell className="font-semibold text-gray-900 text-lg py-5 px-6"></TableCell>
               <TableCell className="font-bold text-gray-900 text-lg py-5 px-6">
                 {currency === "JPY"
-                  ? `¥${totalAmount.toLocaleString("JP")}`
+                  ? `¥${totalAmount?.toLocaleString("JP")}`
                   : currency === "EUR"
-                    ? `€${totalAmount.toLocaleString("DE")}`
-                    : `£${totalAmount.toLocaleString("GB")}`}
+                    ? `€${totalAmount?.toLocaleString("DE")}`
+                    : `£${totalAmount?.toLocaleString("GB")}`}
               </TableCell>
               <TableCell className="py-5 px-6"></TableCell>
             </TableRow>
@@ -190,13 +197,17 @@ const CartContent = (props: ContentProps) => {
           size="lg"
           onClick={getPayment}
           className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 text-lg font-semibold"
-          disabled={!products || products.length === 0}
+          disabled={!cartItems || cartItems.length === 0}
         >
           Go to Payment
         </Button>
       </div>
     </div>
-  )
+    </div>
+  </div>
+)
+   
+
 }
 
 export default CartContent

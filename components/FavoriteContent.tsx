@@ -3,10 +3,14 @@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import Link from "next/link"
 import { Button } from "./ui/button"
-import { Trash2 } from "lucide-react"
-import { useCart } from "@/app/context/CartContext"
+import {ShoppingCartIcon, Trash2 } from "lucide-react"
+
 import NoFavoriteContent from "./NoFavoriteContent"
 import Exchange from "./Exchange"
+import { useProductState } from "@/app/context/UserProductStateProvider"
+
+
+
 
 interface Product {
   sys: any
@@ -22,7 +26,7 @@ interface FavoriteContentProps {
 }
 
 const FavoriteContent = ({ products }: FavoriteContentProps) => {
-  const { addFavorite } = useCart()
+  const { addFavorite,addCartItem} = useProductState()
 
   return products.length !== 0 ? (
     <div className="flex flex-col w-full gap-6">
@@ -32,8 +36,8 @@ const FavoriteContent = ({ products }: FavoriteContentProps) => {
       </div>
 
 
-{/* モバイル表示用 */}
-       <div className="md:hidden flex flex-col gap-3">
+      {/* モバイル表示用 */}
+      <div className="md:hidden flex flex-col gap-3">
         {products.map((product: Product, index: number) => (
           <div key={product.id || index} className="bg-white border border-gray-200 rounded-lg p-3 shadow-sm">
             <div className="flex gap-3">
@@ -60,15 +64,16 @@ const FavoriteContent = ({ products }: FavoriteContentProps) => {
 
               {/* 削除ボタン */}
               <div className="flex-shrink-0">
-                 <Button
-                      variant="ghost"
-                      size="sm"
-                      className="h-8 w-8 p-0 hover:bg-gray-100 text-gray-400 hover:text-gray-600"
-                      onClick={()=>addFavorite(product.id)}
-                    >
-                      <Trash2 className="h-4 w-4" />
-                    </Button>
-                
+
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="h-8 w-8 p-0 hover:bg-gray-100 text-gray-400 hover:text-gray-600"
+                  onClick={() => addFavorite(product.id)}
+                >
+                  <Trash2 className="h-4 w-4" />
+                </Button>
+
               </div>
             </div>
           </div>
@@ -110,14 +115,25 @@ const FavoriteContent = ({ products }: FavoriteContentProps) => {
                 <TableCell className="py-5 px-6">
 
                   <Button
-                        variant="ghost"
-                        size="sm"
-                        className="h-8 w-8 p-0 hover:bg-gray-100 text-gray-400 hover:text-gray-600"
-                        onClick={()=>addFavorite(product.id)}
-                      >
-                        <Trash2 className="h-5 w-5" />
-                      </Button>
-            
+                    variant="ghost"
+                    size="sm"
+                    className="h-8 w-8 p-0 hover:bg-gray-100 text-gray-400 hover:text-gray-600"
+                   onClick={()=>addCartItem(product.id)}
+                    >
+                      
+                    <ShoppingCartIcon />
+                  </Button>
+
+
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="h-8 w-8 p-0 hover:bg-gray-100 text-gray-400 hover:text-gray-600"
+                    onClick={() => addFavorite(product.id)}
+                  >
+                    <Trash2 className="h-5 w-5" />
+                  </Button>
+
                 </TableCell>
               </TableRow>
             ))}
