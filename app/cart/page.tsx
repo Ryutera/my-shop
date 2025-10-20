@@ -12,8 +12,6 @@ const Cart = () => {
   const { cartItems } = useProductState();
 
 
-
-
 console.log(cartItems,"カート中身コンテクスト")
 
   return (

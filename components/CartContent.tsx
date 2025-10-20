@@ -38,18 +38,17 @@ interface Product {
 interface ContentProps {
   cartItems?: any
   removeItem?: (id: string) => void
- 
+
 }
 
 const CartContent = (props: ContentProps) => {
   const router = useRouter()
-  const { cartItems} = props
+  const { cartItems } = props
   const context = useContext(CurrencyContext)
-  const {removeCartItem}  = useProductState()
+  const { removeCartItem } = useProductState()
+ const [loading,setLoading] = useState(false)
 
   const currency = context?.currency
-
-
 
 
   const getPayment = async () => {
@@ -65,10 +64,23 @@ const CartContent = (props: ContentProps) => {
     }
   }
 
- 
 
 
-  
+
+const handleRemoveCartItem = async (id: string) => {
+setLoading(true)
+  try {
+    await Promise.resolve(removeCartItem(id))
+   
+  } catch (e) {
+    console.error(e)
+   
+  } finally {
+    setLoading(false)
+  }
+}
+
+
   const totalAmount = cartItems?.reduce((acc: number, curr: Product) => {
     if (currency === "JPY") {
       return (acc += curr.priceJpy)
@@ -84,7 +96,16 @@ const CartContent = (props: ContentProps) => {
     return <NoCartContent />
   }
 
-  return (
+return (
+
+   <div className="relative">
+    {loading && (
+      <div className="fixed inset-0 z-[60] grid place-items-center bg-white/80 backdrop-blur-sm">
+        <div className="animate-spin rounded-full h-10 w-10 border-t-4 border-gray-400 border-solid" />
+      </div>
+    )}
+
+    <div className={loading ? "pointer-events-none" : ""}>
     <div className="flex flex-col w-full gap-6">
       <div className="mb-8 flex items-center justify-between">
         <h2 className="text-2xl font-semibold text-gray-900">Your Cart</h2>
@@ -92,9 +113,9 @@ const CartContent = (props: ContentProps) => {
       </div>
 
 
-{/* モバイル表示用 */}
-      <CartContentForMobile cartitems={cartItems} currency={currency} totalAmount={totalAmount as number} removeCartItem={removeCartItem}/>
-{/* PC表示用 */}
+      {/* モバイル表示用 */}
+      <CartContentForMobile cartitems={cartItems} currency={currency} totalAmount={totalAmount as number} removeCartItem={handleRemoveCartItem} />
+      {/* PC表示用 */}
       <div className="hidden md:block border border-gray-200 rounded-xl overflow-hidden bg-white shadow lg:p-10">
         <Table>
           <TableHeader>
@@ -133,7 +154,8 @@ const CartContent = (props: ContentProps) => {
                         size="sm"
                         className="h-8 w-8 p-0 hover:bg-gray-100 text-gray-400 hover:text-gray-600"
                       >
-                        <Trash2 className="h-5 w-5" />
+                    <Trash2 className="h-5 w-5" />
+                       
                       </Button>
                     </AlertDialogTrigger>
                     <AlertDialogContent>
@@ -145,7 +167,7 @@ const CartContent = (props: ContentProps) => {
                       </AlertDialogHeader>
                       <AlertDialogFooter>
                         <AlertDialogCancel>Cancel</AlertDialogCancel>
-                        <AlertDialogAction onClick={() => removeCartItem(cartitem.id)}>Continue</AlertDialogAction>
+                        <AlertDialogAction onClick={() => handleRemoveCartItem(cartitem.id)}>Continue</AlertDialogAction>
                       </AlertDialogFooter>
                     </AlertDialogContent>
                   </AlertDialog>
@@ -181,7 +203,11 @@ const CartContent = (props: ContentProps) => {
         </Button>
       </div>
     </div>
-  )
+    </div>
+  </div>
+)
+   
+
 }
 
 export default CartContent
