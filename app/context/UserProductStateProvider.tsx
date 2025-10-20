@@ -3,36 +3,26 @@
 import { createContext, type ReactNode, useContext, useEffect, useState } from "react"
 
 import { addCartToDb, addFavoriteToDb, getCartItemsInDb, getFavoriteWithUserId, getProductFromContentful, isCartInDatabase, isFavoriteInDatabase, removeCartItemFromDB, removeFavoriteFromDb } from "../actions"
-import { Product, ProductFields } from "@/lib/types"
+import { ProductFields } from "@/lib/types"
 
-type CartContextType = {
+type UserProductStateContextType  = {
   cartItemsId: string[] // Cart items (product IDs)
   favorite: string[] // Favorite items (product IDs)
-  cartVersion: number // Version number to trigger cart updates
   cartItems: any[] | ProductFields[]
   userId:string | null
-
-
   addItem: (id: string) => void
   removeCartItem: (id: string) => void
-
   clearCart: () => void
   addFavorite: (id: string) => void
-
-
-  checkIfItemInDatabase: (id: string) => void
   getCartItems: () => void
-
 }
-
-
 
 interface Props {
   children: ReactNode
   userData: any
 }
 
-const CartContext = createContext<CartContextType | undefined>(undefined)
+const UserProductStateContext = createContext<UserProductStateContextType | undefined>(undefined)
 
 export const CartProvider = (props: Props) => {
   const { children, userData } = props
@@ -41,7 +31,7 @@ export const CartProvider = (props: Props) => {
   const [cartItems, setCartItems] = useState<any[]>([]);
   const [favorite, setFavorite] = useState<string[]>([])
   // Cart version to trigger useEffect in other components when cart changes
-  const [cartVersion, setCartVersion] = useState(0)
+
   
 
   const userId = userData?.identities[0].id 
@@ -102,16 +92,7 @@ console.log(cartItemsId, "カートのid")
 
 
 
-  const checkIfItemInDatabase = async (id: string) => {
-    if (userData) {
-      const item = await isCartInDatabase(id, userId);
-      
-      return item
-    } else {
-      return
-    }
 
-  };
 
   const addItem = async (id: string) => {
  
@@ -222,11 +203,11 @@ useEffect(() => {
   
 
   return (
-    <CartContext.Provider
-      value={{ cartItemsId, addItem, removeCartItem, clearCart, favorite, addFavorite, checkIfItemInDatabase, getCartItems, cartVersion, cartItems, userId  }}
+    <UserProductStateContext.Provider
+      value={{ cartItemsId, addItem, removeCartItem, clearCart, favorite, addFavorite,  getCartItems, cartItems, userId  }}
     >
       {children}
-    </CartContext.Provider>
+    </UserProductStateContext.Provider>
   )
 }
 
@@ -234,12 +215,12 @@ useEffect(() => {
  * Custom hook to use cart context
  * Must be used within CartProvider
  */
-export const useCart = () => {
-  const context = useContext(CartContext)
+export const useProductState = () => {
+  const context = useContext(UserProductStateContext)
   if (context === undefined) {
     throw new Error("useCart must be used within a CartProvider")
   }
   return context
 }
 
-export default CartContext
+export default UserProductStateContext

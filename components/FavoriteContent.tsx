@@ -3,10 +3,11 @@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import Link from "next/link"
 import { Button } from "./ui/button"
-import { ShoppingCart, ShoppingCartIcon, Trash2 } from "lucide-react"
-import { useCart } from "@/app/context/CartContext"
+import {ShoppingCartIcon, Trash2 } from "lucide-react"
+
 import NoFavoriteContent from "./NoFavoriteContent"
 import Exchange from "./Exchange"
+import { useProductState } from "@/app/context/UserProductStateProvider"
 
 
 
@@ -25,7 +26,7 @@ interface FavoriteContentProps {
 }
 
 const FavoriteContent = ({ products }: FavoriteContentProps) => {
-  const { addFavorite,addItem } = useCart()
+  const { addFavorite,addItem } = useProductState()
 
   return products.length !== 0 ? (
     <div className="flex flex-col w-full gap-6">

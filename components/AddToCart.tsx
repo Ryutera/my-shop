@@ -1,9 +1,9 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { Button } from "./ui/button";
-import { useCart } from "@/app/context/CartContext";
 import { ProductFields } from "@/lib/types";
 import Exchange from "./Exchange";
+import { useProductState } from "@/app/context/UserProductStateProvider";
 
 interface AddToCartProps {
   productData: ProductFields;
@@ -14,25 +14,19 @@ interface AddToCartProps {
 const AddToCart = (props: AddToCartProps) => {
   const { productData, id } = props;
 
-  const [existingCartItem, setExistingCartItem] = useState<any>(null);
+  const [existingCartItem] = useState<any>(null);
 
   console.log(existingCartItem, "existingcart")
 
-  const { addItem, cartItemsId, cartItems,checkIfItemInDatabase } = useCart();
+  const { addItem, cartItems} = useProductState();
 
   useEffect(() => {
-    const handleDatabasecheck = async () => {
-      const result = await checkIfItemInDatabase(id)
-      setExistingCartItem(result);
-    }
-
-    handleDatabasecheck()
 
   }, [cartItems]);
 
 
 
-  const isAdded = cartItemsId.some((i) => i === id);
+  const isAdded = cartItems.some((i) => i.id === id);
 
   // console.log(items)
   const handleAddToCart = async (id: string) => {
@@ -51,15 +45,7 @@ const AddToCart = (props: AddToCartProps) => {
         onClick={() => handleAddToCart(id)}
         disabled={!existingCartItem ? isAdded : true}
       >
-        {existingCartItem ? (
-          <>
-            Already added to Cart - <Exchange
-              priceEur={productData.priceEur}
-              priceJpy={productData.priceJpy}
-              priceGbp={productData.priceGbp}
-            />
-          </>
-        ) : isAdded ? (
+        {isAdded ? (
           <>
             Already added to Cart - <Exchange
               priceEur={productData.priceEur}

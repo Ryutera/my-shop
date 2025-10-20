@@ -3,12 +3,13 @@
 import Link from "next/link"
 import { ShoppingCart } from "lucide-react"
 import { useEffect, useState } from "react"
-import { useCart } from "@/app/context/CartContext"
+import { useProductState } from "@/app/context/UserProductStateProvider"
+
 
 
 
 const ShoppingCartIcon = () => {
-  const {cartItems} = useCart()
+  const {cartItems} = useProductState()
   const count = cartItems.length
   const [mounted,setMounted] = useState(false)
 

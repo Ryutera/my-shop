@@ -1,5 +1,5 @@
 "use client"
-import { useCart } from '@/app/context/CartContext'
+import { useCart } from '@/app/context/UserProductStateProvider'
 import React, { useEffect } from 'react'
 
 const ClearCartItem = () => {

@@ -2,12 +2,12 @@ import DeployButton from "@/components/deploy-button";
 import { EnvVarWarning } from "@/components/env-var-warning";
 import HeaderAuth from "@/components/header-auth";
 import { hasEnvVars } from "@/utils/supabase/check-env-vars";
-import {  Source_Sans_3, Work_Sans} from "next/font/google";
+import {  Source_Sans_3} from "next/font/google";
 import { ThemeProvider } from "next-themes";
 import Link from "next/link";
 import "./globals.css";
 import { createClient } from "@/utils/supabase/server";
-import { CartProvider } from "./context/CartContext";
+import { CartProvider } from "./context/UserProductStateProvider";
 import { getUserWithId } from "./actions";
 import {
   SidebarInset,

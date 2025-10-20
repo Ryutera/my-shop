@@ -8,7 +8,7 @@ import axios from "axios"
 import { useContext, useEffect, useState } from "react"
 import { removeCartItemFromDB } from "@/app/actions"
 import NoCartContent from "./NoCartContent"
-import { useCart } from "@/app/context/CartContext"
+
 import Exchange from "./Exchange"
 import CurrencyContext from "@/app/context/CurrencyContext"
 import {
@@ -23,6 +23,7 @@ import {
   AlertDialogTrigger,
 } from "./ui/alert-dialog"
 import CartContentForMobile from "./CartContentForMobile"
+import { useProductState } from "@/app/context/UserProductStateProvider"
 
 interface Product {
   sys: any
@@ -44,7 +45,7 @@ const CartContent = (props: ContentProps) => {
   const router = useRouter()
   const { cartItems} = props
   const context = useContext(CurrencyContext)
-  const {removeCartItem}  = useCart()
+  const {removeCartItem}  = useProductState()
 
   const currency = context?.currency
 

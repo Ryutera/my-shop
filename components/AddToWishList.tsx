@@ -1,9 +1,7 @@
 "use client"
-import React, { useEffect, useState } from 'react'
 import { Button } from './ui/button'
 import { Heart } from 'lucide-react'
-import { useCart } from '@/app/context/CartContext'
-import { isFavoriteInDatabase } from '@/app/actions'
+import { useProductState } from '@/app/context/UserProductStateProvider'
 
 interface Props{
     id:string
@@ -11,7 +9,7 @@ interface Props{
 
 const AddToWishList = (props:Props) => {
     const {id} = props
-    const {favorite,addFavorite} = useCart()
+    const {favorite,addFavorite} = useProductState()
   
    
 

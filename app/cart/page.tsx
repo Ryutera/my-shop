@@ -1,14 +1,15 @@
 "use client";
-import React, { useEffect} from "react";
-import { useCart } from "../context/CartContext";
+
+
 
 
 import CartContent from "@/components/CartContent";
 import NoCartContent from "@/components/NoCartContent";
+import { useProductState } from "../context/UserProductStateProvider";
 
 
 const Cart = () => {
-  const { cartItems } = useCart();
+  const { cartItems } = useProductState();
 
 
 
