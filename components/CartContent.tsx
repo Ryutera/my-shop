@@ -43,17 +43,11 @@ interface ContentProps {
 const CartContent = (props: ContentProps) => {
   const router = useRouter()
   const { cartItems} = props
-  const { refreshCart,userId,removeItem,  } = useCart() // Use the imported useCart hook
   const context = useContext(CurrencyContext)
+  const {removeCartItem}  = useCart()
 
   const currency = context?.currency
 
-
-
-
-
-
- 
 
 
 
@@ -70,15 +64,7 @@ const CartContent = (props: ContentProps) => {
     }
   }
 
-  const handleRemoveItem = async (product: Product) => {
-    if (userId) {
-      await removeCartItemFromDB(userId, product.id)
-     
-      refreshCart()
-    } else {
-      removeItem?.(product.id)
-    }
-  }
+ 
 
 
   
@@ -106,7 +92,7 @@ const CartContent = (props: ContentProps) => {
 
 
 {/* モバイル表示用 */}
-      <CartContentForMobile products={cartItems} currency={currency} totalAmount={totalAmount as number} handleRemoveItem={handleRemoveItem}/>
+      {/* <CartContentForMobile products={cartItems} currency={currency} totalAmount={totalAmount as number} handleRemoveItem={handleRemoveItem}/> */}
 {/* PC表示用 */}
       <div className="hidden md:block border border-gray-200 rounded-xl overflow-hidden bg-white shadow lg:p-10">
         <Table>
@@ -119,24 +105,24 @@ const CartContent = (props: ContentProps) => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {cartItems.map((product: Product, index: number) => (
-              <TableRow key={product.id || index} className="border-b border-gray-100 last:border-b-0">
+            {cartItems.map((cartitem: Product, index: number) => (
+              <TableRow key={cartitem.id || index} className="border-b border-gray-100 last:border-b-0">
                 <TableCell className="text-gray-900 text-lg py-5 px-6 hover:text-blue-500">
                   <div className="flex items-center gap-8">
                     <img
-                      src={`${product.thumbnail.fields.file.url}?fm=webp&w=800&h=1200&fit=thumb`}
-                      alt={product.name}
+                      src={`${cartitem?.thumbnail?.fields.file.url}?fm=webp&w=800&h=1200&fit=thumb`}
+                      alt={cartitem.name}
                       loading="lazy"
                       className="w-[15%] h-[15%] object-cover border border-gray-200 flex-shrink-0 transition-transform duration-200 hover:scale-[1.03]"
                     />
-                    <Link href={`/product/${product.id}`}>
-                      <p className="text-lg">{product.name}</p>
+                    <Link href={`/cartitem/${cartitem.id}`}>
+                      <p className="text-lg">{cartitem.name}</p>
                     </Link>
                   </div>
                 </TableCell>
                 <TableCell className="text-gray-900 text-lg py-5 px-6"></TableCell>
                 <TableCell className="text-gray-900 text-lg py-5 px-6">
-                  <Exchange priceEur={product?.priceEur} priceJpy={product?.priceJpy} priceGbp={product?.priceGbp} />
+                  <Exchange priceEur={cartitem?.priceEur} priceJpy={cartitem?.priceJpy} priceGbp={cartitem?.priceGbp} />
                 </TableCell>
                 <TableCell className="py-5 px-6">
                   <AlertDialog>
@@ -158,7 +144,7 @@ const CartContent = (props: ContentProps) => {
                       </AlertDialogHeader>
                       <AlertDialogFooter>
                         <AlertDialogCancel>Cancel</AlertDialogCancel>
-                        <AlertDialogAction onClick={() => handleRemoveItem(product)}>Continue</AlertDialogAction>
+                        <AlertDialogAction onClick={() => removeCartItem(cartitem.id)}>Continue</AlertDialogAction>
                       </AlertDialogFooter>
                     </AlertDialogContent>
                   </AlertDialog>

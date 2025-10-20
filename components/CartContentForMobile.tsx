@@ -44,7 +44,7 @@ const CartContentForMobile = ({products,currency,totalAmount, handleRemoveItem}:
               {/* 商品画像 */}
               <div className="flex-shrink-0">
                 <img
-                  src={`${product.thumbnail.fields.file.url}?fm=webp&w=200&h=300&fit=thumb`}
+                  src={`${product?.thumbnail?.fields.file.url}?fm=webp&w=200&h=300&fit=thumb`}
                   alt={product.name}
                   className="w-20 h-20 object-contain rounded bg-gray-50 border border-gray-100"
                 />

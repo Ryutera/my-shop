@@ -2,8 +2,8 @@
 
 import { createContext, type ReactNode, useContext, useEffect, useState } from "react"
 
-import { addCartToDb, addFavoriteToDb, getCartItemsInDb, getFavoriteWithUserId, getProductFromContentful, isCartInDatabase, isFavoriteInDatabase, removeFavoriteFromDb } from "../actions"
-import { ProductFields } from "@/lib/types"
+import { addCartToDb, addFavoriteToDb, getCartItemsInDb, getFavoriteWithUserId, getProductFromContentful, isCartInDatabase, isFavoriteInDatabase, removeCartItemFromDB, removeFavoriteFromDb } from "../actions"
+import { Product, ProductFields } from "@/lib/types"
 
 type CartContextType = {
   cartItemsId: string[] // Cart items (product IDs)
@@ -14,7 +14,7 @@ type CartContextType = {
 
 
   addItem: (id: string) => void
-  removeItem: (id: string) => void
+  removeCartItem: (id: string) => void
 
   clearCart: () => void
   addFavorite: (id: string) => void
@@ -117,8 +117,12 @@ console.log(cartItemsId, "カートのid")
  
     if (userData) {
       await addCartToDb(userId, id);
-      const result = await  getCartItemsInDb(userId)
-      setCartItems((prev)=>([prev,result]))
+      const results = await  getCartItemsInDb(userId)
+      const itemPromises = results.map((result) => getProductFromContentful(result.cmsItemId));
+const items = await Promise.all(itemPromises); 
+
+
+setCartItems(items);
       refreshCart()
     }else{
          setCartItemsId((prev) => {
@@ -130,12 +134,19 @@ console.log(cartItemsId, "カートのid")
   }
 
 
-  const removeItem = (id: string) => {
 
-    setCartItemsId((prev) => {
+   const removeCartItem = async (id:string) => {
+    if (userId) {
+      await removeCartItemFromDB(userId, id)
+      
+     
+      refreshCart()
+    } else {
+       setCartItemsId((prev) => {
       return prev.filter((i) => i !== id)
     })
 
+    }
   }
 
 
@@ -212,7 +223,7 @@ useEffect(() => {
 
   return (
     <CartContext.Provider
-      value={{ cartItemsId, addItem, removeItem, clearCart, favorite, addFavorite, refreshCart, checkIfItemInDatabase, getCartItems, cartVersion, cartItems, userId  }}
+      value={{ cartItemsId, addItem, removeCartItem, clearCart, favorite, addFavorite, refreshCart, checkIfItemInDatabase, getCartItems, cartVersion, cartItems, userId  }}
     >
       {children}
     </CartContext.Provider>
