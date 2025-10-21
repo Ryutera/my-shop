@@ -85,6 +85,36 @@ const Carousel = React.forwardRef<
       api?.scrollNext()
     }, [api])
 
+
+    // 初回表示時に十字キー操作を可能に
+ React.useEffect(() => {
+      // module-level flag to ensure single registration
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      ;(Carousel as any)._globalListenerRegistered = (Carousel as any)._globalListenerRegistered || false
+      if ((Carousel as any)._globalListenerRegistered) return
+
+      const handler = (event: KeyboardEvent) => {
+        const target = document.activeElement as HTMLElement | null
+        // タイピング中は無効に
+        const isTyping = target && (['INPUT', 'TEXTAREA', 'SELECT'].includes(target.tagName) || target.isContentEditable)
+        if (isTyping) return
+
+        if (event.key === 'ArrowLeft') {
+          event.preventDefault()
+          scrollPrev()
+        } else if (event.key === 'ArrowRight') {
+          event.preventDefault()
+          scrollNext()
+        }
+      }
+      window.addEventListener('keydown', handler)
+      ;(Carousel as any)._globalListenerRegistered = true
+      return () => {
+        window.removeEventListener('keydown', handler)
+        ;(Carousel as any)._globalListenerRegistered = false
+      }
+    }, [scrollPrev, scrollNext])
+
     const handleKeyDown = React.useCallback(
       (event: React.KeyboardEvent<HTMLDivElement>) => {
         if (event.key === "ArrowLeft") {
@@ -136,8 +166,9 @@ const Carousel = React.forwardRef<
       >
         <div
           ref={ref}
+          tabIndex={0} /* make focusable so keyboard events are received */
           onKeyDownCapture={handleKeyDown}
-          className={cn("relative", className)}
+          className={cn("relative outline-none focus:outline-none", className)}
           role="region"
           aria-roledescription="carousel"
           {...props}
@@ -182,6 +213,7 @@ const CarouselItem = React.forwardRef<
     <div
       ref={ref}
       role="group"
+      
       aria-roledescription="slide"
       className={cn(
         "min-w-0 shrink-0 grow-0 basis-full",

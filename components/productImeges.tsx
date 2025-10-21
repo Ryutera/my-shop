@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/carousel";
 import { Asset } from "contentful";
 import { Dialog, DialogContent, DialogTrigger, DialogTitle } from "./ui/dialog";
-import { ArrowLeft, ArrowRight } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 type Props = {
   thumbnail: Asset;
@@ -130,9 +130,6 @@ const ProductImeges = ({ thumbnail, images }: Props) => {
           </CarouselContent>
 <CarouselNext className="hidden md:block md:static  translate-y-0 ml-2" />
           </div>
-
-         
-        
         </Carousel>
 
 
@@ -144,7 +141,7 @@ const ProductImeges = ({ thumbnail, images }: Props) => {
 
             <div className="hidden sm:flex items-center  justify-center  ">
               <button onClick={() => setDialogSlideIndex((prev) => prev === -1 ? -1 : prev - 1)}>
-                {dialogSlideIndex === -1 ? <></> : <ArrowLeft className="text-white" />}
+                {dialogSlideIndex === -1 ? <></> : <ChevronLeft className="text-white" />}
               </button>
             </div>
 
@@ -213,7 +210,7 @@ const ProductImeges = ({ thumbnail, images }: Props) => {
 
             <div className="hidden sm:flex items-center  justify-center">
               <button onClick={() => setDialogSlideIndex((prev) => prev === images.length - 1 ? prev : prev + 1)}>
-                {dialogSlideIndex === images.length - 1 ? <></> : <ArrowRight className="text-white" />}
+                {dialogSlideIndex === images.length - 1 ? <></> : <ChevronRight className="text-white" />}
               </button>
 
             </div>

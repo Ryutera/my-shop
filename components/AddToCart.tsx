@@ -4,6 +4,7 @@ import { Button } from "./ui/button";
 import { ProductFields } from "@/lib/types";
 import Exchange from "./Exchange";
 import { useProductState } from "@/app/context/UserProductStateProvider";
+import { Spinner } from "./ui/spinner";
 
 interface AddToCartProps {
   productData: ProductFields;
@@ -49,7 +50,7 @@ const AddToCart = (props: AddToCartProps) => {
         onClick={() => handleAddToCart(id)}
         disabled={!existingCartItem ? isAdded : true}
       >
-        {loading ? "Adding..." : isAdded ? (
+        {loading ?<> <Spinner /> Adding...</> : isAdded ? (
           <>
             Already added to Cart - <Exchange
               priceEur={productData.priceEur}
