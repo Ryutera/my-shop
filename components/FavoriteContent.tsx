@@ -28,37 +28,43 @@ interface FavoriteContentProps {
 
 const FavoriteContent = ({ products }: FavoriteContentProps) => {
   const { addFavorite, addCartItem, cartItems } = useProductState()
-  const {toast} = useToast()
+  const { toast } = useToast()
 
-const ids = cartItems.map((item:any)=>item.id)
+  const ids = cartItems.map((item: any) => item.id)
 
 
   const handleClick = async (id: string) => {
-  try {
-    if (ids.includes(id)) {
+    try {
+      if (ids.includes(id)) {
+        toast({
+          title: "Already in your cart",
+          description: "カートに追加済みです。",
+          action: (
+            <ToastAction altText="Already in your cart" className="border border-gray-4 hover:bg-gray-50 px-3 py-1 md:px-5 md:py-1 rounded">Close</ToastAction>
+          ),
+        });
+        return;
+      }
+
+      await addCartItem(id);
+
       toast({
-        title: "Already in your cart",
-        description: "この商品はすでにカートに入っています。",
+        title: "Added to cart",
+        description: "カートに追加しました。",
+        action: (
+          <ToastAction altText="Added to cart" className="border border-gray-4 hover:bg-gray-50 px-5 py-1 rounded">Close</ToastAction>
+        ),
       });
-      return;
+    } catch (err) {
+      console.error(err);
+      toast({
+        variant: "destructive",
+        title: "Something went wrong",
+        description: "問題が発生しました。もう一度お試しください。",
+        action: <ToastAction altText="Try again">Try again</ToastAction>,
+      });
     }
-
-    await addCartItem(id);
-
-    toast({
-      title: "Added to cart",
-      description: "商品をカートに追加しました。",
-    });
-  } catch (err) {
-    console.error(err);
-    toast({
-      variant: "destructive",
-      title: "Something went wrong",
-      description: "問題が発生しました。もう一度お試しください。",
-      action: <ToastAction altText="Try again">Try again</ToastAction>,
-    });
-  }
-};
+  };
 
   return products.length !== 0 ? (
     <div className="flex flex-col w-full gap-6">
@@ -101,7 +107,7 @@ const ids = cartItems.map((item:any)=>item.id)
                     variant="ghost"
                     size="sm"
                     className="h-8 w-8 p-0 hover:bg-gray-100 text-gray-400 hover:text-gray-600"
-                     onClick={()=>handleClick(product.id)
+                    onClick={() => handleClick(product.id)
                     }
                   >
                     <ShoppingCartIcon />
@@ -159,17 +165,17 @@ const ids = cartItems.map((item:any)=>item.id)
                   <Exchange priceEur={product?.priceEur} priceJpy={product?.priceJpy} priceGbp={product?.priceGbp} />
                 </TableCell>
                 <TableCell className="py-5 px-6">
- <Button
+                  <Button
                     variant="ghost"
                     size="sm"
                     className="h-8 w-8 p-0 hover:bg-gray-100 text-gray-400 hover:text-gray-600"
-                    onClick={()=>handleClick(product.id)}
+                    onClick={() => handleClick(product.id)}
                   >
-
                     <ShoppingCartIcon />
-                  </Button>  
-                  
- 
+                    
+                  </Button>
+
+
                   <Button
                     variant="ghost"
                     size="sm"

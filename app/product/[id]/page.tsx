@@ -35,7 +35,7 @@ export default async function  ProductPage ({ params }:ProductPageProps) {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="w-full">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         <div className="md:sticky md:top-24 h-fit">
           <ProductImeges

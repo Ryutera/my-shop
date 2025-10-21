@@ -89,7 +89,7 @@ export default async function RootLayout({
                       </div>
                     </nav>
 
-                    <div className="flex flex-col gap-20 w-full md:w-[75%] max-w-7xl p-4">
+                    <div className="flex flex-col gap-20 w-full  max-w-7xl p-4">
                       {children}
                     </div>
                   </div>

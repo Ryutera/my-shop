@@ -15,7 +15,7 @@ const Cart = () => {
 console.log(cartItems,"カート中身コンテクスト")
 
   return (
-    <div className="w-full mx-auto max-w-5xl lg:max-w-6xl xl:max-w-7xl p-6 md:p-10">
+    <div className="w-full md:w-[75%] mx-auto max-w-5xl lg:max-w-6xl xl:max-w-7xl p-6 ">
       {cartItems.length > 0 ? (
         <CartContent cartItems={cartItems}  />
       ) :

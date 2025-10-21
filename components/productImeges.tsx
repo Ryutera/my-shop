@@ -25,14 +25,14 @@ const ProductImeges = ({ thumbnail, images }: Props) => {
   const [position, setPosition] = useState({ x: 0, y: 0 })  // 画像の位置
   const [isDragging, setIsDragging] = useState(false)       // ドラッグ中？
   const [dragStart, setDragStart] = useState({ x: 0, y: 0 }) // ドラッグ開始位置
-  
+
   const [isTouchDevice, setIsTouchDevice] = useState(false);
 
   useEffect(() => {
-  // タッチ操作が可能かチェック
-  const checkTouch = window.matchMedia("(pointer: coarse)").matches;
-  setIsTouchDevice(checkTouch);
-}, []);
+    // タッチ操作が可能かチェック
+    const checkTouch = window.matchMedia("(pointer: coarse)").matches;
+    setIsTouchDevice(checkTouch);
+  }, []);
 
   const handleZoomToggle = () => {
     if (isZoomed) {
@@ -90,6 +90,9 @@ const ProductImeges = ({ thumbnail, images }: Props) => {
       <Dialog onOpenChange={setOpen} open={open}>
         <DialogTitle className="sr-only">Product Image Gallery</DialogTitle>
         <Carousel>
+
+          <div className="flex justify-center  items-center">
+            <CarouselPrevious className="static translate-y-0 mr-2" />
           <CarouselContent>
             {/* Thumbnail image */}
             <CarouselItem key="thumbnail">
@@ -99,7 +102,7 @@ const ProductImeges = ({ thumbnail, images }: Props) => {
                   <img
                     src={`https:${thumbnail.fields.file?.url}`}
                     alt=""
-                    className="h-[600px] object-cover "
+                    className="h-[600px] object-cover p-5"
                     onClick={() => setDialogSlideIndex(-1)}
                   />
                 </DialogTrigger>
@@ -115,7 +118,7 @@ const ProductImeges = ({ thumbnail, images }: Props) => {
                       <img
                         src={`https:${image.fields.file.url}`}
                         alt=""
-                        className="h-[600px] object-cover"
+                        className="h-[600px] object-cover  p-5"
                         onClick={() => setDialogSlideIndex(index)}
                       />
                     </DialogTrigger>
@@ -124,12 +127,9 @@ const ProductImeges = ({ thumbnail, images }: Props) => {
               </CarouselItem>
             ))}
           </CarouselContent>
-
-          <div className="flex justify-center mt-4">
-            <CarouselPrevious className="static translate-y-0 mr-2" />
-
-            <CarouselNext className="static translate-y-0 ml-2" />
+<CarouselNext className="static translate-y-0 ml-2" />
           </div>
+        
         </Carousel>
 
 
@@ -150,7 +150,7 @@ const ProductImeges = ({ thumbnail, images }: Props) => {
                 {dialogSlideIndex < 0 ? (
                   <CarouselItem key="thumbnail">
                     <div className="flex justify-center  items-center min-h-[95dvh]"
-                      onClick={isTouchDevice? undefined: handleZoomToggle}
+                      onClick={isTouchDevice ? undefined : handleZoomToggle}
                       onMouseDown={handleMouseDown}
                       onMouseMove={handleMouseMove}
                       onMouseUp={handleMouseUp}
