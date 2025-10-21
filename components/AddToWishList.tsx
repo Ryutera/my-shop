@@ -22,7 +22,7 @@ const AddToWishList = (props:Props) => {
   >
     <Heart className="mr-2 h-4 w-4" 
     color={ favorite.find((f)=>f===id) ? "red" : "gray"} />
-    Add to Favoritelist
+    Add to Favoritelist / お気に入り登録
   </Button>
   )
 }

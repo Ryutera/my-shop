@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import {
   Carousel,
+  CarouselApi,
   CarouselContent,
   CarouselItem,
   CarouselNext,
@@ -20,6 +21,10 @@ const ProductImeges = ({ thumbnail, images }: Props) => {
   const [dialogSlideIndex, setDialogSlideIndex] = useState(-1);
   const [isZoomed, setIsZoomed] = useState(false)
   const [open, setOpen] = useState(false)
+  
+
+   const [api, setApi] = React.useState<CarouselApi>()
+    
 
   //パン操作
   const [position, setPosition] = useState({ x: 0, y: 0 })  // 画像の位置
@@ -43,6 +48,7 @@ const ProductImeges = ({ thumbnail, images }: Props) => {
       setIsZoomed(true)
     }
   }
+
 
 
 
@@ -85,55 +91,77 @@ const ProductImeges = ({ thumbnail, images }: Props) => {
   }
 
 
+
   return (
     <>
       <Dialog onOpenChange={setOpen} open={open}>
         <DialogTitle className="sr-only">Product Image Gallery</DialogTitle>
-        <Carousel>
-
+        <Carousel setApi={setApi}>
+          
           <div className="flex justify-center  items-center">
             {/* unvisible when using mobile device */}
             <CarouselPrevious className="hidden md:block md:static translate-y-0 mr-2" />
-          <CarouselContent>
-            {/* Thumbnail image */}
-            <CarouselItem key="thumbnail">
-              <div className="flex justify-center ">
-                <DialogTrigger asChild>
+            <CarouselContent>
+              {/* Thumbnail image */}
+              <CarouselItem key="thumbnail">
+                <div className="flex justify-center ">
+                  <DialogTrigger asChild>
 
-                  <img
-                    src={`https:${thumbnail.fields.file?.url}`}
-                    alt=""
-                    className="h-[600px] object-cover"
-                    onClick={() => setDialogSlideIndex(-1)}
-                  />
-                </DialogTrigger>
-              </div>
-            </CarouselItem>
-
-            {/* Images */}
-            {images.map((image, index) => (
-              <CarouselItem key={index}>
-                <div className="flex justify-center" >
-                  {image.fields.file?.url && (
-                    <DialogTrigger asChild>
-                      <img
-                        src={`https:${image.fields.file.url}`}
-                        alt=""
-                        className="h-[600px] object-cover"
-                        onClick={() => setDialogSlideIndex(index)}
-                      />
-                    </DialogTrigger>
-                  )}
+                    <img
+                      src={`https:${thumbnail.fields.file?.url}`}
+                      alt=""
+                      className="h-[600px] object-cover"
+                      onClick={() => setDialogSlideIndex(-1)}
+                    />
+                  </DialogTrigger>
                 </div>
               </CarouselItem>
-            ))}
-          </CarouselContent>
-<CarouselNext className="hidden md:block md:static  translate-y-0 ml-2" />
+
+              {/* Images */}
+              {images.map((image, index) => (
+                <CarouselItem key={index}>
+                  <div className="flex justify-center" >
+                    {image.fields.file?.url && (
+                      <DialogTrigger asChild>
+                        <img
+                          src={`https:${image.fields.file.url}`}
+                          alt=""
+                          className="h-[600px] object-cover"
+                          onClick={() => setDialogSlideIndex(index)}
+                        />
+                      </DialogTrigger>
+                    )}
+                  </div>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            <CarouselNext className="hidden md:block md:static  translate-y-0 ml-2" />
           </div>
+
+          
+
+          <div className="grid grid-4  grid-cols-4 gap-2 mt-5 px-12">
+            <img
+              src={`https:${thumbnail.fields.file?.url}`}
+
+              alt=""
+              className="object-cover"
+              onClick={() => { setDialogSlideIndex(-1); api?.scrollTo(0)} }
+            />
+            {images.map((image, index) => (
+              image.fields.file?.url &&
+              <img
+                src={`https:${image.fields.file.url}`}
+                key={index}
+                alt=""
+                className="object-cover"
+                onClick={() => {setDialogSlideIndex(index) ; api?.scrollTo(index + 1)}}
+              />)
+            )}
+
+          </div>
+
         </Carousel>
-
-
-
 
         <DialogContent className="max-w-[100vw] max-h-[100dvh] p-2 bg-black bg-opacity-20">
 
@@ -156,7 +184,6 @@ const ProductImeges = ({ thumbnail, images }: Props) => {
                       onMouseUp={handleMouseUp}
                       onMouseLeave={handleMouseLeave}
                     >
-
                       <img
                         src={`https:${thumbnail.fields.file?.url}`}
                         alt=""
@@ -170,9 +197,6 @@ const ProductImeges = ({ thumbnail, images }: Props) => {
                           transform: `scale(2.7) translate(${position.x / 2.7}px, ${position.y / 2.7}px)`,
                           transition: isDragging ? 'none' : 'transform 0.5s'
                         } : undefined}
-
-
-
                       />
 
                     </div>
@@ -190,17 +214,11 @@ const ProductImeges = ({ thumbnail, images }: Props) => {
                           alt=""
                           className={`h-[95dvh] sm:h-[90dvh] max-w-full object-cover   ${isZoomed ? (isDragging ? "cursor-grabbing" : "cursor-grab") : "cursor-zoom-in"
                             }`}
-
-
                           style={isZoomed ? {
                             transform: `scale(2.7) translate(${position.x / 2.7}px, ${position.y / 2.7}px)`,
                             transition: isDragging ? 'none' : 'transform 0.5s'
                           } : undefined}
-
-
                         />
-
-
                       )}
                     </div>
                   </CarouselItem>
@@ -218,6 +236,8 @@ const ProductImeges = ({ thumbnail, images }: Props) => {
           </div>
         </DialogContent>
       </Dialog>
+
+
     </>
   );
 };

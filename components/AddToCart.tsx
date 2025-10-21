@@ -52,7 +52,7 @@ const AddToCart = (props: AddToCartProps) => {
       >
         {loading ?<> <Spinner /> Adding...</> : isAdded ? (
           <>
-            Already added to Cart - <Exchange
+            Already in your cart / 追加済み - <Exchange
               priceEur={productData.priceEur}
               priceJpy={productData.priceJpy}
               priceGbp={productData.priceGbp}
@@ -60,7 +60,7 @@ const AddToCart = (props: AddToCartProps) => {
           </>
         ) : (
           <>
-            Add to Cart - <Exchange
+            Add to Cart / カートに追加 - <Exchange
               priceEur={productData.priceEur}
               priceJpy={productData.priceJpy}
               priceGbp={productData.priceGbp}
