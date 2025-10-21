@@ -18,6 +18,7 @@ import { AppSidebar } from "@/components/app-sidebar";
 import { CurrencyProvider } from "./context/CurrencyContext";
 import { SearchProvider } from "./context/SearchContext";
 import SearchBar from "@/components/SearchBar";
+import { Toaster } from "@/components/ui/toaster";
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
@@ -93,6 +94,7 @@ export default async function RootLayout({
                     </div>
                   </div>
                 </main>
+                
               </ThemeProvider>
             </SidebarInset>
           </SidebarProvider>
@@ -100,6 +102,7 @@ export default async function RootLayout({
         </CartProvider>
         </SearchProvider>
         </CurrencyProvider>
+        <Toaster />
       </body>
     </html>
   );

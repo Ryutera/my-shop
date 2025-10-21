@@ -9,8 +9,8 @@ import NoFavoriteContent from "./NoFavoriteContent"
 import Exchange from "./Exchange"
 import { useProductState } from "@/app/context/UserProductStateProvider"
 
-
-
+import { ToastAction } from "@radix-ui/react-toast"
+import { useToast } from "@/hooks/use-toast"
 
 
 interface Product {
@@ -28,8 +28,37 @@ interface FavoriteContentProps {
 
 const FavoriteContent = ({ products }: FavoriteContentProps) => {
   const { addFavorite, addCartItem, cartItems } = useProductState()
+  const {toast} = useToast()
 
 const ids = cartItems.map((item:any)=>item.id)
+
+
+  const handleClick = async (id: string) => {
+  try {
+    if (ids.includes(id)) {
+      toast({
+        title: "Already in your cart",
+        description: "この商品はすでにカートに入っています。",
+      });
+      return;
+    }
+
+    await addCartItem(id);
+
+    toast({
+      title: "Added to cart",
+      description: "商品をカートに追加しました。",
+    });
+  } catch (err) {
+    console.error(err);
+    toast({
+      variant: "destructive",
+      title: "Something went wrong",
+      description: "問題が発生しました。もう一度お試しください。",
+      action: <ToastAction altText="Try again">Try again</ToastAction>,
+    });
+  }
+};
 
   return products.length !== 0 ? (
     <div className="flex flex-col w-full gap-6">
@@ -72,9 +101,9 @@ const ids = cartItems.map((item:any)=>item.id)
                     variant="ghost"
                     size="sm"
                     className="h-8 w-8 p-0 hover:bg-gray-100 text-gray-400 hover:text-gray-600"
-                    onClick={() => addCartItem(product.id)}
+                     onClick={()=>handleClick(product.id)
+                    }
                   >
-
                     <ShoppingCartIcon />
                   </Button>
                 </div>
@@ -134,7 +163,7 @@ const ids = cartItems.map((item:any)=>item.id)
                     variant="ghost"
                     size="sm"
                     className="h-8 w-8 p-0 hover:bg-gray-100 text-gray-400 hover:text-gray-600"
-                    onClick={ids.includes(product.id) ? ()=>{alert("すでに追加されています。")} :   () => addCartItem(product.id)}
+                    onClick={()=>handleClick(product.id)}
                   >
 
                     <ShoppingCartIcon />
