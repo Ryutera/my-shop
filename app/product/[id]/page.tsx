@@ -37,7 +37,7 @@ export default async function  ProductPage ({ params }:ProductPageProps) {
   return (
     <div className="w-full">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        <div className="md:sticky md:top-24 h-fit">
+        <div className="md:sticky md:top-24 h-fit md:px-5">
           <ProductImeges
             thumbnail={productData.thumbnail}
             images={productData.images}

@@ -92,7 +92,8 @@ const ProductImeges = ({ thumbnail, images }: Props) => {
         <Carousel>
 
           <div className="flex justify-center  items-center">
-            <CarouselPrevious className="static translate-y-0 mr-2" />
+            {/* unvisible when using mobile device */}
+            <CarouselPrevious className="hidden md:block md:static translate-y-0 mr-2" />
           <CarouselContent>
             {/* Thumbnail image */}
             <CarouselItem key="thumbnail">
@@ -102,7 +103,7 @@ const ProductImeges = ({ thumbnail, images }: Props) => {
                   <img
                     src={`https:${thumbnail.fields.file?.url}`}
                     alt=""
-                    className="h-[600px] object-cover p-5"
+                    className="h-[600px] object-cover"
                     onClick={() => setDialogSlideIndex(-1)}
                   />
                 </DialogTrigger>
@@ -118,7 +119,7 @@ const ProductImeges = ({ thumbnail, images }: Props) => {
                       <img
                         src={`https:${image.fields.file.url}`}
                         alt=""
-                        className="h-[600px] object-cover  p-5"
+                        className="h-[600px] object-cover"
                         onClick={() => setDialogSlideIndex(index)}
                       />
                     </DialogTrigger>
@@ -127,8 +128,10 @@ const ProductImeges = ({ thumbnail, images }: Props) => {
               </CarouselItem>
             ))}
           </CarouselContent>
-<CarouselNext className="static translate-y-0 ml-2" />
+<CarouselNext className="hidden md:block md:static  translate-y-0 ml-2" />
           </div>
+
+         
         
         </Carousel>
 
