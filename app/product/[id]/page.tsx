@@ -1,11 +1,13 @@
 import { getProductFromContentful } from "@/app/actions";
-import React from "react";
+
 
 import ProductImeges from "@/components/productImeges";
 import { Badge } from "@/components/ui/badge";
 import AddToCart from "@/components/AddToCart";
 import AddToWishList from "@/components/AddToWishList";
 import Exchange from "@/components/Exchange";
+import ProductDescription from "@/components/ProductDescription";
+
 
 
 interface ProductPageProps {
@@ -13,26 +15,22 @@ interface ProductPageProps {
 }
 
 
-export default async function  ProductPage ({ params }:ProductPageProps) {
+export default async function ProductPage({ params }: ProductPageProps) {
   const { id } = await params;
   const productData = await getProductFromContentful(id);
+
+  console.log(productData.description_en,"英語")
  
-  
+  console.log(productData.description_jp,"日本語")
+ 
+
+
   if (!productData) {
     console.log("there are no date");
     return <div>There is no product</div>;
   }
 
-  const formatDescription = (description: string) => {
-    return description.split("\n").map((line, index) => {
-      if (line.trim() === "") return <br key={index} />;
-      return (
-        <p key={index} className="mb-2">
-          {line}
-        </p>
-      );
-    });
-  };
+
 
   return (
     <div className="w-full">
@@ -55,10 +53,10 @@ export default async function  ProductPage ({ params }:ProductPageProps) {
             <div className="flex items-center gap-3">
               <span className="text-2xl font-semibold">
                 {productData.isSoldOut ? "£0" : <Exchange
-                priceJpy ={productData.priceJpy}
-                priceGbp ={productData.priceGbp}
-                priceEur ={productData.priceEur}
-          
+                  priceJpy={productData.priceJpy}
+                  priceGbp={productData.priceGbp}
+                  priceEur={productData.priceEur}
+
                 />}
               </span>
               {productData.isSoldOut ? (
@@ -79,22 +77,17 @@ export default async function  ProductPage ({ params }:ProductPageProps) {
             </div>
             {/* Actions */}
             {productData.isSoldOut ? (
-              
-              <br/>
+
+              <br />
             ) : (
               <div className="space-y-3">
-                <AddToCart productData={productData} id={id}  />
-                <AddToWishList id={id}  />
+                <AddToCart productData={productData} id={id} />
+                <AddToWishList id={id} />
               </div>
             )}
 
             {/* Description */}
-            <div>
-              <h3 className="font-medium mb-3">Product Details</h3>
-              <div className="text-muted-foreground text-sm space-y-1">
-                {formatDescription(productData.description)}
-              </div>
-            </div>
+           <ProductDescription  jp={productData.description_jp} en={productData.description_en}/>
           </div>
         </div>
       </div>

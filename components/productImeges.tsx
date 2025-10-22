@@ -21,7 +21,6 @@ const ProductImeges = ({ thumbnail, images }: Props) => {
   const [dialogSlideIndex, setDialogSlideIndex] = useState(-1);
   const [isZoomed, setIsZoomed] = useState(false)
   const [open, setOpen] = useState(false)
-  
 
    const [api, setApi] = React.useState<CarouselApi>()
     
@@ -140,10 +139,9 @@ const ProductImeges = ({ thumbnail, images }: Props) => {
 
           
 
-          <div className="grid grid-4  grid-cols-4 gap-2 mt-5 px-12">
+          <div className="grid grid-4  grid-cols-4 gap-2 mt-5 md:px-12 px-5 ">
             <img
               src={`https:${thumbnail.fields.file?.url}`}
-
               alt=""
               className="object-cover"
               onClick={() => { setDialogSlideIndex(-1); api?.scrollTo(0)} }
@@ -155,7 +153,9 @@ const ProductImeges = ({ thumbnail, images }: Props) => {
                 key={index}
                 alt=""
                 className="object-cover"
-                onClick={() => {setDialogSlideIndex(index) ; api?.scrollTo(index + 1)}}
+                onClick={() => {setDialogSlideIndex(index) ; api?.scrollTo(index + 1
+
+                )}}
               />)
             )}
 

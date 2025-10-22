@@ -6,7 +6,8 @@ export type ProductFields = {
     priceGbp: number
     priceJpy: number
     priceEur: number
-    description: string
+    description_jp: string | undefined
+    description_en: string | undefined
     thumbnail: Asset
     images: Asset[]
     isSoldOut:{ 'en-US': boolean }

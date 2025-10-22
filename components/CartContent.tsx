@@ -136,7 +136,7 @@ return (
                       loading="lazy"
                       className="w-[15%] h-[15%] object-cover border border-gray-200 flex-shrink-0 transition-transform duration-200 hover:scale-[1.03]"
                     />
-                    <Link href={`/cartitem/${cartitem.id}`}>
+                    <Link href={`/product/${cartitem.id}`}>
                       <p className="text-lg">{cartitem.name}</p>
                     </Link>
                   </div>
