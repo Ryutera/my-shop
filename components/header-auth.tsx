@@ -83,7 +83,7 @@ export default function AuthButton({ data, userData }: any) {
     <div className="flex items-center gap-4">
 
       <button onClick={searchcontext.onClickSearch} className="relative inline-block hover:scale-110 transition-transform duration-200 cursor-pointer">
-        <Search />
+        <Search className="text-gray-700"/>
       </button>
 
        <Link href="/favorite" className="relative inline-block hover:scale-110 transition-transform duration-200 cursor-pointer">
@@ -92,9 +92,7 @@ export default function AuthButton({ data, userData }: any) {
 
       <ShoppingCartIcon  />
 
-    
-
-
+  
       {data ?
         // signup時に一瞬userdata.idがnullになるためそれを回避
 
@@ -108,7 +106,7 @@ export default function AuthButton({ data, userData }: any) {
 
         // {/* <Button asChild size="sm" className="ml-2" variant={"outline"}> */}
         <Link href="/sign-in">
-          <UserRound />
+          <UserRound className="text-gray-700"/>
         </Link>
         /* </Button> */
 

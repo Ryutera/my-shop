@@ -144,7 +144,7 @@ export function AppSidebar() {
                              onClick={() => toggleSidebar()}
                             
                           >
-                            <span className="truncate">{item.title}</span>
+                            <span className="truncate text-gray-500">{item.title}</span>
                           </Link>
                         </SidebarMenuButton>
                       </SidebarMenuItem>

@@ -21,7 +21,7 @@ const SearchBar = () => {
           <input
             type="text"
             placeholder="Search products..."
-            className="flex  mx-auto w-[80%] border rounded px-3 py-2 focus:outline-none"
+            className="flex  mx-auto w-[80%]  rounded px-3 py-2 focus:outline-none bg-white"
             onChange={(e:any)=>context.setSearchedWord(e.target.value)}
             value={context.searchedWord}
           />

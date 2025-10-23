@@ -37,7 +37,7 @@ const ProductsGrid = ({ items, label }: ProductsGridProps) => {
     <h2 className="px-1 sm:px-10 text-lg sm:text-2xl leading-tight tracking-[0.01em] text-center">
       <span className="uppercase ">{label}</span>
       {label === "NEW ARRIVALS" && (
-        <span className="ml-1.5 sm:ml-2 text-[11px] sm:text-sm text-gray-500 align-baseline block md:inline pt-2 md:pt-0">
+        <span className="ml-1.5 sm:ml-2 text-[11px] sm:text-sm text-gray-500 align-baseline block md:inline pt-2 md">
           新着
         </span>
       )}
