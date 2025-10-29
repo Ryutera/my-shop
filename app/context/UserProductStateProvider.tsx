@@ -2,7 +2,7 @@
 
 import { createContext, type ReactNode, useContext, useEffect, useState } from "react"
 
-import { addCartToDb, addFavoriteToDb, getCartItemsInDb, getFavoriteWithUserId, getProductFromContentful, isCartInDatabase, isFavoriteInDatabase, removeCartItemFromDB, removeFavoriteFromDb } from "../actions"
+import { addCartToDb, addFavoriteToDb, getCartItemsInDb, getFavoriteWithUserId, getProductFromContentful, getProductsByIds, isCartInDatabase, isFavoriteInDatabase, removeCartItemFromDB, removeFavoriteFromDb } from "../actions"
 import { ProductFields } from "@/lib/types"
 
 type UserProductStateContextType = {
@@ -81,8 +81,8 @@ export const CartProvider = (props: Props) => {
     if (userData) {
       await addCartToDb(userId, id);
       const results = await getCartItemsInDb(userId)
-      const itemPromises = results.map((result) => getProductFromContentful(result.cmsItemId));
-      const items = await Promise.all(itemPromises);
+       const ids = results.map((r) => r.cmsItemId);
+     const items = await getProductsByIds(ids);
       setCartItems(items);
 
     } else {
@@ -98,11 +98,13 @@ export const CartProvider = (props: Props) => {
     if (userId) {
       await removeCartItemFromDB(userId, id)
 
-      const DbItems = await getCartItemsInDb(userId);
-      const Items = await Promise.all(
-        DbItems.map((item) => getProductFromContentful(item.cmsItemId))
-      );
-      setCartItems(Items);
+      const dbItems = await getCartItemsInDb(userId);
+ const ids = dbItems.map((item) => item.cmsItemId);
+
+// Contentful からまとめて商品データ取得
+const items = await getProductsByIds(ids);
+
+      setCartItems(items);
 
 
     } else {
@@ -131,21 +133,19 @@ export const CartProvider = (props: Props) => {
    * Note: This function does not perform optimistic UI updates for DB-backed users —
    * it waits for the DB result and then re-fetches.
    */
-  const getCartItems = async () => {
-    // Logged-in users: get items from database
-    if (userData) {
-      const DbItems = await getCartItemsInDb(userId);
-      const Items = await Promise.all(
-        DbItems.map((item) => getProductFromContentful(item.cmsItemId))
-      );
-      setCartItems(Items);
-    }
-    else {
-      // Non-logged-in users: get items from context
-      const results = await Promise.all(cartItemsIds.map((id) => getProductFromContentful(id)));
-      setCartItems(results.filter(Boolean));
-    }
+const getCartItems = async () => {
+  if (userData) {
+   
+    const dbItems = await getCartItemsInDb(userId);
+    const ids = dbItems.map((item) => item.cmsItemId);
+    const items = await getProductsByIds(ids);
+    setCartItems(items);
+  } else {
+   
+    const items = await getProductsByIds(cartItemsIds);
+    setCartItems(items.filter(Boolean));
   }
+};
 
     useEffect(() => {
     const fetchProducts = async () => {

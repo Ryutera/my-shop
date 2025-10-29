@@ -30,7 +30,7 @@ const categorySlugs = [
   { title: "Coats", slug: "coats" },
   { title: "Shirts", slug: "shirts" },
   { title: "T-shirts", slug: "t-shirts" },
-  { title: "Pants", slug: "pants" },
+  { title: "Bottoms", slug: "bottoms" },
   { title: "Knit / Sweaters", slug: "knit" },
   { title: "Accessories", slug: "accessories" },
   { title: "Other", slug: "other" },

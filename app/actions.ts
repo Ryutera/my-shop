@@ -177,6 +177,30 @@ export async function getProductFromContentful(id: string): Promise<Product> {
   }
 }
 
+// Get specific products by product IDs
+
+export async function getProductsByIds(ids: string[]): Promise<Product[]> {
+  const unique = [...new Set(ids)].filter(Boolean);
+  if (unique.length === 0) return [];
+
+
+  try {
+  const res = await contentfulClient.getEntries<ProductFieldsSkeleton>({
+    content_type: "clothes",    
+    "sys.id[in]": unique,
+    limit: unique.length,
+  });
+  return res.items.map((entry) => ({
+    id: entry.sys.id,
+    ...entry.fields,
+  }));
+} catch (err: any) {
+  console.error("❌ Error fetching products from Contentful:", err.message || err);
+  throw err;
+}
+}
+
+
 export async function getProductsByCategory(category: string) {
   const entries = await contentfulClient.getEntries<ProductFieldsSkeleton>({
     content_type: "clothes",     
