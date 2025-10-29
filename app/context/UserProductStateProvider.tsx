@@ -101,7 +101,6 @@ export const CartProvider = (props: Props) => {
       const dbItems = await getCartItemsInDb(userId);
  const ids = dbItems.map((item) => item.cmsItemId);
 
-// Contentful からまとめて商品データ取得
 const items = await getProductsByIds(ids);
 
       setCartItems(items);
