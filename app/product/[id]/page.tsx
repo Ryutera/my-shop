@@ -19,11 +19,6 @@ export default async function ProductPage({ params }: ProductPageProps) {
   const { id } = await params;
   const productData = await getProductFromContentful(id);
 
-  console.log(productData.description_en,"英語")
- 
-  console.log(productData.description_jp,"日本語")
- 
-
 
   if (!productData) {
     console.log("there are no date");

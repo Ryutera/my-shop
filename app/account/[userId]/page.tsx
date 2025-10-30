@@ -1,14 +1,9 @@
 import { createClient } from "@/utils/supabase/server";
 import React from "react";
-
 import AccountPanel from "@/components/AccountPanel";
 import { Order } from "@/lib/generated/prisma";
 import { OrderItem } from "@/lib/types";
 import { getPurchaseItemsIndb } from "@/app/actions";
-
-
-
-
 
 const page = async () => {
   const supabase = await createClient();
@@ -28,18 +23,12 @@ const page = async () => {
    
 switch (currency) {
   case "JPY":
-    
     return `${price.toLocaleString('JP')}` ;
-
      case "EUR":
-    
     return `${price.toLocaleString('DE')}`;
      case "GBP":
-    
     return `${price.toLocaleString('GB')}`
-
 }
-
   }
 
 

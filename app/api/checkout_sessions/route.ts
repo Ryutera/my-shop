@@ -10,6 +10,9 @@ export async function POST(req: Request) {
     const body = await req.json();
     const products = body.products || [];
     const currency = body.currency.toLowerCase() || "gbp";
+    const shippingFee = body.shippingFee
+
+    console.log(shippingFee,"送料")
 
     interface Product {
       id: string;
@@ -26,6 +29,8 @@ export async function POST(req: Request) {
     } = await supabase.auth.getUser();
 
     const userId = user?.id;
+
+  
 
     const session = await stripe.checkout.sessions.create({
       line_items: products.map((product: Product) => {
@@ -47,10 +52,47 @@ export async function POST(req: Request) {
           quantity: 1,
         };
       }),
+
+       
       billing_address_collection: "auto",
       shipping_address_collection: {
-        allowed_countries: ["JP", "GB"],
+        allowed_countries: [
+           // Europe
+    "GB", "FR", "DE", "IT", "ES", "NL", "BE", "CH", "SE", "NO", "FI", "IE", "AT", "DK", "PL", "PT", "CZ", "HU",
+
+    // North America
+    "US", "CA",
+
+    // Oceania
+    "AU", "NZ",
+
+    // East Asia
+    "JP", 
+        ],
       },
+       shipping_options: [
+    {
+      shipping_rate_data: {
+        type: 'fixed_amount',
+        fixed_amount: {
+          amount: 5,
+          currency: currency,
+        },
+        display_name: 'Shipping fee',
+        delivery_estimate: {
+          minimum: {
+            unit: 'business_day',
+            value: 5,
+          },
+          maximum: {
+            unit: 'business_day',
+            value: 7,
+          },
+        },
+      },
+    },
+   
+  ],
       metadata: {
         user_id: userId || null,
         products: JSON.stringify(
@@ -62,7 +104,7 @@ export async function POST(req: Request) {
           ? p.priceJpy
           : currency === "eur"
           ? p.priceEur
-          : p.priceGbp ,
+          : p.priceGbp  ,
       currency: currency.toUpperCase()
           }))
         ),
