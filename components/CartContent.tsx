@@ -49,13 +49,12 @@ const CartContent = (props: ContentProps) => {
 
   const currency = context?.currency
 
-  const shippingFee = 500; 
   const getPayment = async () => {
     try {
       const data = await axios.post("/api/checkout_sessions/", {
         products: cartItems,
         currency: currency,
-        shippingFee: shippingFee
+       
       })
 
       router.push(data.data.url)

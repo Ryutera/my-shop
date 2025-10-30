@@ -10,9 +10,7 @@ export async function POST(req: Request) {
     const body = await req.json();
     const products = body.products || [];
     const currency = body.currency.toLowerCase() || "gbp";
-    const shippingFee = body.shippingFee
 
-    console.log(shippingFee,"送料")
 
     interface Product {
       id: string;
@@ -29,6 +27,24 @@ export async function POST(req: Request) {
     } = await supabase.auth.getUser();
 
     const userId = user?.id;
+
+
+
+let  shippingFee 
+if (currency==="jpy") {
+ const  totalAmount = products.map((p:any)=>p.priceJpy).reduce((acc: any,cur: any)=>acc += cur)
+ console.log(totalAmount,"総額")
+  shippingFee  = (totalAmount >= 80000 ? 0 : 2000) 
+ }if (currency==="eur") {
+ const  totalAmount = products.map((p:any)=>p.priceEur).reduce((acc: any,cur: any)=>acc += cur)
+  console.log(totalAmount,"総額")
+  shippingFee = ( totalAmount >= 200 ? 0 : 20 )
+ }else{
+const  totalAmount = products.map((p:any)=>p.priceGbp).reduce((acc: any,cur: any)=>acc += cur)
+  console.log(totalAmount,"総額")
+  shippingFee = (totalAmount >= 250 ? 0 : 20 )
+ }
+    
 
   
 
@@ -75,7 +91,7 @@ export async function POST(req: Request) {
       shipping_rate_data: {
         type: 'fixed_amount',
         fixed_amount: {
-          amount: 5,
+          amount: shippingFee ,
           currency: currency,
         },
         display_name: 'Shipping fee',
