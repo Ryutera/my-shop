@@ -30,20 +30,24 @@ export async function POST(req: Request) {
 
 
 
+//価格に応じて送料が無料になる
 let  shippingFee 
 if (currency==="jpy") {
  const  totalAmount = products.map((p:any)=>p.priceJpy).reduce((acc: any,cur: any)=>acc += cur)
  console.log(totalAmount,"総額")
-  shippingFee  = (totalAmount >= 80000 ? 0 : 2000) 
- }if (currency==="eur") {
+ shippingFee  = (totalAmount >= 30000 ? 0 : 2000) 
+
+ }else if (currency==="eur") {
  const  totalAmount = products.map((p:any)=>p.priceEur).reduce((acc: any,cur: any)=>acc += cur)
   console.log(totalAmount,"総額")
-  shippingFee = ( totalAmount >= 200 ? 0 : 20 )
- }else{
+shippingFee = ( totalAmount >= 200 ? 0 : 20 )
+ }else {
 const  totalAmount = products.map((p:any)=>p.priceGbp).reduce((acc: any,cur: any)=>acc += cur)
-  console.log(totalAmount,"総額")
-  shippingFee = (totalAmount >= 250 ? 0 : 20 )
+  console.log(totalAmount,"総額gbp")
+shippingFee = (totalAmount >= 250 ? 0 : 20 *100 )
  }
+
+ console.log(shippingFee, "送料")
     
 
   
@@ -124,6 +128,7 @@ const  totalAmount = products.map((p:any)=>p.priceGbp).reduce((acc: any,cur: any
       currency: currency.toUpperCase()
           }))
         ),
+      
       },
       mode: "payment",
       locale: "en",

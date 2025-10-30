@@ -33,6 +33,9 @@ export default async function SuccessPage({ searchParams }: Props) {
     const totalAmount = session.amount_total || 0
     const billingAddress = session.customer_details?.address
 
+    const shippingFee = session.shipping_cost?.amount_subtotal
+
+
 
     const formatPrice = (amount: number, currency: string) => {
   switch (currency.toLowerCase()) {
@@ -84,6 +87,23 @@ export default async function SuccessPage({ searchParams }: Props) {
                     </Badge>
                   </div>
                 ))}
+
+{shippingFee &&  <div
+                   
+                    className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 sm:gap-0"
+                  >
+                    <div className="flex-1">
+                      <p className="font-medium text-sm sm:text-base break-words">Shipping Fee</p>
+                    </div>
+
+                    <Badge variant="secondary" className="self-start sm:self-auto text-xs sm:text-sm">
+                     <span>{shippingFee} {items[0].currency!.toUpperCase()}</span>
+
+                    </Badge>
+                  </div>}
+                
+                
+
                 <Separator />
                 <div className="flex justify-between items-center font-semibold text-base sm:text-lg">
                   <span>Total</span>

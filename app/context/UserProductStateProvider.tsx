@@ -36,7 +36,7 @@ export const CartProvider = (props: Props) => {
   
   const userId = userData?.identities[0].id
 
-  console.log(favorite,"フェイバリットの中身")
+  
 
     // Load data from localStorage on initial load (non-logged-in users only)
     //非ログイン時にカートとお気に入りをローカルデータから追加
