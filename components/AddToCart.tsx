@@ -36,7 +36,6 @@ const AddToCart = (props: AddToCartProps) => {
       setLoading(false)
     }
 
-
   };
 
 
@@ -50,7 +49,7 @@ const AddToCart = (props: AddToCartProps) => {
         onClick={() => handleAddToCart(id)}
         disabled={!existingCartItem ? isAdded : true}
       >
-        {loading ?<> <Spinner /> Adding...</> : isAdded ? (
+        {loading ? <> <Spinner /> Adding...</> : isAdded ? (
           <>
             Already in your cart / 追加済み - <Exchange
               priceEur={productData.priceEur}

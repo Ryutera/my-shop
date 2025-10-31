@@ -1,10 +1,8 @@
 "use client";
-import { signOutAction } from "@/app/actions";
-import { hasEnvVars } from "@/utils/supabase/check-env-vars";
+
 import Link from "next/link";
 import ShoppingCartIcon from "./ShoppingCartIcon";
-import { useContext, useEffect, useState } from "react";
-import CurrencyContext from "@/app/context/CurrencyContext";
+import { useContext } from "react";
 import { Heart, Search, UserRound, UserRoundCheck } from "lucide-react";
 import SearchContext from "@/app/context/SearchContext";
 
@@ -13,34 +11,8 @@ import SearchContext from "@/app/context/SearchContext";
 
 export default function AuthButton({ data, userData }: any) {
 
-  const currencycontext = useContext(CurrencyContext)
   const searchcontext = useContext(SearchContext)
-  
 
-
-
-  useEffect(() => {
-    const currencyMap: Record<string, string> = {
-      JP: "JPY",
-      GB: "GBP",
-      FR: "EUR",
-      DE: "EUR",
-      IT: "EUR",
-      //Add later if needed
-    };
-
-
-
-    const setCurrencyBasedonIp = async () => {
-
-      const res = await fetch(`https://ipinfo.io/?token=${process.env.NEXT_PUBLIC_IPINFO_TOKEN}`)
-      const data = await res.json()
-      const currency = currencyMap[data.country] || "GBP"
-      currencycontext?.setCurrency(currency)
-
-    }
-    setCurrencyBasedonIp()
-  }, [])
 
   // if (!hasEnvVars) {
   //   return (

@@ -43,18 +43,19 @@ interface ContentProps {
 const CartContent = (props: ContentProps) => {
   const router = useRouter()
   const { cartItems } = props
-  const context = useContext(CurrencyContext)
+const { currency } = useContext(CurrencyContext) ?? { currency: "GBP" }
+const {region} =    useContext(CurrencyContext) ?? { region: "OTHER" }
   const { removeCartItem } = useProductState()
  const [loading,setLoading] = useState(false)
 
-  const currency = context?.currency
+
 
   const getPayment = async () => {
     try {
       const data = await axios.post("/api/checkout_sessions/", {
         products: cartItems,
         currency: currency,
-       
+        region:region
       })
 
       router.push(data.data.url)

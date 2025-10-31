@@ -10,6 +10,9 @@ export async function POST(req: Request) {
     const body = await req.json();
     const products = body.products || [];
     const currency = body.currency.toLowerCase() || "gbp";
+    const region = body.region 
+
+    console.log(region)
 
 
     interface Product {
@@ -32,22 +35,28 @@ export async function POST(req: Request) {
 
 //価格に応じて送料が無料になる
 let  shippingFee 
-if (currency==="jpy") {
- const  totalAmount = products.map((p:any)=>p.priceJpy).reduce((acc: any,cur: any)=>acc += cur)
- console.log(totalAmount,"総額")
- shippingFee  = (totalAmount >= 30000 ? 0 : 2000) 
+if (region==="JP") {
+ const  totalAmount = products.map((p:Product)=>p.priceJpy).reduce((acc: any,cur: any)=>acc += cur)
 
- }else if (currency==="eur") {
- const  totalAmount = products.map((p:any)=>p.priceEur).reduce((acc: any,cur: any)=>acc += cur)
-  console.log(totalAmount,"総額")
-shippingFee = ( totalAmount >= 200 ? 0 : 20 )
- }else {
-const  totalAmount = products.map((p:any)=>p.priceGbp).reduce((acc: any,cur: any)=>acc += cur)
-  console.log(totalAmount,"総額gbp")
+ shippingFee  = (totalAmount >= 36000 ? 0 : 2000) 
+
+ }else if (region==="EU") {
+ const  totalAmount = products.map((p:Product)=>p.priceEur).reduce((acc: any,cur: any)=>acc += cur)
+
+shippingFee = ( totalAmount >= 200 ? 0 : 20 *100 )
+ }
+ else if (region==="UK") {
+ const  totalAmount = products.map((p:Product)=>p.priceGbp).reduce((acc: any,cur: any)=>acc += cur)
+
+shippingFee = ( totalAmount >= 100 ? 0 : 20 *100)
+ }
+ else {
+const  totalAmount = products.map((p:Product)=>p.priceGbp).reduce((acc: any,cur: any)=>acc += cur)
+
 shippingFee = (totalAmount >= 250 ? 0 : 20 *100 )
  }
 
- console.log(shippingFee, "送料")
+ 
     
 
   
@@ -99,16 +108,16 @@ shippingFee = (totalAmount >= 250 ? 0 : 20 *100 )
           currency: currency,
         },
         display_name: 'Shipping fee',
-        delivery_estimate: {
-          minimum: {
-            unit: 'business_day',
-            value: 5,
-          },
-          maximum: {
-            unit: 'business_day',
-            value: 7,
-          },
-        },
+        // delivery_estimate: {
+        //   minimum: {
+        //     unit: 'business_day',
+        //     value: 5,
+        //   },
+        //   maximum: {
+        //     unit: 'business_day',
+        //     value: 7,
+        //   },
+        // },
       },
     },
    

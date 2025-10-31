@@ -75,7 +75,7 @@ export default async function RootLayout({
                     <div className="w-full max-w-7xl flex justify-between items-center p-3 px-2 md:px-5 text-sm ">
                         <div className="flex gap-2 md:gap-5  items-center font-semibold">
                           <SidebarTrigger />
-                          <Link href={"/"}>My Shop</Link>
+                          <Link href={"/"}>My shop</Link>
                           <div className="flex items-center gap-2">
                             <DeployButton />
                           </div>
