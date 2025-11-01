@@ -15,7 +15,7 @@ interface AddToCartProps {
 const AddToCart = (props: AddToCartProps) => {
   const { productData, id } = props;
   const [existingCartItem] = useState<any>(null);
-  console.log(existingCartItem, "existingcart")
+
   const { addCartItem, cartItems } = useProductState();
   const [loading, setLoading] = useState(false)
 

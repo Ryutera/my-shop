@@ -33,27 +33,27 @@ export async function POST(req: Request) {
 
 
 
-//価格に応じて送料が無料になる
+//地域に応じて送料が無料になる
 let  shippingFee 
 if (region==="JP") {
  const  totalAmount = products.map((p:Product)=>p.priceJpy).reduce((acc: any,cur: any)=>acc += cur)
 
- shippingFee  = (totalAmount >= 36000 ? 0 : 2000) 
+ shippingFee  = (totalAmount >= 80000 ? 0 : 3000) 
 
  }else if (region==="EU") {
  const  totalAmount = products.map((p:Product)=>p.priceEur).reduce((acc: any,cur: any)=>acc += cur)
 
-shippingFee = ( totalAmount >= 200 ? 0 : 20 *100 )
+shippingFee = ( totalAmount >= 350 ? 0 : 15 *100 )
  }
  else if (region==="UK") {
  const  totalAmount = products.map((p:Product)=>p.priceGbp).reduce((acc: any,cur: any)=>acc += cur)
 
-shippingFee = ( totalAmount >= 100 ? 0 : 20 *100)
+shippingFee = ( totalAmount >= 200 ? 0 : 8 *100)
  }
  else {
 const  totalAmount = products.map((p:Product)=>p.priceGbp).reduce((acc: any,cur: any)=>acc += cur)
 
-shippingFee = (totalAmount >= 250 ? 0 : 20 *100 )
+shippingFee = (totalAmount >= 400 ? 0 : 20 *100 )
  }
 
  
