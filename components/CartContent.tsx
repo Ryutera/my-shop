@@ -37,18 +37,15 @@ interface Product {
 interface ContentProps {
   cartItems?: any
   removeItem?: (id: string) => void
-
 }
 
 const CartContent = (props: ContentProps) => {
-  const router = useRouter()
-  const { cartItems } = props
+const router = useRouter()
+const { cartItems } = props
 const { currency } = useContext(CurrencyContext) ?? { currency: "GBP" }
 const {region} =    useContext(CurrencyContext) ?? { region: "OTHER" }
-  const { removeCartItem } = useProductState()
- const [loading,setLoading] = useState(false)
-
-
+const { removeCartItem } = useProductState()
+const [loading,setLoading] = useState(false)
 
   const getPayment = async () => {
     try {
@@ -63,8 +60,6 @@ const {region} =    useContext(CurrencyContext) ?? { region: "OTHER" }
       console.error("Payment error:", error)
     }
   }
-
-
 
 
 const handleRemoveCartItem = async (id: string) => {

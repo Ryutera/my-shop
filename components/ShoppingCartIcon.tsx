@@ -9,8 +9,8 @@ import { useProductState } from "@/app/context/UserProductStateProvider"
 
 
 const ShoppingCartIcon = () => {
-  const {cartItems} = useProductState()
-  const count = cartItems.length
+  const {cartItemsIds} = useProductState()
+  const count = cartItemsIds?.length
   const [mounted,setMounted] = useState(false)
 
   

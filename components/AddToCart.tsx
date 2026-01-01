@@ -16,16 +16,16 @@ const AddToCart = (props: AddToCartProps) => {
   const { productData, id } = props;
   const [existingCartItem] = useState<any>(null);
 
-  const { addCartItem, cartItems } = useProductState();
+  const { addCartItem, cartItemsIds } = useProductState();
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
 
-  }, [cartItems]);
+  }, [cartItemsIds]);
 
 
 
-  const isAdded = cartItems.some((i) => i.id === id);
+  const isAdded = cartItemsIds?.some((i) => i=== id);
 
 
   const handleAddToCart = async (id: string) => {

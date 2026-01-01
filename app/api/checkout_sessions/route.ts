@@ -55,8 +55,6 @@ const  totalAmount = products.map((p:Product)=>p.priceGbp).reduce((acc: any,cur:
 shippingFee = (totalAmount >= 400 ? 0 : 20 *100 )
  }
 
- 
-    
 
   
 

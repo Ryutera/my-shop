@@ -2,13 +2,12 @@
 
 import { createContext, type ReactNode, useContext, useEffect, useState } from "react"
 
-import { addCartToDb, addFavoriteToDb, getCartItemsInDb, getFavoriteWithUserId, getProductFromContentful, getProductsByIds, isCartInDatabase, isFavoriteInDatabase, removeCartItemFromDB, removeFavoriteFromDb } from "../actions"
-import { ProductFields } from "@/lib/types"
+import { addCartToDb, addFavoriteToDb, getCartItemsInDb, getFavoriteWithUserId, removeCartItemFromDB, removeFavoriteFromDb } from "../actions"
+
 
 type UserProductStateContextType = {
   cartItemsIds: string[] // Cart items (product IDs)
   favorite: string[] // Favorite items (product IDs)
-  cartItems: any[] | ProductFields[]
   userId: string | null
   addCartItem: (id: string) => void
   removeCartItem: (id: string) => void
@@ -28,15 +27,16 @@ const UserProductStateContext = createContext<UserProductStateContextType | unde
 export const CartProvider = (props: Props) => {
   const { children, userData } = props
 //Store cart contents based on login status
-  const [cartItemsIds, serCartItemsIds] = useState<string[]>([])
-  const [cartItems, setCartItems] = useState<any[]>([]);
+  const [cartItemsIds, setCartItemsIds] = useState<string[]>([])
 
   //Store cmsID basedon login Status
   const [favorite, setFavorite] = useState<string[]>([])
   
   const userId = userData?.identities[0].id
 
-  
+
+  console.log(cartItemsIds,"カートId")
+
 
     // Load data from localStorage on initial load (non-logged-in users only)
     //非ログイン時にカートとお気に入りをローカルデータから追加
@@ -45,7 +45,7 @@ export const CartProvider = (props: Props) => {
 
       const storedItems = localStorage.getItem("cart_items")
       if (storedItems) {
-        serCartItemsIds(JSON.parse(storedItems))
+        setCartItemsIds(JSON.parse(storedItems))
       }
 
       const storedFavs = localStorage.getItem("favorite_items")
@@ -68,25 +68,17 @@ export const CartProvider = (props: Props) => {
   }, [cartItemsIds, userData])
 
 
-  /**
-   * addCartItem
-   * - If user is logged in: add to DB and refresh `cartItems` from DB.
-   * - If not logged in: add the id to `cartItemsIds` (local-only persistence).
-   *
-   * Note: This function does not perform optimistic UI updates for DB-backed users —
-   * it waits for the DB result and then re-fetches.
-   */
+
   const addCartItem = async (id: string) => {
 
     if (userData) {
       await addCartToDb(userId, id);
       const results = await getCartItemsInDb(userId)
        const ids = results.map((r) => r.cmsItemId);
-     const items = await getProductsByIds(ids);
-      setCartItems(items);
+      setCartItemsIds(ids);
 
     } else {
-      serCartItemsIds((prev) => {
+      setCartItemsIds((prev) => {
         const exists = prev.some((i) => i === id)
         if (exists) return prev // Don't add if already exists
         return [...prev, id]
@@ -100,14 +92,13 @@ export const CartProvider = (props: Props) => {
 
       const dbItems = await getCartItemsInDb(userId);
  const ids = dbItems.map((item) => item.cmsItemId);
+ 
 
-const items = await getProductsByIds(ids);
-
-      setCartItems(items);
-
+// const items = await getProductsByIds(ids);
+      setCartItemsIds(ids);
 
     } else {
-      serCartItemsIds((prev) => {
+      setCartItemsIds((prev) => {
         return prev.filter((i) => i !== id)
       })
 
@@ -117,33 +108,21 @@ const items = await getProductsByIds(ids);
 
   // Clear all cart items
   const clearCart = () => {
-    serCartItemsIds([])
+    setCartItemsIds([])
     if (!userData) {
       localStorage.removeItem("cart_items")
     }
   }
 
 
-  /**
-   * addCartItem
-   * - If user is logged in: add to DB and refresh `cartItems` from DB.
-   * - If not logged in: add the id to `cartItemsIds` (local-only persistence).
-   *
-   * Note: This function does not perform optimistic UI updates for DB-backed users —
-   * it waits for the DB result and then re-fetches.
-   */
+
 const getCartItems = async () => {
   if (userData) {
    
     const dbItems = await getCartItemsInDb(userId);
     const ids = dbItems.map((item) => item.cmsItemId);
-    const items = await getProductsByIds(ids);
-    setCartItems(items);
-  } else {
-   
-    const items = await getProductsByIds(cartItemsIds);
-    setCartItems(items.filter(Boolean));
-  }
+    setCartItemsIds(ids);
+  } 
 };
 
     useEffect(() => {
@@ -151,7 +130,7 @@ const getCartItems = async () => {
       getCartItems()
     };
     fetchProducts();
-  }, [cartItemsIds, userData])
+  }, [userId])
 
 // ------------お気に入りに関する処理-------------
 
@@ -214,7 +193,7 @@ const getCartItems = async () => {
 
   return (
     <UserProductStateContext.Provider
-      value={{ cartItemsIds, addCartItem, removeCartItem, clearCart, favorite, addFavorite, getCartItems, cartItems, userId }}
+      value={{ cartItemsIds, addCartItem, removeCartItem, clearCart, favorite, addFavorite, getCartItems, userId }}
     >
       {children}
     </UserProductStateContext.Provider>
