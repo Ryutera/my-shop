@@ -62,7 +62,7 @@ export default function AuthButton({ data, userData }: any) {
       <Heart className="w-6 h-6 text-gray-700" />
     </Link>
 
-      <ShoppingCartIcon  />
+      <ShoppingCartIcon />
 
   
       {data ?

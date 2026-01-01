@@ -18,6 +18,7 @@ export const signUpAction = async (formData: FormData) => {
   const name = formData.get("name")?.toString()
 
   const supabase = await createClient()
+
   const origin = (await headers()).get("origin")
 
   

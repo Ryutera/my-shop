@@ -12,7 +12,6 @@ export async function POST(req: Request) {
     const currency = body.currency.toLowerCase() || "gbp";
     const region = body.region 
 
-    console.log(region)
 
 
     interface Product {
