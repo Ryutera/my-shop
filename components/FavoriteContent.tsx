@@ -27,10 +27,10 @@ interface FavoriteContentProps {
 }
 
 const FavoriteContent = ({ products }: FavoriteContentProps) => {
-  const { addFavorite, addCartItem, cartItems } = useProductState()
+  const { addFavorite, addCartItem,cartItemsIds} = useProductState()
   const { toast } = useToast()
 
-  const ids = cartItems.map((item: any) => item.id)
+  const ids = cartItemsIds?.map((item: any) => item.id)
 
 
   const handleClick = async (id: string) => {

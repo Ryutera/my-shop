@@ -14,42 +14,6 @@ export default function AuthButton({ data, userData }: any) {
   const searchcontext = useContext(SearchContext)
 
 
-  // if (!hasEnvVars) {
-  //   return (
-  //     <>
-  //       <div className="flex gap-4 items-center">
-  //         <div>
-  //           <Badge
-  //             variant={"default"}
-  //             className="font-normal pointer-events-none"
-  //           >
-  //             Please update .env.local file with anon key and url
-  //           </Badge>
-  //         </div>
-  //         <div className="flex gap-2">
-  //           <Button
-  //             asChild
-  //             size="sm"
-  //             variant={"outline"}
-  //             disabled
-  //             className="opacity-75 cursor-none pointer-events-none"
-  //           >
-  //             <Link href="/sign-in">Sign in</Link>
-  //           </Button>
-  //           <Button
-  //             asChild
-  //             size="sm"
-  //             variant={"default"}
-  //             disabled
-  //             className="opacity-75 cursor-none pointer-events-none"
-  //           >
-  //             <Link href="/sign-up">Sign up</Link>
-  //           </Button>
-  //         </div>
-  //       </div>
-  //     </>
-  //   );
-  // }
 
   return (
     <div className="flex items-center gap-4">
@@ -76,11 +40,12 @@ export default function AuthButton({ data, userData }: any) {
         :
 
 
-        // {/* <Button asChild size="sm" className="ml-2" variant={"outline"}> */}
+       
+
         <Link href="/sign-in">
           <UserRound className="text-gray-700"/>
         </Link>
-        /* </Button> */
+      
 
       }
     </div>

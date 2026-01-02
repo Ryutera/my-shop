@@ -26,7 +26,6 @@ const UserProductStateContext = createContext<UserProductStateContextType | unde
 
 export const CartProvider = (props: Props) => {
   const { children, userData } = props
-//Store cart contents based on login status
   const [cartItemsIds, setCartItemsIds] = useState<string[]>([])
   //Store cmsID basedon login Status
   const [favorite, setFavorite] = useState<string[]>([])  
