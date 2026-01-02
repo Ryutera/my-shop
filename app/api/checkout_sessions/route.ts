@@ -2,16 +2,19 @@ import { NextResponse } from "next/server";
 import { headers } from "next/headers";
 import { stripe } from "@/lib/stripe";
 import { createClient } from "@/utils/supabase/server";
+import { getProductsByIds } from "@/app/actions";
 
 export async function POST(req: Request) {
   try {
     const headersList = await headers();
     const origin = headersList.get("origin");
     const body = await req.json();
-    const products = body.products || [];
+    const productIds = body.productIds || [];
     const currency = body.currency.toLowerCase() || "gbp";
     const region = body.region 
 
+//クライアント側で価格の改善を防ぐためサーバーから商品データを呼ぶ
+    const products = await  getProductsByIds(productIds)
 
 
     interface Product {

@@ -28,14 +28,10 @@ export const CartProvider = (props: Props) => {
   const { children, userData } = props
 //Store cart contents based on login status
   const [cartItemsIds, setCartItemsIds] = useState<string[]>([])
-
   //Store cmsID basedon login Status
-  const [favorite, setFavorite] = useState<string[]>([])
-  
+  const [favorite, setFavorite] = useState<string[]>([])  
   const userId = userData?.identities[0].id
 
-
-  console.log(cartItemsIds,"カートId")
 
 
     // Load data from localStorage on initial load (non-logged-in users only)

@@ -8,11 +8,12 @@ import NoCartContent from "@/components/NoCartContent";
 import { useProductState } from "../context/UserProductStateProvider";
 import { useEffect, useState } from "react";
 import { getProductsByIds } from "../actions";
+import { ProductFields } from "@/lib/types";
 
 
 const Cart = () => {
   const { cartItemsIds } = useProductState();
-  const [cartItems, setCartItems ] = useState<any>()
+  const [cartItems, setCartItems ] = useState< ProductFields[]>()
 
   useEffect(()=>{
     const init = async()=>{

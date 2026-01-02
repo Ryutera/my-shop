@@ -44,13 +44,13 @@ const router = useRouter()
 const { cartItems } = props
 const { currency } = useContext(CurrencyContext) ?? { currency: "GBP" }
 const {region} =    useContext(CurrencyContext) ?? { region: "OTHER" }
-const { removeCartItem } = useProductState()
+const { removeCartItem ,cartItemsIds} = useProductState()
 const [loading,setLoading] = useState(false)
 
   const getPayment = async () => {
     try {
       const data = await axios.post("/api/checkout_sessions/", {
-        products: cartItems,
+        productIds: cartItemsIds,
         currency: currency,
         region:region
       })
