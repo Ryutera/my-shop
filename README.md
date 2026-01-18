@@ -1,77 +1,75 @@
-# Minimal Vintage Clothing E-Commerce Site with Payments
+# ミニマルなヴィンテージ古着向けECサイト（決済機能付き）
 
-🛒 A minimalist vintage clothing e-commerce site built using Next.js, Stripe, and Supabase.
+🛒 Next.js・Stripe・Supabase を用いて構築した、ミニマルなヴィンテージ古着向けECサイトです。
 
-## 🔍 Overview
+---
 
-This app provides all the essential features of a modern e-commerce site, including user authentication, product browsing, wishlist registration, cart management, and secure checkout. Payments are handled via Stripe, and purchase data is automatically saved through Webhook integration with Supabase.
+## 🔍 概要
 
-> 📌 **Note:** The current version uses demo product data and Stripe is operating in test mode.  
-> 🛍️ I plan to add real product listings and switch to live payment mode in the near future.
+本アプリは、認証機能・商品閲覧・ウィッシュリスト・カート管理・安全な決済処理など、  
+モダンなECサイトに必要な基本機能を一通り備えています。
 
-## 🚀 Tech Stack
+決済には Stripe を利用し、Webhook を通じて購入データを Supabase に自動保存する構成としています。
 
-- Next.js 15 (App Router)
+> 📌 **補足**  
+> 現在はデモ用の商品データを使用しており、Stripe はテストモードで動作しています。  
+
+---
+
+## 🚀 使用技術
+
+- Next.js 15（App Router）
 - TypeScript
 - Tailwind CSS
-- Supabase (Database & Auth)
-- Stripe (Payment processing)
-- Prisma (ORM)
-- Contentful (Headless CMS for product data)
+- Supabase（Database / Auth）
+- Stripe（決済処理）
+- Prisma（ORM）
+- Contentful（ヘッドレスCMS・商品管理）
 
-## ✨ Features
+---
 
-- User authentication (Sign up / Log in)
-- Product list and detail pages
-- Cart functionality (supports both logged-in and guest users)
-- Wishlist functionality
-- Purchase history view for logged-in users
-- Stripe Checkout integration
-- Thank you page after successful payment
-- Automatic saving of purchase history via Webhook
+## ✨ 主な機能
 
-## 🧠 Notable Highlights
+- ユーザー認証（新規登録 / ログイン）
+- 商品一覧・商品詳細ページ
+- カート機能（ログイン／未ログイン両対応）
+- ウィッシュリスト機能 （ログイン／未ログイン両対応）
+- 商品検索機能
+- 購入履歴の閲覧（ログインユーザー）
+- Stripe Checkout を用いた決済
+- 決済完了後のサンクスページ表示
+- IPアドレスに基づいた価格表示変更
+- Webhook を用いた購入履歴の自動保存
 
-- **Complete logic separation based on login state**  
-  Key features like cart, wishlist, and purchase history behave differently depending on the user's login state:
-  - For guest users, data is managed using `useState` and stored in `localStorage`
-  - For logged-in users, data is saved in Supabase and tied to their unique user ID
+---
 
-- **Checkout metadata integration with Stripe**  
-  User IDs and product data are passed via Stripe Checkout metadata and handled through Webhooks to securely and automatically save order history to Supabase.
+## 🧠 実装上のポイント
 
-- **Product management with Contentful**  
-  Products are managed through a headless CMS (Contentful), enabling non-developers to update product information without touching the codebase.
+### ログイン状態に応じたロジック分離
+カート・ウィッシュリスト・購入履歴などの機能は、  
+**ログイン状態に応じてデータの管理方法を切り替える設計**としています。
 
-## 🖥️ Demo
+- 未ログイン時：  
+  - `useState` と `localStorage` によるクライアント管理
+- ログイン時：  
+  - Supabase に保存し、ユーザーIDと紐付けて管理
+
+---
+
+### Stripe Checkout × Webhook の活用
+Stripe Checkout の metadata にユーザーIDや商品情報を含め、  
+Webhook 経由で購入情報を Supabase に安全に保存する仕組みを実装しています。
+
+---
+
+### Contentful を用いた商品管理
+商品情報はデータベースから分離し、  
+ヘッドレスCMS（Contentful）で管理することで、  
+非エンジニアでも商品情報の更新が可能な構成としています。
+
+---
+
+## 🖥️ デモ
 
 🚀 https://my-shop-blond-ten.vercel.app/
 
-## 🛠️ Getting Started
-
-Clone the repository and install dependencies:
-
-```bash
-git clone https://github.com/Ryutera/my-shop.git
-cd my-shop
-npm install
-npm run dev
-```
-
-Then create a `.env.local` file in the root directory and add the following:
-
-```env
-NEXT_PUBLIC_SUPABASE_URL=
-NEXT_PUBLIC_SUPABASE_ANON_KEY=
-
-DATABASE_URL=
-
-CONTENTFUL_SPACE_ID=
-CONTENTFUL_ACCESS_TOKEN=
-CONTENTFUL_PREVIEW_ACCESS_TOKEN=
-CONTENTFUL_MANAGEMENT_TOKEN=
-
-NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=
-STRIPE_SECRET_KEY=
-STRIPE_WEBHOOK_SECRET=
-```
