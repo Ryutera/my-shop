@@ -30,8 +30,8 @@ const FavoriteContent = ({ products }: FavoriteContentProps) => {
   const { addFavorite, addCartItem,cartItemsIds} = useProductState()
   const { toast } = useToast()
 
-  const ids = cartItemsIds?.map((item: any) => item.id)
-
+  const ids = cartItemsIds?.map((id:string) => id)
+console.log(ids,"ids")
 
   const handleClick = async (id: string) => {
     try {

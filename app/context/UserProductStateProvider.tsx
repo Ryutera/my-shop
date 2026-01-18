@@ -139,8 +139,7 @@ const getCartItems = async () => {
 
 
   // Register favoriteItems to favorites upon login
-  // NOTE: we intentionally do not run this effect when userId is falsy. Use userId in the
-  // dependency array to avoid calling the DB with an undefined id.
+
   useEffect(() => {
     if (!userId) {
       return
