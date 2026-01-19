@@ -11,13 +11,15 @@ import SearchContext from "@/app/context/SearchContext";
 
 export default function AuthButton({ data, userData }: any) {
 
-  const searchcontext = useContext(SearchContext)
+  const context = useContext(SearchContext)
+  if (!context) return
+  const {onClickSearch} = context
 
   return (
 
     <div className="flex items-center gap-4">
 
-      <button onClick={searchcontext.onClickSearch} className="relative inline-block hover:scale-110 transition-transform duration-200 cursor-pointer">
+      <button onClick={onClickSearch} className="relative inline-block hover:scale-110 transition-transform duration-200 cursor-pointer">
         <Search className="text-gray-700" />
       </button>
 
