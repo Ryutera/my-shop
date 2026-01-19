@@ -13,42 +13,36 @@ export default function AuthButton({ data, userData }: any) {
 
   const searchcontext = useContext(SearchContext)
 
-
-
   return (
+
     <div className="flex items-center gap-4">
 
       <button onClick={searchcontext.onClickSearch} className="relative inline-block hover:scale-110 transition-transform duration-200 cursor-pointer">
-        <Search className="text-gray-700"/>
+        <Search className="text-gray-700" />
       </button>
 
-       <Link href="/favorite" className="relative inline-block hover:scale-110 transition-transform duration-200 cursor-pointer">
-      <Heart className="w-6 h-6 text-gray-700" />
-    </Link>
+      <Link href="/favorite" className="relative inline-block hover:scale-110 transition-transform duration-200 cursor-pointer">
+        <Heart className="w-6 h-6 text-gray-700" />
+      </Link>
 
       <ShoppingCartIcon />
 
-  
+
       {data ?
         // signup時に一瞬userdata.idがnullになるためそれを回避
 
         <Link href={userData ? `/account/${userData.id}` : "/"}>
           <UserRoundCheck />
         </Link>
-
-
         :
-
-
-       
-
         <Link href="/sign-in">
-          <UserRound className="text-gray-700"/>
+          <UserRound className="text-gray-700" />
         </Link>
-      
+
 
       }
     </div>
+
 
 
   );
